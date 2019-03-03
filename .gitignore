@@ -4,3 +4,5 @@
 \.idea/
 
 config/
+
+db\.sqlite3
