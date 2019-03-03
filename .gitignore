@@ -6,3 +6,7 @@
 config/
 
 db\.sqlite3
+
+soma/__pycache__/
+
+soma/migrations/__pycache__/
