@@ -18,5 +18,6 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('soma/',include('soma.urls')),
+    #path('soma/',include('soma.urls')),
+    path('', include('login.urls')),
 ]

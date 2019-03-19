@@ -17,6 +17,12 @@
       {% csrf_token %}
       <div class="input-group" style="margin-bottom:10px">
         <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+        <select id="family_list" name="familyname" type="text" value="" maxlength="256" placeholder="Familyname" aria-describedby="sizing-addon1" autofocus required/>
+            <option value = "soma">soma</option>
+        </select>
+      </div>
+      <div class="input-group" style="margin-bottom:10px">
+        <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
         <input id="id_username" name="username" type="text" value="" maxlength="256" placeholder="Username" aria-describedby="sizing-addon1" autofocus required/> {# ② #}
       </div>
       <div class="input-group" style="margin-bottom:10px">
