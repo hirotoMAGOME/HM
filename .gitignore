@@ -16,3 +16,5 @@ login/migrations/__pycache__/
 login/__pycache__/
 
 hiroto/__pycache__/
+
+hiroto/migrations/__pycache__/
