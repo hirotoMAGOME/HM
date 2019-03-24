@@ -4,5 +4,7 @@ from . import views
 app_name = 'login'
 
 urlpatterns = [
-    url('', views.login, name='login'),
+    url('login/', views.login, name='login'),
+    #login/へリダイレクトする
+    url('', views.index, name='index'),
 ]

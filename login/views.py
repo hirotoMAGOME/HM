@@ -6,6 +6,8 @@ from login.models import Member
 
 from login.forms import LoginForm
 
+from django.views.generic import RedirectView
+
 # Create your views here.
 
 class LoginView(View):
@@ -38,3 +40,8 @@ class LoginView(View):
         return render(request,'login/login.html')
 
 login = LoginView.as_view()
+
+class RedirectLoginView(RedirectView):
+    url = '/login/'
+
+index = RedirectLoginView.as_view()
