@@ -33,4 +33,4 @@ class Member(models.Model):
     del_flg = django.db.models.BooleanField(verbose_name = '削除フラグ')
 
     def __str__(self):
-        return self.password#Todo 何を返すべきか
+        return self.password#Todo 何を返すべきか,passwordはなし

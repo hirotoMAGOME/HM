@@ -1,12 +1,12 @@
-from django.contrib.auth import login as auth_login
 from django.shortcuts import render,redirect
-from django.urls import reverse
+
 from django.views import View
 from login.models import Member
 
 from login.forms import LoginForm
 
 from django.views.generic import RedirectView
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 
@@ -27,21 +27,16 @@ class LoginView(View):
             return render(request,'login/login.html',{'form':form})
         #user = form.get_user()
 
-        success_count = Member.objects.filter(login_id = request.POST["login_id"],password = request.POST["password"]).count()#0件時のエラー処理
-        if success_count==1:
+        try:
+            member_data = Member.objects.get(login_id = request.POST["login_id"],password = request.POST["password"])
             print("login success")
-            #return render(reverse("login:hiroto"))
-            return render(request, 'hiroto/index.html')
-        else:
-            print("login faild")
-
-        #auth_login(request,user)
-
-        return render(request,'login/login.html')
+            return HttpResponseRedirect(member_data.first_name_en + "/")
+        except:
+            print("login failure")
+            return HttpResponseRedirect("/")
 
 login = LoginView.as_view()
 
 class RedirectLoginView(RedirectView):
     url = '/login/'
-
 index = RedirectLoginView.as_view()
