@@ -13,3 +13,16 @@ class Family(models.Model):
     create_date = django.db.models.DateTimeField(verbose_name = '作成日', auto_now_add = True)
     update_date = django.db.models.DateTimeField(verbose_name = '更新日', auto_now = True)
     del_flg = django.db.models.BooleanField(verbose_name = '削除フラグ')
+
+class Member(models.Model):
+    class Meta:
+        db_table = 'member'
+
+    family_id = django.db.models.IntegerField(verbose_name = '家族ID')
+    first_name_en = django.db.models.CharField(verbose_name = '名前(英)', max_length=20)
+    first_name_jp = django.db.models.CharField(verbose_name = '名前(日)', max_length=20)
+    birth_day = django.db.models.DateTimeField(verbose_name = '誕生日')
+    disp_flg = django.db.models.BooleanField(verbose_name = '表示フラグ')
+    create_date = django.db.models.DateTimeField(verbose_name = '作成日', auto_now_add = True)
+    update_date = django.db.models.DateTimeField(verbose_name = '更新日', auto_now = True)
+    del_flg = django.db.models.BooleanField(verbose_name = '削除フラグ')
