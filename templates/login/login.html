@@ -15,21 +15,20 @@
       {% csrf_token %}
       <div class="input-group" style="margin-bottom:10px">
         <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-        <select id="family_list" name="family_name_jp" type="text" value="" maxlength="256" placeholder="Familyname" aria-describedby="sizing-addon1" autofocus required/>
-            <option value = "soma">soma</option>
-        </select>
+            {{ form.family.label }}
+            {{ form.family }}
       </div>
       <div class="input-group" style="margin-bottom:10px">
-        <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-        <input id="id_login_id" name="login_id" type="text" value="" maxlength="20" placeholder="Username" aria-describedby="sizing-addon1" autofocus required/> {# ② #}
+          {{ form.login_id.label }}
+          {{ form.login_id }}
       </div>
       <div class="input-group" style="margin-bottom:10px">
-        <span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
-        <input id="id_password" name="password" type="password" value="" maxlength="20" placeholder="Pasword" aria-describedby="sizing-addon1" required/> {# ② #}
+          {{ form.password.label }}
+          {{ form.password }}
       </div>
 
       <button type="submit" style="margin-bottom:-20px"><i class="fa fa-sign-in">Login</i></button>
-      <input name="next" type="hidden" value="{{ next }}"/> {# ③ #}
+      <input name="next" type="hidden" value="{{ next }}"/>
     </form>
   </div>
 </div>

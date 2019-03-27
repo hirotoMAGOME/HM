@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UsernameField
-from login.models import Member
+from . import models
 
 class LoginForm(forms.Form):
     login_id = forms.CharField(
@@ -13,3 +13,5 @@ class LoginForm(forms.Form):
         strip=False,
         widget=forms.PasswordInput(render_value=True),
     )
+
+    family = forms.ModelChoiceField(models.Family.objects,label='家族名')
