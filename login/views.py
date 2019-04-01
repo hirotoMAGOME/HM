@@ -31,7 +31,7 @@ class LoginView(View):
             return render(request,'login/login.html',{'form':form})
 
         try:
-            member_data = Member.objects.get(login_id = request.POST["login_id"],password = request.POST["password"])
+            member_data = Member.objects.get(login_id = request.POST["login_id"],password = request.POST["password"],family_id = request.POST['family'])
             print("login success")
             request.session['login_id'] = request.POST['login_id']
             #request.session['time'] = datetime.now
