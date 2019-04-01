@@ -1,10 +1,14 @@
-from django.contrib.auth import login as auth_login
 from django.shortcuts import render,redirect
-from django.urls import reverse
+
 from django.views import View
 from login.models import Member
 
 from login.forms import LoginForm
+
+from django.views.generic import RedirectView
+from django.http import HttpResponseRedirect
+
+from datetime import datetime
 
 # Create your views here.
 
@@ -15,6 +19,8 @@ class LoginView(View):
             'form':LoginForm(),
         }
         return render(request,'login/login.html',context)
+        print("session_get")
+        print(vars(request.session))
 
     def post(self,request,*args,**kwargs):
         """POST リクエスト用のメソッド"""
@@ -23,18 +29,22 @@ class LoginView(View):
         if not form.is_valid():
             print("バリデーションエラー")
             return render(request,'login/login.html',{'form':form})
-        #user = form.get_user()
 
-        success_count = Member.objects.filter(login_id = request.POST["login_id"],password = request.POST["password"]).count()#0件時のエラー処理
-        if success_count==1:
+        try:
+            member_data = Member.objects.get(login_id = request.POST["login_id"],password = request.POST["password"],family_id = request.POST['family'])
             print("login success")
-            #return render(reverse("login:hiroto"))
-            return render(request, 'hiroto/index.html')
-        else:
-            print("login faild")
-
-        #auth_login(request,user)
-
-        return render(request,'login/login.html')
+            request.session['login_id'] = request.POST['login_id']
+            #request.session['time'] = datetime.now
+            #request.session.save()
+            print("session_post")
+            print(vars(request.session))
+            return HttpResponseRedirect(member_data.first_name_en + "/")
+        except:
+            print("login failure")
+            return HttpResponseRedirect("/")
 
 login = LoginView.as_view()
+
+class RedirectLoginView(RedirectView):
+    url = '/login/'
+index = RedirectLoginView.as_view()

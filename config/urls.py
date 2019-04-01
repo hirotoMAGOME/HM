@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from django.conf.urls import url
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('login.urls')),
+    path('admin/', admin.site.urls),#Todo admin見れない不具合
+    url('hiroto/',include('hiroto.urls')),#メンバー追加時
+    url('',include('login.urls')),
 ]
