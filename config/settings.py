@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+#SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 #SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 SESSION_COOKIE_AGE = 6000
 SESSION_SAVE_EVERY_REQUEST = True
