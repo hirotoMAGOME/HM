@@ -32,12 +32,11 @@ class LoginView(View):
 
         try:
             member_data = Member.objects.get(login_id = request.POST["login_id"],password = request.POST["password"],family_id = request.POST['family'])
-            print("login success")
-            request.session['login_id'] = request.POST['login_id']
-            #request.session['time'] = datetime.now
-            #request.session.save()
-            print("session_post")
-            print(vars(request.session))
+            member_data.session_id = request.session.session_key
+            member_data.save()
+
+            
+
             return HttpResponseRedirect(member_data.first_name_en + "/")
         except:
             print("login failure")
