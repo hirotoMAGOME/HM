@@ -6,5 +6,5 @@ app_name = 'hiroto'
 urlpatterns = [
     #topPage
     path('', views.index, name='index'),
-    path('aa', views.index, name='index'),
+    path('budget', views.index, name='index'),
 ]

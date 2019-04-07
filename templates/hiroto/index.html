@@ -39,11 +39,12 @@
             <tr class = "contents">
                 <td>
                     <div class = "side-menu" >
-                        side menu<br/>
+                        hiroto side menu<br/>
                     </div>
                 </td>
                 <td>
                     <div class ="main-contents">
+                        {% block main-contents-frame %}
                         <table class = "main-contents-frame">
                             <tr>
                                 <td>
@@ -127,6 +128,7 @@
                                 </td>
                             </tr>
                         </table>
+                        {% endblock %}
                     </div>
                 <td>
             </tr>

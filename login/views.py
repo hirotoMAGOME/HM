@@ -8,8 +8,6 @@ from login.forms import LoginForm
 from django.views.generic import RedirectView
 from django.http import HttpResponseRedirect
 
-from datetime import datetime
-
 # Create your views here.
 
 class LoginView(View):
@@ -32,12 +30,11 @@ class LoginView(View):
 
         try:
             member_data = Member.objects.get(login_id = request.POST["login_id"],password = request.POST["password"],family_id = request.POST['family'])
-            member_data.session_id = request.session.session_key
-            member_data.save()
+            #member_data.session_id = request.session.session_key
+            #member_data.save()
 
-            
-
-            return HttpResponseRedirect(member_data.first_name_en + "/")
+            #login成功したdirへ遷移
+            return HttpResponseRedirect("/" + member_data.first_name_en + "/")
         except:
             print("login failure")
             return HttpResponseRedirect("/")
