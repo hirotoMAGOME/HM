@@ -17,3 +17,5 @@ class PaymentPlanForm(forms.Form):
 
     name = forms.CharField(models.PaymentPlan.objects,label='収支予定名')
     amount = forms.IntegerField(models.PaymentPlan.objects,label='金額')
+    payment_unit_id = forms.IntegerField(verbose_name='支払い単位ID',null=True)
+    payment_limit = forms.IntegerField(verbose_name='支払いリミット',null=True)

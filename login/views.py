@@ -17,8 +17,6 @@ class LoginView(View):
             'form':LoginForm(),
         }
         return render(request,'login/login.html',context)
-        print("session_get")
-        print(vars(request.session))
 
     def post(self,request,*args,**kwargs):
         """POST リクエスト用のメソッド"""

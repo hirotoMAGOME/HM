@@ -38,6 +38,7 @@ class PaymentPlan(models.Model):
     payment_category_id = django.db.models.IntegerField(verbose_name='支払いカテゴリID',null=True)
     name = django.db.models.CharField(verbose_name='名前', max_length=20,null=True)
     memo = django.db.models.CharField(verbose_name='備考', max_length=100,null=True)
+    amount_plus_flg = django.db.models.BooleanField(verbose_name='収支区分', default=0)
     amount = django.db.models.IntegerField(verbose_name='金額',null=True)
     payment_unit_id = django.db.models.IntegerField(verbose_name='支払い単位ID',null=True)
     payment_limit = django.db.models.IntegerField(verbose_name='支払いリミット',null=True)
