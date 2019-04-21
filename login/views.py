@@ -30,11 +30,12 @@ class LoginView(View):
 
         try:
             member_data = Member.objects.get(login_id = request.POST["login_id"],password = request.POST["password"],family_id = request.POST['family'])
-            #member_data.session_id = request.session.session_key
-            #member_data.save()
 
             #login成功したdirへ遷移
-            return HttpResponseRedirect("/" + member_data.first_name_en + "/")
+            #return HttpResponseRedirect("/" + member_data.first_name_en + "/")
+
+            #一旦、budgetで開発
+            return HttpResponseRedirect("/budget/")
         except:
             print("login failure")
             return HttpResponseRedirect("/")

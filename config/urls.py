@@ -20,5 +20,6 @@ from django.conf.urls import url
 urlpatterns = [
     path('admin/', admin.site.urls),#Todo admin見れない不具合
     url('hiroto/',include('hiroto.urls')),#メンバー追加時
+    url('budget/',include('budget.urls')),
     url('',include('login.urls')),
 ]
