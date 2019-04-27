@@ -10,7 +10,7 @@ class LoginForm(forms.Form):
     )
 
     password = forms.CharField(
-        label = 'パスワード',
+        label='パスワード',
         strip=False,
         widget=forms.PasswordInput(render_value=True),
     )

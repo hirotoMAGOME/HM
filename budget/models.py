@@ -58,7 +58,7 @@ class PaymentResult(models.Model):
     class Meta:
         db_table = 'payment_result'
 
-    payment_plan = django.db.models.ForeignKey(PaymentPlan, verbose_name='予算', on_delete=models.PROTECT)
+    payment_plan = django.db.models.ForeignKey(PaymentPlan, verbose_name='予算', on_delete=models.PROTECT, null=False)
     amount_plus_flg = django.db.models.BooleanField(verbose_name='収支区分', default=0)
     amount = django.db.models.IntegerField(verbose_name='金額', null=True)
     memo = django.db.models.CharField(verbose_name='備考', max_length=100, null=True)
@@ -71,7 +71,7 @@ class PaymentResult(models.Model):
     del_flg = django.db.models.BooleanField(verbose_name='削除フラグ', default=0)
 
     def __str__(self):
-        return self.name
+        return self.memo
 
 
 class PaymentCategory(models.Model):
@@ -92,7 +92,7 @@ class PaymentUnit(models.Model):
     class Meta:
         db_table = 'payment_unit'
 
-    #1,2,3,4,5 回、年、月、週、日
+    #1,2,3,4,5 不定期、年、月、週、日
     name = django.db.models.CharField(verbose_name='名前', max_length=20)
 
     def __str__(self):

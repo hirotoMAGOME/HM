@@ -18,7 +18,7 @@ class LoginView(View):
         context = {
             'form': LoginForm(),
         }
-        return render(request,'login/login.html',context)
+        return render(request, 'login/login.html', context)
 
     def post(self, request, *args, **kwargs):
         """POST リクエスト用のメソッド"""
@@ -29,7 +29,9 @@ class LoginView(View):
             return render(request, 'login/login.html', {'form': form})
 
         try:
-            member_data = Member.objects.get(login_id=request.POST["login_id"], password=request.POST["password"], family_id=request.POST['family'])
+            member_data = Member.objects.get(
+                login_id=request.POST["login_id"], password=request.POST["password"], family_id=request.POST['family']
+            )
 
             #login成功したdirへ遷移
             #return HttpResponseRedirect("/" + member_data.first_name_en + "/")
