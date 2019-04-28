@@ -55,7 +55,7 @@ class PaymentPlan(models.Model):
     memo = django.db.models.CharField(verbose_name='備考', max_length=100, null=True)
     amount_plus_flg = django.db.models.BooleanField(verbose_name='収支区分', default=0)
     amount = django.db.models.IntegerField(verbose_name='金額', null=True)
-    payment_unit = django.db.models.ForeignKey(PaymentUnit, verbose_name='支払い単位ID', on_delete=models.PROTECT, null= False, default=1)
+    payment_unit = django.db.models.ForeignKey(PaymentUnit, verbose_name='支払い単位ID', on_delete=models.PROTECT, null=False, default=1)
     payment_limit = django.db.models.IntegerField(verbose_name='支払いリミット', null=True)
     rank = django.db.models.IntegerField(verbose_name='表示順', null=True)
     family_id = django.db.models.IntegerField(verbose_name='家族ID', null=True)

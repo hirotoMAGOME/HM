@@ -82,38 +82,71 @@
                                             <th colspan="3">予定</th>
                                             <th colspan="3">実績</th>
                                         </tr>
-                                        {% for unit in unit_data %}
+                                        {% if payment_unit_count1 > 0 %}
+                                            {% for anytime in payment_unit_data1 %}
                                             <tr>
-
-                                            </tr>
-                                        {% endfor %}
-                                        <tr>
-                                            <th>day</th>
-                                            <td>平日食事{{ data1 }}</td>
-                                            <td>-1500円</td>
-                                            <td>3/18{{ data3 }}</td>
-                                            <td>平日食事</td>
-                                            <td>-570</td>
-                                            <td>3/18</td>
-                                        </tr>
-                                        <tr>
-                                            <th>week</th>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <th>month</th>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                                <th>{{ anytime.payment_plan.payment_unit.name_en }}</th>
+                                                <td>{{ anytime.payment_plan.name }}</td>
+                                                <td>{{ anytime.payment_plan.payment_limit }}</td>
+                                                <td>{{ anytime.payment_plan.amount }}</td>
+                                                <td>{{ anytime.memo }}</td>
+                                                <td>{{ anytime.amount }}</td>
+                                                <td>{{ anytime.payment_date }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if payment_unit_count2 > 0 %}
+                                            {% for anytime in payment_unit_data2 %}
+                                            <tr>
+                                                <th>{{ anytime.payment_plan.payment_unit.name_en }}</th>
+                                                <td>{{ anytime.payment_plan.name }}</td>
+                                                <td>{{ anytime.payment_plan.payment_limit }}</td>
+                                                <td>{{ anytime.payment_plan.amount }}</td>
+                                                <td>{{ anytime.memo }}</td>
+                                                <td>{{ anytime.amount }}</td>
+                                                <td>{{ anytime.payment_date }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if payment_unit_count3 > 0 %}
+                                            {% for anytime in payment_unit_data3 %}
+                                            <tr>
+                                                <th>{{ anytime.payment_plan.payment_unit.name_en }}</th>
+                                                <td>{{ anytime.payment_plan.name }}</td>
+                                                <td>{{ anytime.payment_plan.payment_limit }}</td>
+                                                <td>{{ anytime.payment_plan.amount }}</td>
+                                                <td>{{ anytime.memo }}</td>
+                                                <td>{{ anytime.amount }}</td>
+                                                <td>{{ anytime.payment_date }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if payment_unit_count4 > 0 %}
+                                            {% for anytime in payment_unit_data4 %}
+                                            <tr>
+                                                <th>{{ anytime.payment_plan.payment_unit.name_en }}</th>
+                                                <td>{{ anytime.payment_plan.name }}</td>
+                                                <td>{{ anytime.payment_plan.payment_limit }}</td>
+                                                <td>{{ anytime.payment_plan.amount }}</td>
+                                                <td>{{ anytime.memo }}</td>
+                                                <td>{{ anytime.amount }}</td>
+                                                <td>{{ anytime.payment_date }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if payment_unit_count5 > 0 %}
+                                            {% for anytime in payment_unit_data5 %}
+                                            <tr>
+                                                <th>{{ anytime.payment_plan.payment_unit.name_en }}</th>
+                                                <td>{{ anytime.payment_plan.name }}</td>
+                                                <td>{{ anytime.payment_plan.payment_limit }}</td>
+                                                <td>{{ anytime.payment_plan.amount }}</td>
+                                                <td>{{ anytime.memo }}</td>
+                                                <td>{{ anytime.amount }}</td>
+                                                <td>{{ anytime.payment_date }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
                                     </table>
                                 </td>
                             </tr>
