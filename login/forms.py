@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UsernameField
 from . import models
 
+
 class LoginForm(forms.Form):
     login_id = forms.CharField(
         label='ユーザー名',
@@ -9,9 +10,9 @@ class LoginForm(forms.Form):
     )
 
     password = forms.CharField(
-        label = 'パスワード',
+        label='パスワード',
         strip=False,
         widget=forms.PasswordInput(render_value=True),
     )
 
-    family = forms.ModelChoiceField(models.Family.objects,label='家族名')
+    family = forms.ModelChoiceField(models.Family.objects, label='家族名')
