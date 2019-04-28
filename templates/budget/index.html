@@ -90,9 +90,27 @@
                                             {% endif %}
                                                 <td>{{ anytime.payment_plan.name }}</td>
                                                 <td>{{ anytime.payment_plan.payment_limit }}</td>
-                                                <td>{{ anytime.payment_plan.amount }}</td>
+                                                <td>¥
+                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
+                                                        +
+                                                    {% elif anytime.payment_plan.amount == 0 %}
+
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                    {{ anytime.payment_plan.amount }}
+                                                </td>
                                                 <td>{{ anytime.memo }}</td>
-                                                <td>{{ anytime.amount }}</td>
+                                                <td>¥
+                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
+                                                        +
+                                                    {% elif anytime.payment_plan.amount == 0 %}
+
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                    {{ anytime.amount }}
+                                                </td>
                                                 <td>{{ anytime.payment_date }}</td>
                                                 </tr>
                                             {% endfor %}
@@ -105,9 +123,27 @@
                                             {% endif %}
                                                 <td>{{ anytime.payment_plan.name }}</td>
                                                 <td>{{ anytime.payment_plan.payment_limit }}</td>
-                                                <td>{{ anytime.payment_plan.amount }}</td>
+                                                <td>¥
+                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
+                                                        +
+                                                    {% elif anytime.payment_plan.amount == 0 %}
+
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                    {{ anytime.payment_plan.amount }}
+                                                </td>
                                                 <td>{{ anytime.memo }}</td>
-                                                <td>{{ anytime.amount }}</td>
+                                                <td>¥
+                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
+                                                        +
+                                                    {% elif anytime.payment_plan.amount == 0 %}
+
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                    {{ anytime.amount }}
+                                                </td>
                                                 <td>{{ anytime.payment_date }}</td>
                                                 </tr>
                                             {% endfor %}
@@ -120,9 +156,27 @@
                                             {% endif %}
                                                 <td>{{ anytime.payment_plan.name }}</td>
                                                 <td>{{ anytime.payment_plan.payment_limit }}</td>
-                                                <td>{{ anytime.payment_plan.amount }}</td>
+                                                <td>¥
+                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
+                                                        +
+                                                    {% elif anytime.payment_plan.amount == 0 %}
+
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                    {{ anytime.payment_plan.amount }}
+                                                </td>
                                                 <td>{{ anytime.memo }}</td>
-                                                <td>{{ anytime.amount }}</td>
+                                                <td>¥
+                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
+                                                        +
+                                                    {% elif anytime.payment_plan.amount == 0 %}
+
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                    {{ anytime.amount }}
+                                                </td>
                                                 <td>{{ anytime.payment_date }}</td>
                                                 </tr>
                                             {% endfor %}
@@ -135,9 +189,27 @@
                                             {% endif %}
                                                 <td>{{ anytime.payment_plan.name }}</td>
                                                 <td>{{ anytime.payment_plan.payment_limit }}</td>
-                                                <td>{{ anytime.payment_plan.amount }}</td>
+                                                <td>¥
+                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
+                                                        +
+                                                    {% elif anytime.payment_plan.amount == 0 %}
+
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                    {{ anytime.payment_plan.amount }}
+                                                </td>
                                                 <td>{{ anytime.memo }}</td>
-                                                <td>{{ anytime.amount }}</td>
+                                                <td>¥
+                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
+                                                        +
+                                                    {% elif anytime.payment_plan.amount == 0 %}
+
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                    {{ anytime.amount }}
+                                                </td>
                                                 <td>{{ anytime.payment_date }}</td>
                                                 </tr>
                                             {% endfor %}
@@ -150,9 +222,27 @@
                                             {% endif %}
                                                 <td>{{ anytime.payment_plan.name }}</td>
                                                 <td>{{ anytime.payment_plan.payment_limit }}</td>
-                                                <td>{{ anytime.payment_plan.amount }}</td>
+                                                <td>¥
+                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
+                                                        +
+                                                    {% elif anytime.payment_plan.amount == 0 %}
+
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                    {{ anytime.payment_plan.amount }}
+                                                </td>
                                                 <td>{{ anytime.memo }}</td>
-                                                <td>{{ anytime.amount }}</td>
+                                                <td>¥
+                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
+                                                        +
+                                                    {% elif anytime.payment_plan.amount == 0 %}
+
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                    {{ anytime.amount }}
+                                                </td>
                                                 <td>{{ anytime.payment_date }}</td>
                                                 </tr>
                                             {% endfor %}
