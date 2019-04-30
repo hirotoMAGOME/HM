@@ -1,0 +1,22 @@
+        <section id="modalArea" class="modalArea">
+            <div id="modalBg" class="modalBg"></div>
+            <div class="modalWrapper">aaaa
+                <form action="" method="post" role="form">
+                    {% csrf_token %}
+                      <div class="input-group" style="margin-bottom:10px">
+                       <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                            {{ data.name.label }}
+                            {{ data.name }}aaaqqq{{ data }}bbb
+                    </div>
+                    <div class="input-group" style="margin-bottom:10px">
+                        {% for aiu in data %}
+                            {{ aiu.amount }}
+                        {% endfor %}
+                    </div>
+                    <div class="input-group" style="margin-bottom:10px">
+                        {{ form.password.label }}
+                        {{ form.password }}
+                    </div>
+                </form>
+            </div>
+        </section>

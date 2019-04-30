@@ -17,7 +17,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path,include
 from django.conf.urls import url
-
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),#Todo admin見れない不具合
@@ -25,7 +25,8 @@ urlpatterns = [
     url('budget/',include('budget.urls')),
     url('',include('login.urls')),
 ]
-
+#debug=Trueの時しか動作しない
+urlpatterns += staticfiles_urlpatterns()
 
 if settings.DEBUG:
     import debug_toolbar
