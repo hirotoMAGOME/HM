@@ -304,11 +304,10 @@
             $('td').click(function(){
                 arrClassName = $(this)[0].parentElement.className.split(" ");
                 for(var i=0,l=arrClassName.length;i<l;i++){
-
                     if(arrClassName[i].indexOf("result_id")===0){
                         var payment_result_id = arrClassName[i].replace('result_id',' ')
-                        console.log(payment_result_id);
-                        break
+                        $('#modalArea').fadeIn();
+                        break;
                     }
                 }
 

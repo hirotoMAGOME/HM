@@ -77,7 +77,7 @@ class PaymentResult(models.Model):
     family_id = django.db.models.IntegerField(verbose_name='家族ID', null=True)
     member_id = django.db.models.IntegerField(verbose_name='メンバーID', null=True)
     rank = django.db.models.IntegerField(verbose_name='表示順', null=True)
-    payment_date = django.db.models.DateTimeField(verbose_name='支払い日')
+    payment_date = django.db.models.DateTimeField(verbose_name='支払日')
     create_date = django.db.models.DateTimeField(verbose_name='作成日', auto_now_add=True)
     update_date = django.db.models.DateTimeField(verbose_name='更新日', auto_now=True)
     del_flg = django.db.models.BooleanField(verbose_name='削除フラグ', default=0)
