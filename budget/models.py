@@ -64,7 +64,7 @@ class PaymentPlan(models.Model):
     class Meta:
         db_table = 'payment_plan'
 
-    payment_category_id = django.db.models.IntegerField(verbose_name='支払いカテゴリID', null=True)
+    payment_category = django.db.models.ForeignKey(PaymentCategory, verbose_name='支払いカテゴリID', on_delete=models.PROTECT, null=True)
     name = django.db.models.CharField(verbose_name='名前', max_length=20, null=True)
     memo = django.db.models.CharField(verbose_name='備考', max_length=100, null=True)
     amount_plus_flg = django.db.models.BooleanField(verbose_name='収支区分', default=0)
