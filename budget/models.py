@@ -33,6 +33,20 @@ class WalletType(models.Model):
         return self.name
 
 
+class PaymentCategory(models.Model):
+    class Meta:
+        db_table = 'payment_category'
+
+    name = django.db.models.CharField(verbose_name='名前', max_length=20)
+    sample = django.db.models.CharField(verbose_name='例', max_length=100, null=True)
+    memo = django.db.models.CharField(verbose_name='備考', max_length=100, null=True)
+    family_id = django.db.models.IntegerField(verbose_name='家族ID', null=True)
+    member_id = django.db.models.IntegerField(verbose_name='メンバーID', null=True)
+
+    def __str__(self):
+        return self.name
+
+
 class PaymentUnit(models.Model):
     class Meta:
         db_table = 'payment_unit'
@@ -84,17 +98,3 @@ class PaymentResult(models.Model):
 
     def __str__(self):
         return self.memo
-
-
-class PaymentCategory(models.Model):
-    class Meta:
-        db_table = 'payment_category'
-
-    name = django.db.models.CharField(verbose_name='名前', max_length=20)
-    sample = django.db.models.CharField(verbose_name='例', max_length=100, null=True)
-    memo = django.db.models.CharField(verbose_name='備考', max_length=100, null=True)
-    family_id = django.db.models.IntegerField(verbose_name='家族ID', null=True)
-    member_id = django.db.models.IntegerField(verbose_name='メンバーID', null=True)
-
-    def __str__(self):
-        return self.name
