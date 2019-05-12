@@ -58,6 +58,6 @@ class IndexView(View):
 
     def post(self, request, *args, **kwargs):
         """POST リクエスト用のメソッド"""
-
+        
 
 index = IndexView.as_view()

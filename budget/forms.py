@@ -14,8 +14,8 @@ PLUS_FLG_CHOICES = (
 class PaymentResultForm(forms.Form):
     #予算情報
     name_plan = forms.ModelChoiceField(models.PaymentPlan.objects, label='予算')
-    amount_plan = forms.ModelChoiceField(models.PaymentPlan.objects, label='金額')
-    payment_limit_plan = forms.ModelChoiceField(models.PaymentPlan.objects, label='締め日')
+    amount_plan = forms.CharField(label='金額')
+    payment_limit = forms.ModelChoiceField(models.PaymentPlan.objects, label='締め日')
 
     #実績情報
     #TODO プルダウンやめる。ダイナミックサーチ
