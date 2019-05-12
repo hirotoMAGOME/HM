@@ -1,0 +1,228 @@
+{% load static %}
+
+<!DOCTYPE html>
+<!--
+960px想定
+-->
+<html lang="jp">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style type = "text/css">
+            table.budget-table,table.asset-table{
+                border:1px black solid;
+            }
+            table.budget-table tr,table.budget-table th,table.budget-table td{
+                border:1px black solid;
+            }
+            table.asset-table tr,table.asset-table th,table.asset-table td{
+                border:1px black solid;
+            }
+            div.side-menu{
+                width:160px;
+                border-right:1px black solid;
+            }
+            div.main-contents{
+                width:800px;
+                border-left:1px black solid;
+            }
+            div.inline-box{
+                float:left;
+            }
+
+            /* モーダルCSS */
+            .modalArea {display: none;position: fixed;z-index: 10; /*サイトによってここの数値は調整 */top: 0;left: 0;width: 100%;height: 100%;}
+            .modalBg {width: 100%;height: 100%;background-color: rgba(30,30,30,0.9);}
+            .modalWrapper {position: absolute;top: 50%;left: 50%;transform:translate(-50%,-50%);width: 70%;max-width: 500px;padding: 10px 30px;background-color: #fff;}
+            .closeModal {position: absolute;top: 0.5rem;right: 1rem;cursor: pointer;}
+
+            /* 以下ボタンスタイル */
+            button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-radius: 2px;cursor: pointer;}
+            #openModal {position: absolute;top: 50%;left: 50%;transform:translate(-50%,-50%);}
+        </style>
+    </head>
+    <body>
+        <table class = "body-frame">
+            <tr class = "header">
+                <td colspan = "2">
+                </td>
+            </tr>
+            <tr class = "contents">
+                <td>
+                    <div class = "side-menu" >
+                        hiroto side menu<br/>
+                    </div>
+                </td>
+                <td>
+                    <div class ="main-contents">
+                        {% block main-contents-frame %}
+                        <table class = "main-contents-frame">
+                            <tr>
+                                <td>
+                                収支予定/資産状況{{ form.name }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span>おすすめ集計範囲：</span>
+                                    <span>カスタム集計範囲：</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                   □week　□month
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table class = "budget-table">
+                                        <tr>
+                                            <th></th>
+                                            <th colspan="3">予定</th>
+                                            <th colspan="3">実績</th>
+                                        </tr>
+                                        {% if payment_unit_count1 > 0 %}
+                                            {% for anytime in payment_unit_data1 %}
+                                            <tr>
+                                                <th>{{ anytime.payment_plan.payment_unit.name_en }}</th>
+                                                <td>{{ anytime.payment_plan.name }}</td>
+                                                <td>{{ anytime.payment_plan.payment_limit }}</td>
+                                                <td>{{ anytime.payment_plan.amount }}</td>
+                                                <td>{{ anytime.memo }}</td>
+                                                <td>{{ anytime.amount }}</td>
+                                                <td>{{ anytime.payment_date }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if payment_unit_count2 > 0 %}
+                                            {% for anytime in payment_unit_data2 %}
+                                            <tr>
+                                                <th>{{ anytime.payment_plan.payment_unit.name_en }}</th>
+                                                <td>{{ anytime.payment_plan.name }}</td>
+                                                <td>{{ anytime.payment_plan.payment_limit }}</td>
+                                                <td>{{ anytime.payment_plan.amount }}</td>
+                                                <td>{{ anytime.memo }}</td>
+                                                <td>{{ anytime.amount }}</td>
+                                                <td>{{ anytime.payment_date }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if payment_unit_count3 > 0 %}
+                                            {% for anytime in payment_unit_data3 %}
+                                            <tr>
+                                                <th>{{ anytime.payment_plan.payment_unit.name_en }}</th>
+                                                <td>{{ anytime.payment_plan.name }}</td>
+                                                <td>{{ anytime.payment_plan.payment_limit }}</td>
+                                                <td>{{ anytime.payment_plan.amount }}</td>
+                                                <td>{{ anytime.memo }}</td>
+                                                <td>{{ anytime.amount }}</td>
+                                                <td>{{ anytime.payment_date }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if payment_unit_count4 > 0 %}
+                                            {% for anytime in payment_unit_data4 %}
+                                            <tr>
+                                                <th>{{ anytime.payment_plan.payment_unit.name_en }}</th>
+                                                <td>{{ anytime.payment_plan.name }}</td>
+                                                <td>{{ anytime.payment_plan.payment_limit }}</td>
+                                                <td>{{ anytime.payment_plan.amount }}</td>
+                                                <td>{{ anytime.memo }}</td>
+                                                <td>{{ anytime.amount }}</td>
+                                                <td>{{ anytime.payment_date }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if payment_unit_count5 > 0 %}
+                                            {% for anytime in payment_unit_data5 %}
+                                            <tr>
+                                                <th>{{ anytime.payment_plan.payment_unit.name_en }}</th>
+                                                <td>{{ anytime.payment_plan.name }}</td>
+                                                <td>{{ anytime.payment_plan.payment_limit }}</td>
+                                                <td>{{ anytime.payment_plan.amount }}</td>
+                                                <td>{{ anytime.memo }}</td>
+                                                <td>{{ anytime.amount }}</td>
+                                                <td>{{ anytime.payment_date }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="inline-box">
+                                        資産サマリー<br/>
+                                        <table class="asset-table">
+                                            <tr>
+                                                <th>現金</th>
+                                                <td>20000円</td>
+                                            </tr>
+                                            <tr>
+                                                <th>LINE pay</th>
+                                                <td>5000円</td>
+                                            </tr>
+                                            <tr>
+                                                <th>paypay</th>
+                                                <td>300円</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="inline-box">
+                                        収支入力精度<br/>
+                                        手動入力金額：-70000円<br/>
+                                        自動調整金額：-30000円<br/>
+                                        入力率：70%<br/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        {% endblock %}
+                    </div>
+                <td>
+            </tr>
+            <tr class = "footer">
+                <td colspan = "2">
+                </td>
+            </tr>
+        </table>
+<button id="openModal">Open modal</button>
+        <!--↓popupのテンプレートを読み込む-->
+        <!--https://myscreate.com/pure-modal/-->
+        <section id="modalArea" class="modalArea">
+            <div id="modalBg" class="modalBg"></div>
+            <div class="modalWrapper">aaaa
+                <form action="" method="post" role="form">
+                    {% csrf_token %}
+                      <div class="input-group" style="margin-bottom:10px">
+                       <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                            {{ data.name.label }}
+                            {{ data.name }}aaa{{ data }}bbb
+                    </div>
+                    <div class="input-group" style="margin-bottom:10px">
+                        {% for aiu in data %}
+                            {{ aiu.amount }}
+                        {% endfor %}
+                    </div>
+                    <div class="input-group" style="margin-bottom:10px">
+                        {{ form.password.label }}
+                        {{ form.password }}
+                    </div>
+                </form>
+            </div>
+        </section>
+        <!--↓body閉じタグ直前でjQueryを読み込む-->
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $('#openModal').click(function(){
+                $('#modalArea').fadeIn();
+            });
+            $('#closeModal , #modalBg').click(function(){
+                $('#modalArea').fadeOut();
+            });
+        });
+    </script>
+    </body>
+</html>

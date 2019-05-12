@@ -1,0 +1,35 @@
+{% block content %}
+
+{% if form.errors  %}
+  <div class="alert alert-danger" role="alert">
+    <p>Your usernamne and password didn't match. Please try again.</p>
+  </div>
+{% endif %}
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title text-center">Log-in to mysite</h3>
+  </div>
+  <div class="panel-body">
+    <form action="" method="post" role="form">
+      {% csrf_token %}
+      <div class="input-group" style="margin-bottom:10px">
+        <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+            {{ form.family.label }}
+            {{ form.family }}
+      </div>
+      <div class="input-group" style="margin-bottom:10px">
+          {{ form.login_id.label }}
+          {{ form.login_id }}
+      </div>
+      <div class="input-group" style="margin-bottom:10px">
+          {{ form.password.label }}
+          {{ form.password }}
+      </div>
+
+      <button type="submit" style="margin-bottom:-20px"><i class="fa fa-sign-in">Login</i></button>
+      <input name="next" type="hidden" value="{{ next }}"/>
+    </form>
+  </div>
+</div>
+{% endblock %}
