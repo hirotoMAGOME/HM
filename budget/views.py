@@ -49,8 +49,6 @@ class IndexView(View):
             'payment_unit_count3': len(payment_result_data3),
             'payment_unit_count4': len(payment_result_data4),
             'payment_unit_count5': len(payment_result_data5),
-            #'unit_data':payment_unit,
-            #'planForm': PaymentPlanForm(),
             'resultForm': PaymentResultForm(),
         }
 
