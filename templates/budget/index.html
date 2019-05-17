@@ -75,167 +75,208 @@
                                             <th colspan="3">実績</th>
                                         </tr>
                                         {% if payment_unit_count1 > 0 %}
+                                            <!--
+                                                0:plan.name
+                                                1:plan.payment_limit
+                                                2:plan.amount_plus_flg
+                                                3:plan.amount
+                                                4:result.id
+                                                5:result.payment_date
+                                                6:result.memo
+                                                7:result.amount_plus_flg
+                                                8:result.amount
+                                                9:unit.name_en
+                                            -->
                                             {% for anytime in payment_unit_data1 %}
-                                            <tr id="payment_unit_tr1" class="result_id{{ anytime.id }}">
+                                            <tr id="payment_unit_tr1" class="result_id{{ anytime.4 }}">
                                             {% if forloop.first %}
-                                                <th rowspan={{ payment_unit_count1 }}>{{ anytime.payment_plan.payment_unit.name_en }}</th>
+                                                <th rowspan={{ payment_unit_count1 }}>{{ anytime.9 }}</th>
                                             {% endif %}
-                                                <td>{{ anytime.payment_plan.name }}</td>
-                                                <td>{{ anytime.payment_plan.payment_limit }}</td>
-                                                <td>¥
-                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
-                                                        +
-                                                    {% elif anytime.payment_plan.amount == 0 %}
+                                                <td>{{ anytime.0 }}</td>
+                                                <td>{{ anytime.1 }}</td>
+                                                <td>
+                                                    {% if anytime.3 is not None %}
+                                                        ¥
+                                                        {% if anytime.2 == 1 %}
+                                                            +
+                                                        {% elif anytime.3 == 0 %}
 
-                                                    {% else %}
-                                                        -
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                        {{ anytime.3}}
                                                     {% endif %}
-                                                    {{ anytime.payment_plan.amount }}
                                                 </td>
-                                                <td>{{ anytime.memo }}</td>
-                                                <td>¥
-                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
-                                                        +
-                                                    {% elif anytime.payment_plan.amount == 0 %}
+                                                <td>{{ anytime.6 |default:"" }}</td>
+                                                <td>
+                                                    {% if anytime.8 is not None %}
+                                                        ¥
+                                                        {% if anytime.7 == 1 %}
+                                                            +
+                                                        {% elif anytime.8 == 0 %}
 
-                                                    {% else %}
-                                                        -
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                        {{ anytime.8}}
                                                     {% endif %}
-                                                    {{ anytime.amount }}
                                                 </td>
-                                                <td>{{ anytime.payment_date |date:"Y/m/j"}}</td>
+                                                <td>{{ anytime.5 |date:"Y/m/j"}}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
                                         {% if payment_unit_count2 > 0 %}
-                                            {% for anytime in payment_unit_data2 %}
-                                            <tr id="payment_unit_tr2" class="result_id{{ anytime.id }}">
+                                            {% for year in payment_unit_data2 %}
+                                            <tr id="payment_unit_tr2" class="result_id{{ year.4 }}">
                                             {% if forloop.first %}
-                                                <th rowspan={{ payment_unit_count2 }}>{{ anytime.payment_plan.payment_unit.name_en }}</th>
+                                                <th rowspan={{ payment_unit_count2 }}>{{ year.9 }}</th>
                                             {% endif %}
-                                                <td>{{ anytime.payment_plan.name }}</td>
-                                                <td>{{ anytime.payment_plan.payment_limit }}</td>
-                                                <td>¥
-                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
-                                                        +
-                                                    {% elif anytime.payment_plan.amount == 0 %}
+                                                <td>{{ year.0 }}</td>
+                                                <td>{{ year.1 }}</td>
+                                                <td>
+                                                    {% if year.3 is not None %}
+                                                        ¥
+                                                        {% if year.2 == 1 %}
+                                                            +
+                                                        {% elif year.3 == 0 %}
 
-                                                    {% else %}
-                                                        -
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                        {{ year.3}}
                                                     {% endif %}
-                                                    {{ anytime.payment_plan.amount }}
                                                 </td>
-                                                <td>{{ anytime.memo }}</td>
-                                                <td>¥
-                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
-                                                        +
-                                                    {% elif anytime.payment_plan.amount == 0 %}
+                                                <td>{{ year.6 |default:"" }}</td>
+                                                <td>
+                                                    {% if year.8 is not None %}
+                                                        ¥
+                                                        {% if year.7 == 1 %}
+                                                            +
+                                                        {% elif year.8 == 0 %}
 
-                                                    {% else %}
-                                                        -
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                        {{ year.8}}
                                                     {% endif %}
-                                                    {{ anytime.amount }}
                                                 </td>
-                                                <td>{{ anytime.payment_date |date:"Y/m/j"}}</td>
+                                                <td>{{ year.5 |date:"Y/m/j"}}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
                                         {% if payment_unit_count3 > 0 %}
-                                            {% for anytime in payment_unit_data3 %}
-                                            <tr id="payment_unit_tr3" class="result_id{{ anytime.id }}">
+                                            {% for month in payment_unit_data3 %}
+                                            <tr id="payment_unit_tr3" class="result_id{{ month.4 }}">
                                             {% if forloop.first %}
-                                                <th rowspan={{ payment_unit_count3 }}>{{ anytime.payment_plan.payment_unit.name_en }}</th>
+                                                <th rowspan={{ payment_unit_count3 }}>{{ month.9 }}</th>
                                             {% endif %}
-                                                <td>{{ anytime.payment_plan.name }}</td>
-                                                <td>{{ anytime.payment_plan.payment_limit }}</td>
-                                                <td>¥
-                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
-                                                        +
-                                                    {% elif anytime.payment_plan.amount == 0 %}
+                                                <td>{{ month.0 }}</td>
+                                                <td>{{ month.1 }}</td>
+                                                <td>
+                                                    {% if month.3 is not None %}
+                                                        ¥
+                                                        {% if month.2 == 1 %}
+                                                            +
+                                                        {% elif month.3 == 0 %}
 
-                                                    {% else %}
-                                                        -
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                        {{ month.3}}
                                                     {% endif %}
-                                                    {{ anytime.payment_plan.amount }}
                                                 </td>
-                                                <td>{{ anytime.memo }}</td>
-                                                <td>¥
-                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
-                                                        +
-                                                    {% elif anytime.payment_plan.amount == 0 %}
+                                                <td>{{ month.6 |default:"" }}</td>
+                                                <td>{% if month.8 is not None %}
+                                                        ¥
+                                                        {% if month.7 == 1 %}
+                                                            +
+                                                        {% elif month.8 == 0 %}
 
-                                                    {% else %}
-                                                        -
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                        {{ month.8}}
                                                     {% endif %}
-                                                    {{ anytime.amount }}
                                                 </td>
-                                                <td>{{ anytime.payment_date |date:"Y/m/j"}}</td>
+                                                <td>{{ month.5 |date:"Y/m/j"}}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
                                         {% if payment_unit_count4 > 0 %}
-                                            {% for anytime in payment_unit_data4 %}
-                                            <tr id="payment_unit_tr4" class="result_id{{ anytime.id }}">
+                                            {% for week in payment_unit_data4 %}
+                                            <tr id="payment_unit_tr4" class="result_id{{ anytime.4 }}">
                                             {% if forloop.first %}
-                                                <th rowspan={{ payment_unit_count4 }}>{{ anytime.payment_plan.payment_unit.name_en }}</th>
+                                                <th rowspan={{ payment_unit_count4 }}>{{ week.9 }}</th>
                                             {% endif %}
-                                                <td>{{ anytime.payment_plan.name }}</td>
-                                                <td>{{ anytime.payment_plan.payment_limit }}</td>
-                                                <td>¥
-                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
-                                                        +
-                                                    {% elif anytime.payment_plan.amount == 0 %}
+                                                <td>{{ week.0 }}</td>
+                                                <td>{{ week.1 }}</td>
+                                                <td>
+                                                    {% if week.3 is not None %}
+                                                        ¥
+                                                        {% if week.2 == 1 %}
+                                                            +
+                                                        {% elif week.3 == 0 %}
 
-                                                    {% else %}
-                                                        -
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                        {{ week.3}}
                                                     {% endif %}
-                                                    {{ anytime.payment_plan.amount }}
                                                 </td>
-                                                <td>{{ anytime.memo }}</td>
-                                                <td>¥
-                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
-                                                        +
-                                                    {% elif anytime.payment_plan.amount == 0 %}
+                                                <td>{{ week.6 |default:"" }}</td>
+                                                <td>
+                                                    {% if week.8 is not None %}
+                                                        ¥
+                                                        {% if week.7 == 1 %}
+                                                            +
+                                                        {% elif week.8 == 0 %}
 
-                                                    {% else %}
-                                                        -
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                        {{ week.8}}
                                                     {% endif %}
-                                                    {{ anytime.amount }}
                                                 </td>
-                                                <td>{{ anytime.payment_date |date:"Y/m/j"}}</td>
+                                                <td>{{ week.5 |date:"Y/m/j"}}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
                                         {% if payment_unit_count5 > 0 %}
-                                            {% for anytime in payment_unit_data5 %}
-                                            <tr id="payment_unit_tr5" class="result_id{{ anytime.id }}">
+                                            {% for day in payment_unit_data5 %}
+                                            <tr id="payment_unit_tr5" class="result_id{{ day.4 }}">
                                             {% if forloop.first %}
-                                                <th rowspan={{ payment_unit_count5 }}>{{ anytime.payment_plan.payment_unit.name_en }}</th>
+                                                <th rowspan={{ payment_unit_count5 }}>{{ day.9 }}</th>
                                             {% endif %}
-                                                <td>{{ anytime.payment_plan.name }}</td>
-                                                <td>{{ anytime.payment_plan.payment_limit }}</td>
-                                                <td>¥
-                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
-                                                        +
-                                                    {% elif anytime.payment_plan.amount == 0 %}
+                                                <td>{{ day.0 }}</td>
+                                                <td>{{ day.1 }}</td>
+                                                <td>
+                                                    {% if day.3 is not None %}
+                                                        ¥
+                                                        {% if day.2 == 1 %}
+                                                            +
+                                                        {% elif day.3 == 0 %}
 
-                                                    {% else %}
-                                                        -
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                        {{ day.3}}
                                                     {% endif %}
-                                                    {{ anytime.payment_plan.amount }}
                                                 </td>
-                                                <td>{{ anytime.memo }}</td>
-                                                <td>¥
-                                                    {% if anytime.payment_plan.amount_plus_flg == 1 %}
-                                                        +
-                                                    {% elif anytime.payment_plan.amount == 0 %}
+                                                <td>{{ day.6 |default:"" }}</td>
+                                                <td>
+                                                    {% if day.8 is not None %}
+                                                        ¥
+                                                        {% if day.7 == 1 %}
+                                                            +
+                                                        {% elif day.8 == 0 %}
 
-                                                    {% else %}
-                                                        -
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                        {{ day.8}}
                                                     {% endif %}
-                                                    {{ anytime.amount }}
                                                 </td>
-                                                <td>{{ anytime.payment_date |date:"Y/m/j"}}</td>
+                                                <td>{{ day.5 |date:"Y/m/j" }}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
@@ -306,6 +347,7 @@
                 for(var i=0,l=arrClassName.length;i<l;i++){
                     if(arrClassName[i].indexOf("result_id")===0){
                         var payment_result_id = arrClassName[i].replace('result_id',' ')
+                        console.log(payment_result_id);
                         $('#modalArea').fadeIn();
                         break;
                     }
