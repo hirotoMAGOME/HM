@@ -19,40 +19,6 @@ class IndexView(View):
         payment_result_data4 = get_front_info(4)
         payment_result_data5 = get_front_info(5)
 
-        #cursor1 = connection.cursor()
-        #cursor1.execute("SELECT * FROM payment_plan  AS plan LEFT JOIN payment_unit as unit ON plan.payment_unit_id = unit.id LEFT JOIN payment_result as result ON plan.id = result.payment_plan_id WHERE payment_unit_id = 1")
-        #payment_result_data1 = cursor1.fetchall()
-        #cursor2 = connection.cursor()
-        #cursor2.execute("SELECT * FROM payment_plan  AS plan LEFT JOIN payment_unit as unit ON plan.payment_unit_id = unit.id LEFT JOIN payment_result as result ON plan.id = result.payment_plan_id WHERE payment_unit_id = 2")
-        #payment_result_data2 = cursor2.fetchall()
-        #cursor3 = connection.cursor()
-        #cursor3.execute("SELECT * FROM payment_plan  AS plan LEFT JOIN payment_unit as unit ON plan.payment_unit_id = unit.id LEFT JOIN payment_result as result ON plan.id = result.payment_plan_id WHERE payment_unit_id = 3")
-        #payment_result_data3 = cursor3.fetchall()
-        #cursor4 = connection.cursor()
-        #cursor4.execute("SELECT * FROM payment_plan  AS plan LEFT JOIN payment_unit as unit ON plan.payment_unit_id = unit.id LEFT JOIN payment_result as result ON plan.id = result.payment_plan_id WHERE payment_unit_id = 4")
-        #payment_result_data4 = cursor4.fetchall()
-        #cursor5 = connection.cursor()
-        #cursor5.execute("SELECT * FROM payment_plan  AS plan LEFT JOIN payment_unit as unit ON plan.payment_unit_id = unit.id LEFT JOIN payment_result as result ON plan.id = result.payment_plan_id WHERE payment_unit_id = 5")
-        #payment_result_data5 = cursor5.fetchall()
-
-        #TODO unit_idを固定値ではなくroopで回す
-        #######################################################################################################################
-        #どっちが早いか、あとで検証
-        #payment_result_data = PaymentResult.objects.select_related('payment_plan').all()
-        #payment_result_data1 = payment_result_data.filter(payment_plan__payment_unit_id=1)
-        #payment_result_data2 = payment_result_data.filter(payment_plan__payment_unit_id=2)
-        #payment_result_data3 = payment_result_data.filter(payment_plan__payment_unit_id=3)
-        #payment_result_data4 = payment_result_data.filter(payment_plan__payment_unit_id=4)
-        #payment_result_data5 = payment_result_data.filter(payment_plan__payment_unit_id=5)
-
-        #payment_result_data1 = PaymentResult.objects.select_related('payment_plan').filter(payment_plan__payment_unit_id=1)
-        #payment_result_data2 = PaymentResult.objects.select_related('payment_plan').filter(payment_plan__payment_unit_id=2)
-        #payment_result_data3 = PaymentResult.objects.select_related('payment_plan').filter(payment_plan__payment_unit_id=3)
-        #payment_result_data4 = PaymentResult.objects.select_related('payment_plan').filter(payment_plan__payment_unit_id=4)
-        #payment_result_data5 = PaymentResult.objects.select_related('payment_plan').filter(payment_plan__payment_unit_id=5)
-
-        #######################################################################################################################
-
         context = {
             'payment_unit_data1': payment_result_data1,
             'payment_unit_data2': payment_result_data2,
