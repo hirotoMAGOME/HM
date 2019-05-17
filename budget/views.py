@@ -85,12 +85,13 @@ class IndexView(View):
         }
         PaymentResult.objects.create(**insert)
 
-        #表示用
-        payment_result_data1 = PaymentResult.objects.select_related('payment_plan').filter(payment_plan__payment_unit_id=1).select_related('payment_plan__payment_unit').all()
-        payment_result_data2 = PaymentResult.objects.select_related('payment_plan').filter(payment_plan__payment_unit_id=2).select_related('payment_plan__payment_unit').all()
-        payment_result_data3 = PaymentResult.objects.select_related('payment_plan').filter(payment_plan__payment_unit_id=3).select_related('payment_plan__payment_unit').all()
-        payment_result_data4 = PaymentResult.objects.select_related('payment_plan').filter(payment_plan__payment_unit_id=4).select_related('payment_plan__payment_unit').all()
-        payment_result_data5 = PaymentResult.objects.select_related('payment_plan').filter(payment_plan__payment_unit_id=5).select_related('payment_plan__payment_unit').all()
+        #TODO ORMを使う
+        #TODO 必要な項目だけをSELECT
+        payment_result_data1 = get_front_info(1)
+        payment_result_data2 = get_front_info(2)
+        payment_result_data3 = get_front_info(3)
+        payment_result_data4 = get_front_info(4)
+        payment_result_data5 = get_front_info(5)
 
         context = {
             'payment_unit_data1': payment_result_data1,
