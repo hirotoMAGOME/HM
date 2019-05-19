@@ -100,9 +100,9 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
 	                	</div>
 	                	<div id="second_tab01" class="cp_tabpanel">
 	                	    <h2>予算情報</h2>
-                                {{ resultForm.name_plan }}
-                                {{ resultForm.amount_plan }}
-                                {{ resultForm.payment_limit }}
+                                <div id="selected_plan_name"></div>
+                                <div id="selected_plan_amount"></div>
+                                <!--すでに使用した分を表示-->
 
                             <h2>実績情報</h2>
                             <form action="" method="post" role="form">

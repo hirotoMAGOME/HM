@@ -86,7 +86,7 @@ def get_front_info(unit_id):
     cursor = connection.cursor()
     cursor.execute(
         "SELECT "
-        "plan.name,plan.payment_limit,plan.amount_plus_flg,plan.amount,result.id,result.payment_date,result.memo,result.amount_plus_flg,result.amount,unit.name_en "
+        "plan.id,plan.name,plan.payment_limit,plan.amount_plus_flg,plan.amount,result.id,result.payment_date,result.memo,result.amount_plus_flg,result.amount,unit.name_en "
         "FROM payment_plan AS plan "
         "LEFT JOIN payment_unit as unit ON plan.payment_unit_id = unit.id "
         "LEFT JOIN payment_result as result ON plan.id = result.payment_plan_id "

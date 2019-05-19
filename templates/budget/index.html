@@ -76,49 +76,50 @@
                                         </tr>
                                         {% if payment_unit_count1 > 0 %}
                                             <!--
-                                                0:plan.name
-                                                1:plan.payment_limit
-                                                2:plan.amount_plus_flg
-                                                3:plan.amount
-                                                4:result.id
-                                                5:result.payment_date
-                                                6:result.memo
-                                                7:result.amount_plus_flg
-                                                8:result.amount
-                                                9:unit.name_en
+                                                0:plan.id
+                                                1:plan.name
+                                                2:plan.payment_limit
+                                                3:plan.amount_plus_flg
+                                                4:plan.amount
+                                                5:result.id
+                                                6:result.payment_date
+                                                7:result.memo
+                                                8:result.amount_plus_flg
+                                                9:result.amount
+                                                10:unit.name_en
                                             -->
                                             {% for anytime in payment_unit_data1 %}
-                                            <tr id="payment_unit_tr1" class="result_id{{ anytime.4 }}">
+                                            <tr id="payment_unit_tr1" class="plan_id{{ anytime.0 }} result_id{{ anytime.5|default:"" }}">
                                             {% if forloop.first %}
-                                                <th rowspan={{ payment_unit_count1 }}>{{ anytime.9 }}</th>
+                                                <th rowspan={{ payment_unit_count1 }}>{{ anytime.10 }}</th>
                                             {% endif %}
-                                                <td>{{ anytime.0 }}</td>
-                                                <td>{{ anytime.1 }}</td>
-                                                <td>
-                                                    {% if anytime.3 is not None %}
+                                                <td name = "plan_name_name_tag{{ anytime.0 }}">{{ anytime.1 }}</td>
+                                                <td>{{ anytime.2 }}</td>
+                                                <td name = "plan_amount_name_tag{{ anytime.0 }}">
+                                                    {% if anytime.4 is not None %}
                                                         ¥
-                                                        {% if anytime.2 == 1 %}
+                                                        {% if anytime.3 == 1 %}
                                                             +
-                                                        {% elif anytime.3 == 0 %}
+                                                        {% elif anytime.4 == 0 %}
 
                                                         {% else %}
                                                             -
                                                         {% endif %}
-                                                        {{ anytime.3}}
+                                                        {{ anytime.4}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ anytime.6 |default:"" }}</td>
+                                                <td>{{ anytime.7 |default:"" }}</td>
                                                 <td>
-                                                    {% if anytime.8 is not None %}
+                                                    {% if anytime.9 is not None %}
                                                         ¥
-                                                        {% if anytime.7 == 1 %}
+                                                        {% if anytime.8 == 1 %}
                                                             +
-                                                        {% elif anytime.8 == 0 %}
+                                                        {% elif anytime.9 == 0 %}
 
                                                         {% else %}
                                                             -
                                                         {% endif %}
-                                                        {{ anytime.8}}
+                                                        {{ anytime.9}}
                                                     {% endif %}
                                                 </td>
                                                 <td>{{ anytime.5 |date:"Y/m/j"}}</td>
@@ -127,156 +128,156 @@
                                         {% endif %}
                                         {% if payment_unit_count2 > 0 %}
                                             {% for year in payment_unit_data2 %}
-                                            <tr id="payment_unit_tr2" class="result_id{{ year.4 }}">
+                                            <tr id="payment_unit_tr2" class="plan_id{{ year.0 }} result_id{{ year.5|default:"" }}">
                                             {% if forloop.first %}
-                                                <th rowspan={{ payment_unit_count2 }}>{{ year.9 }}</th>
+                                                <th rowspan={{ payment_unit_count2 }}>{{ year.10 }}</th>
                                             {% endif %}
-                                                <td>{{ year.0 }}</td>
-                                                <td>{{ year.1 }}</td>
-                                                <td>
-                                                    {% if year.3 is not None %}
+                                                <td name = "plan_name_name_tag{{ year.0 }}">{{ year.1 }}</td>
+                                                <td>{{ year.2 }}</td>
+                                                <td name = "plan_amount_name_tag{{ year.0 }}">
+                                                    {% if year.4 is not None %}
                                                         ¥
-                                                        {% if year.2 == 1 %}
+                                                        {% if year.3 == 1 %}
                                                             +
-                                                        {% elif year.3 == 0 %}
+                                                        {% elif year.4 == 0 %}
 
                                                         {% else %}
                                                             -
                                                         {% endif %}
-                                                        {{ year.3}}
+                                                        {{ year.4}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ year.6 |default:"" }}</td>
+                                                <td>{{ year.7 |default:"" }}</td>
                                                 <td>
-                                                    {% if year.8 is not None %}
+                                                    {% if year.9 is not None %}
                                                         ¥
-                                                        {% if year.7 == 1 %}
+                                                        {% if year.8 == 1 %}
                                                             +
-                                                        {% elif year.8 == 0 %}
+                                                        {% elif year.9 == 0 %}
 
                                                         {% else %}
                                                             -
                                                         {% endif %}
-                                                        {{ year.8}}
+                                                        {{ year.9}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ year.5 |date:"Y/m/j"}}</td>
+                                                <td>{{ year.6 |date:"Y/m/j"}}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
                                         {% if payment_unit_count3 > 0 %}
                                             {% for month in payment_unit_data3 %}
-                                            <tr id="payment_unit_tr3" class="result_id{{ month.4 }}">
+                                            <tr id="payment_unit_tr3" class="plan_id{{ month.0 }} result_id{{ month.5|default:"" }}">
                                             {% if forloop.first %}
-                                                <th rowspan={{ payment_unit_count3 }}>{{ month.9 }}</th>
+                                                <th rowspan={{ payment_unit_count3 }}>{{ month.10 }}</th>
                                             {% endif %}
-                                                <td>{{ month.0 }}</td>
-                                                <td>{{ month.1 }}</td>
-                                                <td>
-                                                    {% if month.3 is not None %}
+                                                <td name = "plan_name_name_tag{{ month.0 }}">{{ month.1 }}</td>
+                                                <td>{{ month.2 }}</td>
+                                                <td name = "plan_amount_name_tag{{ month.0 }}">
+                                                    {% if month.4 is not None %}
                                                         ¥
-                                                        {% if month.2 == 1 %}
+                                                        {% if month.3 == 1 %}
                                                             +
-                                                        {% elif month.3 == 0 %}
+                                                        {% elif month.4 == 0 %}
 
                                                         {% else %}
                                                             -
                                                         {% endif %}
-                                                        {{ month.3}}
+                                                        {{ month.4}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ month.6 |default:"" }}</td>
-                                                <td>{% if month.8 is not None %}
+                                                <td>{{ month.7 |default:"" }}</td>
+                                                <td>{% if month.9 is not None %}
                                                         ¥
-                                                        {% if month.7 == 1 %}
+                                                        {% if month.8 == 1 %}
                                                             +
-                                                        {% elif month.8 == 0 %}
+                                                        {% elif month.9 == 0 %}
 
                                                         {% else %}
                                                             -
                                                         {% endif %}
-                                                        {{ month.8}}
+                                                        {{ month.9}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ month.5 |date:"Y/m/j"}}</td>
+                                                <td>{{ month.6 |date:"Y/m/j"}}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
                                         {% if payment_unit_count4 > 0 %}
                                             {% for week in payment_unit_data4 %}
-                                            <tr id="payment_unit_tr4" class="result_id{{ anytime.4 }}">
+                                            <tr id="payment_unit_tr4" class="plan_id{{ week.0 }} result_id{{ week.5|default:"" }}">
                                             {% if forloop.first %}
-                                                <th rowspan={{ payment_unit_count4 }}>{{ week.9 }}</th>
+                                                <th rowspan={{ payment_unit_count4 }}>{{ week.10 }}</th>
                                             {% endif %}
-                                                <td>{{ week.0 }}</td>
-                                                <td>{{ week.1 }}</td>
-                                                <td>
-                                                    {% if week.3 is not None %}
+                                                <td name = "plan_name_name_tag{{ week.0 }}">{{ week.1 }}</td>
+                                                <td>{{ week.2 }}</td>
+                                                <td name = "plan_amount_name_tag{{ week.0 }}">
+                                                    {% if week.4 is not None %}
                                                         ¥
-                                                        {% if week.2 == 1 %}
+                                                        {% if week.3 == 1 %}
                                                             +
-                                                        {% elif week.3 == 0 %}
+                                                        {% elif week.4 == 0 %}
 
                                                         {% else %}
                                                             -
                                                         {% endif %}
-                                                        {{ week.3}}
+                                                        {{ week.4}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ week.6 |default:"" }}</td>
+                                                <td>{{ week.7 |default:"" }}</td>
                                                 <td>
-                                                    {% if week.8 is not None %}
+                                                    {% if week.9 is not None %}
                                                         ¥
-                                                        {% if week.7 == 1 %}
+                                                        {% if week.8 == 1 %}
                                                             +
-                                                        {% elif week.8 == 0 %}
+                                                        {% elif week.9 == 0 %}
 
                                                         {% else %}
                                                             -
                                                         {% endif %}
-                                                        {{ week.8}}
+                                                        {{ week.9}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ week.5 |date:"Y/m/j"}}</td>
+                                                <td>{{ week.6 |date:"Y/m/j"}}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
                                         {% if payment_unit_count5 > 0 %}
                                             {% for day in payment_unit_data5 %}
-                                            <tr id="payment_unit_tr5" class="result_id{{ day.4 }}">
+                                            <tr id="payment_unit_tr5" class="plan_id{{ day.0 }} result_id{{ day.5|default:"" }}">
                                             {% if forloop.first %}
-                                                <th rowspan={{ payment_unit_count5 }}>{{ day.9 }}</th>
+                                                <th rowspan={{ payment_unit_count5 }}>{{ day.10 }}</th>
                                             {% endif %}
-                                                <td>{{ day.0 }}</td>
-                                                <td>{{ day.1 }}</td>
-                                                <td>
-                                                    {% if day.3 is not None %}
+                                                <td name = "plan_name_name_tag{{ day.0 }}">{{ day.1 }}</td>
+                                                <td>{{ day.2 }}</td>
+                                                <td name = "plan_amount_name_tag{{ day.0 }}">
+                                                    {% if day.4 is not None %}
                                                         ¥
-                                                        {% if day.2 == 1 %}
+                                                        {% if day.3 == 1 %}
                                                             +
-                                                        {% elif day.3 == 0 %}
+                                                        {% elif day.4 == 0 %}
 
                                                         {% else %}
                                                             -
                                                         {% endif %}
-                                                        {{ day.3}}
+                                                        {{ day.4}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ day.6 |default:"" }}</td>
+                                                <td>{{ day.7 |default:"" }}</td>
                                                 <td>
-                                                    {% if day.8 is not None %}
+                                                    {% if day.9 is not None %}
                                                         ¥
-                                                        {% if day.7 == 1 %}
+                                                        {% if day.8 == 1 %}
                                                             +
-                                                        {% elif day.8 == 0 %}
+                                                        {% elif day.9 == 0 %}
 
                                                         {% else %}
                                                             -
                                                         {% endif %}
-                                                        {{ day.8}}
+                                                        {{ day.9}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ day.5 |date:"Y/m/j" }}</td>
+                                                <td>{{ day.6 |date:"Y/m/j" }}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
@@ -333,7 +334,6 @@
                 $('#openModal1').click(function(){
                     aa ++;
                     $('#modalArea').fadeIn();
-                    console.log(aa);
                 });
                 $('#closeModal , #modalBg').click(function(){
                     $('#modalArea').fadeOut();
@@ -345,14 +345,35 @@
             $('td').click(function(){
                 arrClassName = $(this)[0].parentElement.className.split(" ");
                 for(var i=0,l=arrClassName.length;i<l;i++){
+
                     if(arrClassName[i].indexOf("result_id")===0){
-                        var payment_result_id = arrClassName[i].replace('result_id',' ')
-                        console.log(payment_result_id);
-                        $('#modalArea').fadeIn();
-                        break;
+
+                        var payment_result_id = arrClassName[i].replace('result_id','');
+                        console.log("result_id");console.log(payment_result_id);
+                        target = document.getElementById("selected_plan_name");
+
+
+                    }else if(arrClassName[i].indexOf("plan_id")===0){
+                        <!-- クリックした予算id -->
+                        var payment_plan_id = arrClassName[i].replace('plan_id','');
+
+                        <!-- 予算名の取得 -->
+                        var plan_name_text = document.getElementsByName("plan_name_name_tag" + payment_plan_id)[0].innerHTML;
+                        <!-- セット位置の取得 -->
+                        target_plan_name = document.getElementById("selected_plan_name");
+                        <!-- 代入 -->
+                        target_plan_name.innerHTML = plan_name_text;
+
+                        <!-- 予算の取得 -->
+                        var plan_amount_text = document.getElementsByName("plan_amount_name_tag" + payment_plan_id)[0].innerHTML;
+                        <!-- セット位置の取得 -->
+                        target_plan_amount = document.getElementById("selected_plan_amount");
+                        <!-- 代入 -->
+                        target_plan_amount.innerHTML = plan_amount_text;
+
                     }
                 }
-
+                $('#modalArea').fadeIn();
             })
         </script>
     </body>
