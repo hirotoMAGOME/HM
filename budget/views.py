@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
-from budget.forms import PaymentResultForm
+from budget.forms import PaymentPlanForm, PaymentResultForm
 
 from budget.models import PaymentPlan, PaymentResult, PaymentUnit, PaymentCategory, WalletType, Wallet
 
@@ -30,6 +30,7 @@ class IndexView(View):
             'payment_unit_count3': len(payment_result_data3),
             'payment_unit_count4': len(payment_result_data4),
             'payment_unit_count5': len(payment_result_data5),
+            'planForm': PaymentPlanForm(),
             'resultForm': PaymentResultForm(),
         }
 
@@ -70,6 +71,7 @@ class IndexView(View):
             'payment_unit_count3': len(payment_result_data3),
             'payment_unit_count4': len(payment_result_data4),
             'payment_unit_count5': len(payment_result_data5),
+            'planForm': PaymentPlanForm(),
             'resultForm': PaymentResultForm(),
         }
 

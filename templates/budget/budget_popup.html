@@ -92,10 +92,22 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
 	                	    <h2>First Tab</h2>
                             <form action="" method="post" role="form">
                                 {% csrf_token %}
-                                {{ planForm.name }}
-                                {{ planForm.amount }}
-                                {{ planForm.payment_limit }}
-
+                                <p>
+                                    {{ planForm.planform_payment_unit_id.label }}：
+                                    {{ planForm.planform_payment_unit_id }}
+                                </p>
+                                <p>
+                                    {{ planForm.planform_name.label }}：
+                                    {{ planForm.planform_name }}
+                                </p>
+                                <p>
+                                    {{ planForm.planform_amount.label }}：
+                                    {{ planForm.planform_amount }}円  (  {{ planForm.planform_amount_plus_flg }}  )
+                                </p>
+                                <p>
+                                    {{ planForm.planform_payment_unit_id.label }}：
+                                    {{ planForm.planform_payment_unit_id }}
+                                </p>
                             </form>
 	                	</div>
 	                	<div id="second_tab01" class="cp_tabpanel">
