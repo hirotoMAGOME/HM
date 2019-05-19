@@ -19,10 +19,7 @@ class PaymentResultForm(forms.Form):
 
     #実績情報
     #TODO プルダウンやめる。ダイナミックサーチ
-    name = forms.ModelChoiceField(
-        models.PaymentResult.objects,
-        label='予算',
-    )
+
     amount_plus_flg = forms.ChoiceField(
         choices=PLUS_FLG_CHOICES,
         required=True,
@@ -35,10 +32,4 @@ class PaymentResultForm(forms.Form):
     memo = forms.CharField(
         label='備考',
         max_length=100,
-    )
-    payment_date = forms.DateTimeField(
-        label='支払日',
-        required=True,
-        widget=forms.DateInput(attrs={"type": "date"}),
-        input_formats=['%Y-%m-%d'],
     )

@@ -344,35 +344,52 @@
             <!--tdタグ内をクリック時に,該当class名からpayment_result_idを取得-->
             $('td').click(function(){
                 arrClassName = $(this)[0].parentElement.className.split(" ");
-                for(var i=0,l=arrClassName.length;i<l;i++){
-
-                    if(arrClassName[i].indexOf("result_id")===0){
-
+                for(var i=0,l=arrClassName.length;i<l;i++) {
+                    if(arrClassName[i].indexOf("result_id")===0) {
+                        <!-- クリックした実績id -->
                         var payment_result_id = arrClassName[i].replace('result_id','');
-                        console.log("result_id");console.log(payment_result_id);
-                        target = document.getElementById("selected_plan_name");
-
-
-                    }else if(arrClassName[i].indexOf("plan_id")===0){
+                    }else if(arrClassName[i].indexOf("plan_id")===0) {
                         <!-- クリックした予算id -->
-                        var payment_plan_id = arrClassName[i].replace('plan_id','');
-
-                        <!-- 予算名の取得 -->
-                        var plan_name_text = document.getElementsByName("plan_name_name_tag" + payment_plan_id)[0].innerHTML;
-                        <!-- セット位置の取得 -->
-                        target_plan_name = document.getElementById("selected_plan_name");
-                        <!-- 代入 -->
-                        target_plan_name.innerHTML = plan_name_text;
-
-                        <!-- 予算の取得 -->
-                        var plan_amount_text = document.getElementsByName("plan_amount_name_tag" + payment_plan_id)[0].innerHTML;
-                        <!-- セット位置の取得 -->
-                        target_plan_amount = document.getElementById("selected_plan_amount");
-                        <!-- 代入 -->
-                        target_plan_amount.innerHTML = plan_amount_text;
-
+                        var payment_plan_id = arrClassName[i].replace('plan_id', '');
                     }
                 }
+
+                <!-- 予算情報デフォルトセット START -->
+                    <!-- 予算名の取得 -->
+                    var plan_name_text = document.getElementsByName("plan_name_name_tag" + payment_plan_id)[0].innerHTML;
+                    <!-- セット位置の取得 -->
+                    target_plan_name = document.getElementById("selected_plan_name");
+                    <!-- 代入 -->
+                    target_plan_name.innerHTML = plan_name_text;
+
+                    <!-- 予算の取得 -->
+                    var plan_amount_text = document.getElementsByName("plan_amount_name_tag" + payment_plan_id)[0].innerHTML;
+                    <!-- セット位置の取得 -->
+                    target_plan_amount = document.getElementById("selected_plan_amount");
+                    <!-- 代入 -->
+                    target_plan_amount.innerHTML = plan_amount_text;
+                <!-- 予算情報デフォルトセット END -->
+
+
+                <!-- 実績情報デフォルトセット -->
+                    <!-- 予算名を実績メモに仮セット -->
+                        <!-- セット位置の取得 -->
+                        target_result_memo = document.getElementById("id_memo");
+                        <!-- 代入 -->
+                        target_result_memo.value = plan_name_text;
+
+                    <!-- 当日日付をセット -->
+                        var date = new Date();
+                        var yyyy = date.getFullYear();
+                        var mm = ("0" + (date.getMonth()+1)).slice(-2);
+                        var dd = ("0" + date.getDate()).slice(-2);
+
+                        document.getElementById("id_payment_date").value=yyyy+'-'+mm+'-'+dd;
+
+                <!-- 実績情報デフォルトセット END -->
+
+
+
                 $('#modalArea').fadeIn();
             })
         </script>

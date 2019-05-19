@@ -109,16 +109,12 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
                                 {% csrf_token %}
                                 <!--TODO ダイナミックサーチ-->
                                 <p>
-                                    {{ resultForm.name.label }}：
-                                    {{ resultForm.name }}
+                                    {{ resultForm.memo.label }}：
+                                    {{ resultForm.memo }}
                                 </p>
                                 <p>
                                     {{ resultForm.amount.label }}：
                                     {{ resultForm.amount }}円  (  {{ resultForm.amount_plus_flg }}  )
-                                </p>
-                                <p>
-                                    {{ resultForm.memo.label }}：
-                                    {{ resultForm.memo }}
                                 </p>
                                 <!--TODO datepicker-->
                                 <p>
