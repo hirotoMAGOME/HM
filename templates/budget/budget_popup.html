@@ -92,6 +92,7 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
 	                	    <h2>First Tab</h2>
                             <form action="" method="post" role="form">
                                 {% csrf_token %}
+                                {{ planForm.planform_id.as_hidden }}
                                 <p>
                                     {{ planForm.planform_payment_unit_id.label }}：
                                     {{ planForm.planform_payment_unit_id }}
@@ -105,16 +106,17 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
                                     {{ planForm.planform_amount }}円  (  {{ planForm.planform_amount_plus_flg }}  )
                                 </p>
                                 <p>
-                                    {{ planForm.planform_payment_unit_id.label }}：
-                                    {{ planForm.planform_payment_unit_id }}
+                                    {{ planForm.planform_payment_limit.label }}：
+                                    {{ planForm.planform_payment_limit }}
                                 </p>
+                                <button type="submit" name="plan_button" value="plan_button">登録</button>
                             </form>
 	                	</div>
 	                	<div id="second_tab01" class="cp_tabpanel">
 	                	    <h2>予算情報</h2>
                                 <div id="selected_plan_name"></div>
                                 <div id="selected_plan_amount"></div>
-                                <!--すでに使用した分を表示-->
+                                <!--TODO すでに今月3000円使ってます的な情報を表示-->
 
                             <h2>実績情報</h2>
                             <form action="" method="post" role="form">
@@ -133,7 +135,7 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
                                     {{ resultForm.payment_date.label }}：
                                     {{ resultForm.payment_date }}
                                 </p>
-                                <button type="submit">登録</button>
+                                <button type="submit" name="result_button" value="result_button">登録</button>
                             </form>
 	                	</div>
 	                </div>

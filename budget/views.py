@@ -2,10 +2,9 @@ from django.shortcuts import render, redirect
 from django.views import View
 
 from budget.forms import PaymentPlanForm, PaymentResultForm
-
 from budget.models import PaymentPlan, PaymentResult, PaymentUnit, PaymentCategory, WalletType, Wallet
 
-from django.db import connection
+from datetime import datetime
 
 class IndexView(View):
     def get(self, request, *args, **kwargs):
@@ -38,19 +37,31 @@ class IndexView(View):
 
     def post(self, request, *args, **kwargs):
         """POST リクエスト用のメソッド"""
+        if 'result_button' in request.POST:
+            print("post1")
+            #TODO payment_plan_id,amount_plus_flg,family_id,member_id,rank,payment_date
+            insert = {
+                'payment_plan_id': 1,
+                'amount_plus_flg': 1,
+                'amount': request.POST['amount'],
+                'memo': request.POST['memo'],
+                'family_id': 1,
+                'member_id': 1,
+                'rank': 1,
+                'payment_date': request.POST['payment_date'],
+            }
+            PaymentResult.objects.create(**insert)
 
-        #TODO payment_plan_id,amount_plus_flg,family_id,member_id,rank,payment_date
-        insert = {
-            'payment_plan_id': 1,
-            'amount_plus_flg': 1,
-            'amount': request.POST['amount'],
-            'memo': request.POST['memo'],
-            'family_id': 1,
-            'member_id': 1,
-            'rank': 1,
-            'payment_date': request.POST['payment_date'],
-        }
-        PaymentResult.objects.create(**insert)
+        elif 'plan_button' in request.POST:
+            update = {
+                'family_id': 3,
+                'update_date': datetime.now(),
+            }
+            print(request.POST)
+            PaymentPlan.objects.filter(id=request.POST['planform_id']).update(**update)
+            print("post2")
+
+
 
         #TODO ORMを使う
         #TODO 必要な項目だけをSELECT

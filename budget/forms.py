@@ -9,6 +9,9 @@ PLUS_FLG_CHOICES = (
 
 class PaymentPlanForm(forms.Form):
     #予算情報
+    planform_id = forms.IntegerField(
+        required=True,
+    )
     planform_name = forms.CharField(
         label='予算名',
         required=True,

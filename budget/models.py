@@ -74,6 +74,11 @@ class PaymentPlan(models.Model):
     rank = django.db.models.IntegerField(verbose_name='表示順', null=True)
     family_id = django.db.models.IntegerField(verbose_name='家族ID', null=True)
     member_id = django.db.models.IntegerField(verbose_name='メンバーID', null=True)
+    """nullの削除"""
+    create_date = django.db.models.DateTimeField(verbose_name='作成日', auto_now_add=True, null=True)
+    """nullの削除"""
+    update_date = django.db.models.DateTimeField(verbose_name='更新日', auto_now=True, null=True)
+    del_flg = django.db.models.BooleanField(verbose_name='削除フラグ', default=0)
         
     def __str__(self):
         return self.name
