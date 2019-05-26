@@ -1,5 +1,7 @@
 from django import forms
 from django.db import connection
+from datetime import datetime, date, timedelta
+from dateutil.relativedelta import relativedelta
 from . import models
 
 PLUS_FLG_CHOICES = (
@@ -16,6 +18,14 @@ for i in data:
     unit = (i[0], i[1])
     arrUnit.append(unit)
 PAYMENT_UNIT = arrUnit
+
+#動的に過去3ヶ月分を作成
+
+DISPRAY_RANGE = (
+    (datetime.strftime(datetime.today(), '%-m'), datetime.strftime(datetime.today(), '%m') + '月'),
+    (datetime.strftime(datetime.today() - relativedelta(months=1), '%-m'), datetime.strftime(datetime.today() - relativedelta(months=1), '%m') + '月'),
+    (datetime.strftime(datetime.today() - relativedelta(months=2), '%-m'), datetime.strftime(datetime.today() - relativedelta(months=2), '%m') + '月'),
+)
 
 class PaymentPlanForm(forms.Form):
     #予算情報
@@ -45,7 +55,6 @@ class PaymentPlanForm(forms.Form):
     )
 
 
-
 class PaymentResultForm(forms.Form):
     #実績情報
     #TODO プルダウンやめる。ダイナミックサーチ
@@ -65,4 +74,12 @@ class PaymentResultForm(forms.Form):
     )
     payment_date = forms.DateField(
         label='支払日',
+    )
+
+
+class DisplayForm(forms.Form):
+    month = forms.ChoiceField(
+        choices=DISPRAY_RANGE,
+        required=True,
+        initial=0,
     )
