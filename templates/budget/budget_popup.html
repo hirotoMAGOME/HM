@@ -1,0 +1,145 @@
+
+<style type = "text/css">
+/* タブ切り替え */
+.cp_tab *, .cp_tab *:before, .cp_tab *:after {
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+.cp_tab {
+	margin: 1em auto;
+}
+.cp_tab > input[type='radio'] {
+	margin: 0;
+	padding: 0;
+	border: none;
+	border-radius: 0;
+	outline: none;
+	background: none;
+	-webkit-appearance: none;
+	        appearance: none;
+	display: none;
+}
+.cp_tab .cp_tabpanel {
+	display: none;
+}
+.cp_tab > input:first-child:checked ~ .cp_tabpanels > .cp_tabpanel:first-child,
+.cp_tab > input:nth-child(3):checked ~ .cp_tabpanels > .cp_tabpanel:nth-child(2),
+.cp_tab > input:nth-child(5):checked ~ .cp_tabpanels > .cp_tabpanel:nth-child(3),
+.cp_tab > input:nth-child(7):checked ~ .cp_tabpanels > .cp_tabpanel:nth-child(4),
+.cp_tab > input:nth-child(9):checked ~ .cp_tabpanels > .cp_tabpanel:nth-child(5),
+.cp_tab > input:nth-child(11):checked ~ .cp_tabpanels > .cp_tabpanel:nth-child(6) {
+	display: block;
+}
+.cp_tab > label {
+	position: relative;
+	display: inline-block;
+	padding: 15px;
+	cursor: pointer;
+	border: 1px solid transparent;
+	border-bottom: 0;
+}
+.cp_tab > label:hover,
+.cp_tab > input:focus + label {
+	color: #0066cc;
+}
+.cp_tab > input:checked + label {
+	margin-bottom: -1px;
+	border-color: #cccccc;
+	border-bottom: 1px solid #ffffff;/*背景色と同じ*/
+	border-radius: 6px 6px 0 0;
+}
+.cp_tab .cp_tabpanel {
+	padding: 0.5em 1em;
+	border-top: 1px solid #cccccc;
+}
+@media (max-width: 480px) {
+	.cp_tab {
+		width: 100%;
+		font-size: 0.8em;
+	}
+	.cp_tab label {
+		padding: 0.5em;
+	}
+}
+
+
+/* モーダルCSS */
+.modalArea {display: none;position: fixed;z-index: 10; /*サイトによってここの数値は調整 */top: 0;left: 0;width: 100%;height: 100%;}
+.modalBg {width: 100%;height: 100%;background-color: rgba(30,30,30,0.9);}
+.modalWrapper {position: absolute;top: 50%;left: 50%;transform:translate(-50%,-50%);width: 70%;max-width: 500px;padding: 10px 30px;background-color: #fff;}
+.closeModal {position: absolute;top: 0.5rem;right: 1rem;cursor: pointer;}
+
+/* 以下ボタンスタイル */
+button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-radius: 2px;cursor: pointer;}
+#openModal {position: absolute;top: 50%;left: 50%;transform:translate(-50%,-50%);}
+
+</style>
+
+        <section id="modalArea" class="modalArea">
+            <div id="modalBg" class="modalBg"></div>
+            <div class="modalWrapper">
+                <form action="" method="post" role="form">
+                    {% csrf_token %}
+
+                </form>
+                <div class="cp_tab">
+	                <input type="radio" name="cp_tab" id="tab1_1" aria-controls="first_tab01" >
+                	<label for="tab1_1">予算</label>
+                	<input type="radio" name="cp_tab" id="tab1_2" aria-controls="second_tab01" checked>
+                	<label for="tab1_2">実績</label>
+	                <div class="cp_tabpanels">
+	                	<div id="first_tab01" class="cp_tabpanel">
+	                	    <h2>First Tab</h2>
+                            <form action="" method="post" role="form">
+                                {% csrf_token %}
+                                {{ planForm.planform_id.as_hidden }}
+                                <p>
+                                    {{ planForm.planform_payment_unit_id.label }}：
+                                    {{ planForm.planform_payment_unit_id }}
+                                </p>
+                                <p>
+                                    {{ planForm.planform_name.label }}：
+                                    {{ planForm.planform_name }}
+                                </p>
+                                <p>
+                                    {{ planForm.planform_amount.label }}：
+                                    {{ planForm.planform_amount }}円  (  {{ planForm.planform_amount_plus_flg }}  )
+                                </p>
+                                <p>
+                                    {{ planForm.planform_payment_limit.label }}：
+                                    {{ planForm.planform_payment_limit }}
+                                </p>
+                                <button type="submit" name="plan_button" value="plan_button">登録</button>
+                            </form>
+	                	</div>
+	                	<div id="second_tab01" class="cp_tabpanel">
+	                	    <h2>予算情報</h2>
+                                <div id="selected_plan_name"></div>
+                                <div id="selected_plan_amount"></div>
+                                <!--TODO すでに今月3000円使ってます的な情報を表示-->
+
+                            <h2>実績情報</h2>
+                            <form action="" method="post" role="form">
+                                {% csrf_token %}
+                                <!--TODO ダイナミックサーチ-->
+                                <p>
+                                    {{ resultForm.memo.label }}：
+                                    {{ resultForm.memo }}
+                                </p>
+                                <p>
+                                    {{ resultForm.amount.label }}：
+                                    {{ resultForm.amount }}円  (  {{ resultForm.amount_plus_flg }}  )
+                                </p>
+                                <!--TODO datepicker-->
+                                <p>
+                                    {{ resultForm.payment_date.label }}：
+                                    {{ resultForm.payment_date }}
+                                </p>
+                                <button type="submit" name="result_button" value="result_button">登録</button>
+                            </form>
+	                	</div>
+	                </div>
+                </div>
+
+            </div>
+        </section>

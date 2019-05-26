@@ -33,6 +33,20 @@ class WalletType(models.Model):
         return self.name
 
 
+class PaymentCategory(models.Model):
+    class Meta:
+        db_table = 'payment_category'
+
+    name = django.db.models.CharField(verbose_name='名前', max_length=20)
+    sample = django.db.models.CharField(verbose_name='例', max_length=100, null=True)
+    memo = django.db.models.CharField(verbose_name='備考', max_length=100, null=True)
+    family_id = django.db.models.IntegerField(verbose_name='家族ID', null=True)
+    member_id = django.db.models.IntegerField(verbose_name='メンバーID', null=True)
+
+    def __str__(self):
+        return self.name
+
+
 class PaymentUnit(models.Model):
     class Meta:
         db_table = 'payment_unit'
@@ -50,7 +64,7 @@ class PaymentPlan(models.Model):
     class Meta:
         db_table = 'payment_plan'
 
-    payment_category_id = django.db.models.IntegerField(verbose_name='支払いカテゴリID', null=True)
+    payment_category = django.db.models.ForeignKey(PaymentCategory, verbose_name='支払いカテゴリID', on_delete=models.PROTECT, null=True)
     name = django.db.models.CharField(verbose_name='名前', max_length=20, null=True)
     memo = django.db.models.CharField(verbose_name='備考', max_length=100, null=True)
     amount_plus_flg = django.db.models.BooleanField(verbose_name='収支区分', default=0)
@@ -60,6 +74,11 @@ class PaymentPlan(models.Model):
     rank = django.db.models.IntegerField(verbose_name='表示順', null=True)
     family_id = django.db.models.IntegerField(verbose_name='家族ID', null=True)
     member_id = django.db.models.IntegerField(verbose_name='メンバーID', null=True)
+    """nullの削除"""
+    create_date = django.db.models.DateTimeField(verbose_name='作成日', auto_now_add=True, null=True)
+    """nullの削除"""
+    update_date = django.db.models.DateTimeField(verbose_name='更新日', auto_now=True, null=True)
+    del_flg = django.db.models.BooleanField(verbose_name='削除フラグ', default=0)
         
     def __str__(self):
         return self.name
@@ -77,24 +96,10 @@ class PaymentResult(models.Model):
     family_id = django.db.models.IntegerField(verbose_name='家族ID', null=True)
     member_id = django.db.models.IntegerField(verbose_name='メンバーID', null=True)
     rank = django.db.models.IntegerField(verbose_name='表示順', null=True)
-    payment_date = django.db.models.DateTimeField(verbose_name='支払い日')
+    payment_date = django.db.models.DateTimeField(verbose_name='支払日')
     create_date = django.db.models.DateTimeField(verbose_name='作成日', auto_now_add=True)
     update_date = django.db.models.DateTimeField(verbose_name='更新日', auto_now=True)
     del_flg = django.db.models.BooleanField(verbose_name='削除フラグ', default=0)
 
     def __str__(self):
         return self.memo
-
-
-class PaymentCategory(models.Model):
-    class Meta:
-        db_table = 'payment_category'
-
-    name = django.db.models.CharField(verbose_name='名前', max_length=20)
-    sample = django.db.models.CharField(verbose_name='例', max_length=100, null=True)
-    memo = django.db.models.CharField(verbose_name='備考', max_length=100, null=True)
-    family_id = django.db.models.IntegerField(verbose_name='家族ID', null=True)
-    member_id = django.db.models.IntegerField(verbose_name='メンバーID', null=True)
-
-    def __str__(self):
-        return self.name
