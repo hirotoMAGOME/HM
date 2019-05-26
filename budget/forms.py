@@ -1,4 +1,5 @@
 from django import forms
+from django.db import connection
 from . import models
 
 PLUS_FLG_CHOICES = (
@@ -6,6 +7,15 @@ PLUS_FLG_CHOICES = (
     ('0', '支出'),
 )
 
+# payment_unitマスタからプルダウンを生成
+cursor = connection.cursor()
+cursor.execute("SELECT id,name_en FROM payment_unit")
+data = cursor.fetchall()
+arrUnit = list()
+for i in data:
+    unit = (i[0], i[1])
+    arrUnit.append(unit)
+PAYMENT_UNIT = arrUnit
 
 class PaymentPlanForm(forms.Form):
     #予算情報
@@ -29,9 +39,11 @@ class PaymentPlanForm(forms.Form):
         label='金額',
         required=True,
     )
-    planform_payment_unit_id = forms.IntegerField(
-        label='単位'
+    planform_payment_unit_id = forms.ChoiceField(
+        choices=PAYMENT_UNIT,
+        label='単位',
     )
+
 
 
 class PaymentResultForm(forms.Form):

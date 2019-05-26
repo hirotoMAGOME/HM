@@ -356,7 +356,7 @@
                 <!-- tdタグが重複しているため、.clickアクションが複数回回ってしまうのを排除。 -->
                 if(payment_plan_id !== undefined) {
                     <!-- 予算タブ > 予算情報デフォルトセット START -->
-                        <!-- セット位置の取得 -->
+                        <!-- セット位置の取得(id) -->
                         target_plan_id = document.getElementById("id_planform_id");
                         <!-- 代入 -->
                         target_plan_id.value = payment_plan_id;
@@ -384,6 +384,15 @@
                             plan_amount_text_plus = 0;
                         }
                         target_plan_amount_plus.value = plan_amount_text_plus;
+
+                        <!-- 予算単位の取得 -->
+                        var payment_unit_tr_id = document.getElementsByClassName("plan_id" + payment_plan_id)[0].id;
+                        var unit_id = payment_unit_tr_id.replace('payment_unit_tr','');
+                        <!-- セット位置の取得 -->
+                        target_plan_unit = document.getElementById("id_planform_payment_unit_id");
+                        <!-- 代入 -->
+                        target_plan_unit.options[Number(unit_id)-1].selected = true;
+
 
                     <!-- 予算タブ > 予算情報デフォルトセット END -->
 
