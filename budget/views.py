@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 
 from budget.forms import PaymentPlanForm, PaymentResultForm, DisplayForm
-from budget.models import PaymentPlan, PaymentResult, PaymentUnit, PaymentCategory, WalletType, Wallet
+from budget.models import PaymentPlan, PaymentResult
 
 from datetime import datetime
 

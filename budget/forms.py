@@ -1,8 +1,7 @@
 from django import forms
 from django.db import connection
-from datetime import datetime, date, timedelta
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from . import models
 
 PLUS_FLG_CHOICES = (
     ('1', '収入'),
