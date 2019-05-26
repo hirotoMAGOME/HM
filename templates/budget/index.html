@@ -370,11 +370,21 @@
 
                         <!-- 予算の取得 TODO replace不要。数値、符号を別々に取得。下にもあるamountも合わせて修正。-->
                         var plan_amount_text = document.getElementsByName("plan_amount_name_tag" + payment_plan_id)[0].innerHTML;
-                        <!-- セット位置の取得 -->
+                        <!-- セット位置の取得(金額) -->
                         target_plan_amount = document.getElementById("id_planform_amount");
-                        <!-- 代入 -->
+                        <!-- 代入(金額) -->
                         plan_amount_text_num = plan_amount_text.replace(/[^0-9]/g, '');
                         target_plan_amount.value = plan_amount_text_num;
+                        <!-- セット位置の取得(符号) -->
+                        target_plan_amount_plus = document.getElementById("id_planform_amount_plus_flg");
+                        <!-- 代入(符号) -->
+                        if(plan_amount_text.indexOf('+') != -1){
+                            plan_amount_text_plus = 1;
+                        }else{
+                            plan_amount_text_plus = 0;
+                        }
+                        target_plan_amount_plus.value = plan_amount_text_plus;
+
                     <!-- 予算タブ > 予算情報デフォルトセット END -->
 
 

@@ -53,8 +53,15 @@ class IndexView(View):
             PaymentResult.objects.create(**insert)
 
         elif 'plan_button' in request.POST:
+            #TODO memo項目追加
             update = {
-                'family_id': 3,
+                'amount': request.POST['planform_amount'],
+                'family_id': 1,
+                'member_id': 1,
+                'name': request.POST['planform_name'],
+                'payment_limit': request.POST['planform_payment_limit'],
+                'payment_unit_id': request.POST['planform_payment_unit_id'],
+                'amount_plus_flg': request.POST['planform_amount_plus_flg'],
                 'update_date': datetime.now(),
             }
             print(request.POST)
