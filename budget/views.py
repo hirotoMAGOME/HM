@@ -38,7 +38,6 @@ class IndexView(View):
     def post(self, request, *args, **kwargs):
         """POST リクエスト用のメソッド"""
         if 'result_button' in request.POST:
-            print("post1")
             #TODO payment_plan_id,amount_plus_flg,family_id,member_id,rank,payment_date
             insert = {
                 'payment_plan_id': 1,
@@ -64,9 +63,8 @@ class IndexView(View):
                 'amount_plus_flg': request.POST['planform_amount_plus_flg'],
                 'update_date': datetime.now(),
             }
-            print(request.POST)
             PaymentPlan.objects.filter(id=request.POST['planform_id']).update(**update)
-            print("post2")
+
 
 
 
