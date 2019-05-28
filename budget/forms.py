@@ -19,7 +19,6 @@ for i in data:
 PAYMENT_UNIT = arrUnit
 
 #動的に過去3ヶ月分を作成
-
 DISPRAY_RANGE = (
     (datetime.strftime(datetime.today(), '%-m'), datetime.strftime(datetime.today(), '%m') + '月'),
     (datetime.strftime(datetime.today() - relativedelta(months=1), '%-m'), datetime.strftime(datetime.today() - relativedelta(months=1), '%m') + '月'),
@@ -77,8 +76,7 @@ class PaymentResultForm(forms.Form):
 
 
 class DisplayForm(forms.Form):
-    month = forms.ChoiceField(
+    month_select_box = forms.ChoiceField(
         choices=DISPRAY_RANGE,
         required=True,
-        initial=0,
     )

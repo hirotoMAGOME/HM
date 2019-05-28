@@ -9,14 +9,20 @@ from datetime import datetime
 class IndexView(View):
     def get(self, request, *args, **kwargs):
         """GET リクエスト用のメソッド"""
+        """TODO 対象月プルダウンでの絞り込み"""
+        print("get")
+        if 'month_select_box' in request.GET:
+            disp_month = request.GET['month_select_box']
+        else:
+            disp_month = datetime.today().month
 
         #TODO ORMを使う
         #TODO 必要な項目だけをSELECT
-        payment_result_data1 = get_front_info(1)
-        payment_result_data2 = get_front_info(2)
-        payment_result_data3 = get_front_info(3)
-        payment_result_data4 = get_front_info(4)
-        payment_result_data5 = get_front_info(5)
+        payment_result_data1 = get_front_info(1, disp_month)
+        payment_result_data2 = get_front_info(2, disp_month)
+        payment_result_data3 = get_front_info(3, disp_month)
+        payment_result_data4 = get_front_info(4, disp_month)
+        payment_result_data5 = get_front_info(5, disp_month)
 
         context = {
             'payment_unit_data1': payment_result_data1,
@@ -32,12 +38,19 @@ class IndexView(View):
             'planForm': PaymentPlanForm(),
             'resultForm': PaymentResultForm(),
             'displayForm': DisplayForm(),
+            'disp_month': disp_month,
         }
 
         return render(request, 'budget/index.html', context)
 
     def post(self, request, *args, **kwargs):
         """POST リクエスト用のメソッド"""
+        """TODO 対象月プルダウンでの絞り込み"""
+        if 'month_select_box' in request.GET:
+            disp_month = request.GET['month_select_box']
+        else:
+            disp_month = datetime.today().month
+        print("post")
         if 'result_button' in request.POST:
             #TODO payment_plan_id,amount_plus_flg,family_id,member_id,rank,payment_date
             insert = {
@@ -49,6 +62,7 @@ class IndexView(View):
                 'member_id': 1,
                 'rank': 1,
                 'payment_date': request.POST['payment_date'],
+
             }
             PaymentResult.objects.create(**insert)
 
@@ -71,11 +85,11 @@ class IndexView(View):
 
         #TODO ORMを使う
         #TODO 必要な項目だけをSELECT
-        payment_result_data1 = get_front_info(1)
-        payment_result_data2 = get_front_info(2)
-        payment_result_data3 = get_front_info(3)
-        payment_result_data4 = get_front_info(4)
-        payment_result_data5 = get_front_info(5)
+        payment_result_data1 = get_front_info(1, disp_month)
+        payment_result_data2 = get_front_info(2, disp_month)
+        payment_result_data3 = get_front_info(3, disp_month)
+        payment_result_data4 = get_front_info(4, disp_month)
+        payment_result_data5 = get_front_info(5, disp_month)
 
         context = {
             'payment_unit_data1': payment_result_data1,
@@ -91,6 +105,7 @@ class IndexView(View):
             'planForm': PaymentPlanForm(),
             'resultForm': PaymentResultForm(),
             'displayForm': DisplayForm(),
+            'disp_month': disp_month,
         }
 
         return render(request, 'budget/index.html', context)
@@ -98,7 +113,7 @@ class IndexView(View):
 index = IndexView.as_view()
 
 
-def get_front_info(unit_id):
+def get_front_info(unit_id, month):
     from django.db import connection
 
     #取得項目の順番を変えると、フロントがずれる。
@@ -110,8 +125,9 @@ def get_front_info(unit_id):
         "FROM payment_plan AS plan "
         "LEFT JOIN payment_unit as unit ON plan.payment_unit_id = unit.id "
         "LEFT JOIN payment_result as result ON plan.id = result.payment_plan_id "
-        "WHERE payment_unit_id = %s",
-        {unit_id}
+        "WHERE payment_unit_id = %s "
+        "AND MONTH(payment_date) = %s",
+        (unit_id, month, )
     )
     data = cursor.fetchall()
 
