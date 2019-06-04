@@ -16,30 +16,7 @@ class IndexView(View):
         else:
             disp_month = datetime.today().month
 
-        #TODO ORMを使う
-        #TODO 必要な項目だけをSELECT
-        payment_result_data1 = get_front_info(1, disp_month)
-        payment_result_data2 = get_front_info(2, disp_month)
-        payment_result_data3 = get_front_info(3, disp_month)
-        payment_result_data4 = get_front_info(4, disp_month)
-        payment_result_data5 = get_front_info(5, disp_month)
-
-        context = {
-            'payment_unit_data1': payment_result_data1,
-            'payment_unit_data2': payment_result_data2,
-            'payment_unit_data3': payment_result_data3,
-            'payment_unit_data4': payment_result_data4,
-            'payment_unit_data5': payment_result_data5,
-            'payment_unit_count1': len(payment_result_data1),
-            'payment_unit_count2': len(payment_result_data2),
-            'payment_unit_count3': len(payment_result_data3),
-            'payment_unit_count4': len(payment_result_data4),
-            'payment_unit_count5': len(payment_result_data5),
-            'planForm': PaymentPlanForm(),
-            'resultForm': PaymentResultForm(),
-            'displayForm': DisplayForm(),
-            'disp_month': disp_month,
-        }
+        context = get_disp_data(disp_month)
 
         return render(request, 'budget/index.html', context)
 
@@ -50,6 +27,9 @@ class IndexView(View):
             disp_month = request.GET['month_select_box']
         else:
             disp_month = datetime.today().month
+
+        context = get_disp_data(disp_month)
+
         print("post")
         if 'result_button' in request.POST:
             #TODO payment_plan_id,amount_plus_flg,family_id,member_id,rank,payment_date
@@ -80,34 +60,6 @@ class IndexView(View):
             }
             PaymentPlan.objects.filter(id=request.POST['planform_id']).update(**update)
 
-
-
-
-        #TODO ORMを使う
-        #TODO 必要な項目だけをSELECT
-        payment_result_data1 = get_front_info(1, disp_month)
-        payment_result_data2 = get_front_info(2, disp_month)
-        payment_result_data3 = get_front_info(3, disp_month)
-        payment_result_data4 = get_front_info(4, disp_month)
-        payment_result_data5 = get_front_info(5, disp_month)
-
-        context = {
-            'payment_unit_data1': payment_result_data1,
-            'payment_unit_data2': payment_result_data2,
-            'payment_unit_data3': payment_result_data3,
-            'payment_unit_data4': payment_result_data4,
-            'payment_unit_data5': payment_result_data5,
-            'payment_unit_count1': len(payment_result_data1),
-            'payment_unit_count2': len(payment_result_data2),
-            'payment_unit_count3': len(payment_result_data3),
-            'payment_unit_count4': len(payment_result_data4),
-            'payment_unit_count5': len(payment_result_data5),
-            'planForm': PaymentPlanForm(),
-            'resultForm': PaymentResultForm(),
-            'displayForm': DisplayForm(),
-            'disp_month': disp_month,
-        }
-
         return render(request, 'budget/index.html', context)
 
 index = IndexView.as_view()
@@ -132,3 +84,29 @@ def get_front_info(unit_id, month):
     data = cursor.fetchall()
 
     return data
+
+def get_disp_data(disp_month):
+    payment_result_data1 = get_front_info(1, disp_month)
+    payment_result_data2 = get_front_info(2, disp_month)
+    payment_result_data3 = get_front_info(3, disp_month)
+    payment_result_data4 = get_front_info(4, disp_month)
+    payment_result_data5 = get_front_info(5, disp_month)
+
+    context = {
+        'payment_unit_data1': payment_result_data1,
+        'payment_unit_data2': payment_result_data2,
+        'payment_unit_data3': payment_result_data3,
+        'payment_unit_data4': payment_result_data4,
+        'payment_unit_data5': payment_result_data5,
+        'payment_unit_count1': len(payment_result_data1),
+        'payment_unit_count2': len(payment_result_data2),
+        'payment_unit_count3': len(payment_result_data3),
+        'payment_unit_count4': len(payment_result_data4),
+        'payment_unit_count5': len(payment_result_data5),
+        'planForm': PaymentPlanForm(),
+        'resultForm': PaymentResultForm(),
+        'displayForm': DisplayForm(),
+        'disp_month': disp_month,
+    }
+
+    return context
