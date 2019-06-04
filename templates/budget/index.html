@@ -68,6 +68,14 @@
                             </tr>
                             <tr>
                                 <td>
+                                    <form id="month_form" method="get" action="#">
+                                        {% csrf_token %}
+                                        対象月{{ displayForm.month_select_box }}
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <table class = "budget-table">
                                         <tr>
                                             <th></th>
@@ -328,11 +336,15 @@
 
         <!--↓body閉じタグ直前でjQueryを読み込む-->
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- 対象月プルダウンの初期値セット -->
         <script>
-            var aa = 0;
+            var today = new Date();
+            var month = today.getMonth();
+            document.getElementById('id_month_select_box').options[month + 1 - {{ disp_month }}].selected = true;
+        </script>
+        <script>
             $(function () {
                 $('#openModal1').click(function(){
-                    aa ++;
                     $('#modalArea').fadeIn();
                 });
                 $('#closeModal , #modalBg').click(function(){
@@ -341,6 +353,7 @@
             });
         </script>
         <script>
+            <!-- クリック箇所に応じたデフォルト値をモーダルにセット -->
             <!--tdタグ内をクリック時に,該当class名からpayment_result_idを取得-->
             $('td').click(function(){
                 arrClassName = $(this)[0].parentElement.className.split(" ");
@@ -435,5 +448,12 @@
                 }
             })
         </script>
+        <script>
+            $(function(){
+                $("#id_month_select_box").change(function(){
+                    $("#month_form").submit();
+                });
+            });
+        </script>
     </body>
 </html>
