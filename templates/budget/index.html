@@ -295,21 +295,19 @@
                             <tr>
                                 <td>
                                     <div class="inline-box">
-                                        資産サマリー<br/>
-                                        <table class="asset-table">
-                                            <tr>
-                                                <th>現金</th>
-                                                <td>20000円</td>
-                                            </tr>
-                                            <tr>
-                                                <th>LINE pay</th>
-                                                <td>5000円</td>
-                                            </tr>
-                                            <tr>
-                                                <th>paypay</th>
-                                                <td>300円</td>
-                                            </tr>
-                                        </table>
+                                        <form action="" method="post" role="form">
+                                        {% csrf_token %}
+                                        資産サマリー<button type="submit" name="wallet_button" value="wallet_button">更新</button>
+                                            <table class="asset-table">
+                                                {% for wallet in wallet_data %}
+                                                    <tr>
+                                                        <th>{{ wallet.name }}</th>
+                                                        <td>{{ wallet.balance }}円</td>
+                                                        <td><input type="text" name="balance_update_{{ wallet.id }}" maxlength="10" id="balance{{ wallet.id }}">円</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </table>
+                                        </form>
                                     </div>
                                     <div class="inline-box">
                                         収支入力精度<br/>
