@@ -15,7 +15,23 @@ class Wallet(models.Model):
     member_id = django.db.models.IntegerField(verbose_name='メンバーID', null=True)
     create_date = django.db.models.DateTimeField(verbose_name='作成日', auto_now_add=True)
     update_date = django.db.models.DateTimeField(verbose_name='更新日', auto_now=True)
-    del_flg = django.db.models.BooleanField(verbose_name='削除フラグ', default=0)
+    del_flg = django.db.models.BooleanField(verbose_name='削除フラグ', null=False, default=0)
+
+    def __str__(self):
+        return self.name
+
+
+class WalletHistory(models.Model):
+    class Meta:
+        db_table = 'wallet_history'
+
+    wallet_id = django.db.models.ForeignKey(Wallet, on_delete=models.PROTECT, null=False)
+    balance = django.db.models.IntegerField(verbose_name='残高', null=False, default=0)
+    family_id = django.db.models.IntegerField(verbose_name='家族ID', null=False, default=0)
+    member_id = django.db.models.IntegerField(verbose_name='メンバーID', null=False, default=0)
+    create_date = django.db.models.DateTimeField(verbose_name='作成日', null=False)
+    update_date = django.db.models.DateTimeField(verbose_name='更新日', null=False)
+    del_flg = django.db.models.BooleanField(verbose_name='削除フラグ', null=False, default=0)
 
     def __str__(self):
         return self.name
