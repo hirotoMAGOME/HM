@@ -80,3 +80,16 @@ class DisplayForm(forms.Form):
         choices=DISPRAY_RANGE,
         required=True,
     )
+
+
+#TODO monthにplaceholderをつける
+class SettlementForm(forms.Form):
+    settlement_month = forms.CharField(
+        label='決算月',
+        required=True,
+        max_length=6,
+    )
+    settlement_date = forms.DateField(
+        label='決算日',
+    )
+

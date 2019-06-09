@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
-from budget.forms import PaymentPlanForm, PaymentResultForm, DisplayForm
+from budget.forms import PaymentPlanForm, PaymentResultForm, DisplayForm, SettlementForm
 from budget.models import PaymentPlan, PaymentResult, Wallet, WalletHistory
 
 from datetime import datetime
@@ -81,7 +81,7 @@ class IndexView(View):
                     wh.save()
 
                     #Walletを更新
-                    Wallet.objects.filter(id=update_wallet_id).update(balance=request.POST[post_key], update_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+                    Wallet.objects.filter(id=update_wallet_id).update(balance=request.POST[post_key], update_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
         return render(request, 'budget/index.html', context)
 
@@ -95,12 +95,12 @@ def get_front_info(unit_id, month):
     cursor = connection.cursor()
     cursor.execute(
         "SELECT "
-        "plan.id,plan.name,plan.payment_limit,plan.amount_plus_flg,plan.amount,result.id,result.payment_date,result.memo,result.amount_plus_flg,result.amount,unit.name_en "
+        "plan.id,plan.name,plan.payment_limit,plan.amount_plus_flg,plan.amount,result.id,result.payment_date,result.memo,result.amount_plus_flg,result.amount,unit.name_en,result.sample_flg "
         "FROM payment_plan AS plan "
         "LEFT JOIN payment_unit as unit ON plan.payment_unit_id = unit.id "
         "LEFT JOIN payment_result as result ON plan.id = result.payment_plan_id "
         "WHERE payment_unit_id = %s "
-        "AND MONTH(payment_date) = %s",
+        "AND (MONTH(payment_date) = %s OR sample_flg = 1)",
         (unit_id, month, )
     )
     data = cursor.fetchall()
@@ -136,6 +136,7 @@ def get_disp_data(disp_month):
         'displayForm': DisplayForm(),
         'disp_month': disp_month,
         'wallet_data': wallet_data,
+        'settlementForm': SettlementForm(),
     }
 
     return context

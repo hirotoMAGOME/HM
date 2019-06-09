@@ -109,13 +109,25 @@ class PaymentResult(models.Model):
     amount_plus_flg = django.db.models.BooleanField(verbose_name='収支区分', default=0)
     amount = django.db.models.IntegerField(verbose_name='金額', null=True)
     memo = django.db.models.CharField(verbose_name='備考', max_length=100, null=True)
+    rank = django.db.models.IntegerField(verbose_name='表示順', null=True)
+    payment_month = django.db.models.DateTimeField(verbose_name='支払月', null=True)
+    payment_date = django.db.models.DateTimeField(verbose_name='支払日', null=True)
+    sample_flg = django.db.models.BooleanField(verbose_name='サンプルフラグ', default=0)
     family_id = django.db.models.IntegerField(verbose_name='家族ID', null=True)
     member_id = django.db.models.IntegerField(verbose_name='メンバーID', null=True)
-    rank = django.db.models.IntegerField(verbose_name='表示順', null=True)
-    payment_date = django.db.models.DateTimeField(verbose_name='支払日')
     create_date = django.db.models.DateTimeField(verbose_name='作成日', auto_now_add=True)
     update_date = django.db.models.DateTimeField(verbose_name='更新日', auto_now=True)
     del_flg = django.db.models.BooleanField(verbose_name='削除フラグ', default=0)
 
     def __str__(self):
         return self.memo
+
+
+class Settlement(models.Model):
+    settlement_month = django.db.models.DateTimeField(verbose_name='決算月', unique_for_month=True, null=False)
+    settlement_date = django.db.models.DateTimeField(verbose_name='決算日', null=False)
+    family_id = django.db.models.IntegerField(verbose_name='家族ID', null=True)
+    member_id = django.db.models.IntegerField(verbose_name='メンバーID', null=True)
+    create_date = django.db.models.DateTimeField(verbose_name='作成日', null=False, auto_now_add=True)
+    update_date = django.db.models.DateTimeField(verbose_name='更新日', null=False, auto_now=True)
+    del_flg = django.db.models.BooleanField(verbose_name='削除フラグ', null=False, default=0)
