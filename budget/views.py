@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.views import View
 
 from budget.forms import PaymentPlanForm, PaymentResultForm, DisplayForm, SettlementForm
-from budget.models import PaymentPlan, PaymentResult, Wallet, WalletHistory
+from budget.models import PaymentPlan, PaymentResult, Wallet, WalletHistory,DoublePost
 
-from datetime import datetime
 from django.db import connection
+from datetime import datetime, timedelta
+from tkinter import messagebox
 
 class IndexView(View):
     def get(self, request, *args, **kwargs):
@@ -23,6 +24,36 @@ class IndexView(View):
 
     def post(self, request, *args, **kwargs):
         """POST リクエスト用のメソッド"""
+        #TODO 2重POSTの防止　同じPOSTがきた場合は、処理しない。
+        # 古いデータの削除(1日以上古いデータを削除)
+        delete_limit = datetime.now() - timedelta(days=1)
+        dp_del = DoublePost.objects.filter(create_date__lte=delete_limit)
+        dp_del.delete()
+
+        #2重とみなす時間(s)
+        double_post_error_period = 1200
+        double_min_time = datetime.now() - timedelta(seconds=double_post_error_period)
+        double_max_time = datetime.now() + timedelta(seconds=double_post_error_period)
+
+        #2重チェック用のPOSTデータ
+        check_csrf = request.POST['csrfmiddlewaretoken']
+        check_post_text = ''
+        for post_key in request.POST:
+            check_post_text = check_post_text + request.POST[post_key]
+
+        dp = DoublePost.objects.filter(
+            create_date__gte=double_min_time,
+            create_date__lte=double_max_time,
+            csrf=check_csrf,
+            post_text=check_post_text,
+        )
+        if len(dp) > 0:
+            print("2重POSTあり")
+            #TODO break的なことをしたい
+
+        else:
+            print("2重POSTなし")
+
         """TODO 対象月プルダウンでの絞り込み"""
         if 'month_select_box' in request.GET:
             disp_month = request.GET['month_select_box']
@@ -47,6 +78,14 @@ class IndexView(View):
             }
             PaymentResult.objects.create(**insert)
 
+            #2重チェック用
+            insert = {
+                'csrf': request.POST['csrfmiddlewaretoken'],
+                'post_text': check_post_text,
+                'create_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            }
+            DoublePost.objects.create(**insert)
+            
         elif 'plan_button' in request.POST:
             #TODO memo項目追加
             update = {

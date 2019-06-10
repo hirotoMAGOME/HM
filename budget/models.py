@@ -131,3 +131,13 @@ class Settlement(models.Model):
     create_date = django.db.models.DateTimeField(verbose_name='作成日', null=False, auto_now_add=True)
     update_date = django.db.models.DateTimeField(verbose_name='更新日', null=False, auto_now=True)
     del_flg = django.db.models.BooleanField(verbose_name='削除フラグ', null=False, default=0)
+
+
+class DoublePost(models.Model):
+    """2重POST防止用モデル"""
+    class Meta:
+        db_table = 'double_post'
+
+    csrf = django.db.models.CharField(verbose_name='csrf', max_length=100, null=False)
+    post_text = django.db.models.CharField(verbose_name='POST内容', max_length=1000, null=False)
+    create_date = django.db.models.DateTimeField(verbose_name='作成日', auto_now_add=False)
