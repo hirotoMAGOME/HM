@@ -6,7 +6,6 @@ from budget.models import PaymentPlan, PaymentResult, Wallet, WalletHistory,Doub
 
 from django.db import connection
 from datetime import datetime, timedelta
-from tkinter import messagebox
 
 class IndexView(View):
     def get(self, request, *args, **kwargs):
