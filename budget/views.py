@@ -62,7 +62,7 @@ class IndexView(View):
         print("post")
         if 'result_button' in request.POST:
             print('result_button')
-            print(request.POST)
+
             #TODO family_id,member_id,rank
             insert = {
                 'payment_plan_id': request.POST['selected_plan_id'],
@@ -76,6 +76,10 @@ class IndexView(View):
 
             }
             PaymentResult.objects.create(**insert)
+
+            # Wallet
+            diff_amount = request.POST['amount'] if(request.POST['amount_plus_flg'] == '1') else int(request.POST['amount']) * (-1)
+            update_wallet(request.POST['wallet'], diff_amount, 2)
 
             #2重チェック用
             insert = {
@@ -106,22 +110,9 @@ class IndexView(View):
             for post_key in request.POST:
                 if post_key[0:15] == 'balance_update_' and len(request.POST[post_key]) != 0:
                     update_wallet_id = post_key.replace('balance_update_', '')
-                    wallet = Wallet.objects.filter(id=update_wallet_id).values('id', 'balance', 'family_id', 'member_id', 'create_date')
 
-                    #Walletの内容をWalletHistoryでUPDATE
-                    wh = WalletHistory(
-                        balance=wallet[0]['balance'],
-                        family_id=wallet[0]['family_id'],
-                        member_id=wallet[0]['member_id'],
-                        create_date=wallet[0]['create_date'],
-                        update_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                        del_flg=0,
-                        wallet_id_id=wallet[0]['id'],
-                    )
-                    wh.save()
-
-                    #Walletを更新
-                    Wallet.objects.filter(id=update_wallet_id).update(balance=request.POST[post_key], update_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+                    #idと金額でWalletの更新とWalletHistoryの作成
+                    update_wallet(update_wallet_id, request.POST[post_key], 1)
 
         return render(request, 'budget/index.html', context)
 
@@ -180,3 +171,33 @@ def get_disp_data(disp_month):
     }
 
     return context
+
+
+# 財布の金額を更新
+# 更新前の金額はWalletHistoryにコピー
+# update_wallet_id
+# update_balance
+# mode 1:balance=update_balanceで更新　2:balance = balance + update_balanceで更新
+def update_wallet(update_wallet_id, update_balance, mode):
+    wallet = Wallet.objects.filter(id=update_wallet_id).values('id', 'balance', 'family_id', 'member_id', 'create_date')
+
+    # Walletの内容をWalletHistoryでUPDATE
+    wh = WalletHistory(
+        balance=wallet[0]['balance'],
+        family_id=wallet[0]['family_id'],
+        member_id=wallet[0]['member_id'],
+        create_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        update_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        del_flg=0,
+        wallet_id_id=wallet[0]['id'],
+    )
+    wh.save()
+
+    if mode == 1:
+        new_balance = update_balance
+    elif mode == 2:
+        new_balance = int(wallet[0]['balance']) + int(update_balance)
+
+    # Walletを更新
+    Wallet.objects.filter(id=update_wallet_id).update(balance=new_balance,
+                                                      update_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
