@@ -130,11 +130,16 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
                                     {{ resultForm.amount.label }}：
                                     {{ resultForm.amount }}円  (  {{ resultForm.amount_plus_flg }}  )
                                 </p>
+                                <p>
+                                    {{ resultForm.wallet.label }}：
+                                    {{ resultForm.wallet }}
+                                </p>
                                 <!--TODO datepicker-->
                                 <p>
                                     {{ resultForm.payment_date.label }}：
                                     {{ resultForm.payment_date }}
                                 </p>
+                                {{ resultForm.selected_plan_id.as_hidden }}
                                 <button type="submit" name="result_button" value="result_button">登録</button>
                             </form>
 	                	</div>

@@ -23,6 +23,15 @@ class IndexView(View):
 
     def post(self, request, *args, **kwargs):
         """POST リクエスト用のメソッド"""
+        """TODO 対象月プルダウンでの絞り込み"""
+        if 'month_select_box' in request.GET:
+            disp_month = request.GET['month_select_box']
+        else:
+            disp_month = datetime.today().month
+
+        context = get_disp_data(disp_month)
+
+
         #TODO 2重POSTの防止　同じPOSTがきた場合は、処理しない。
         # 古いデータの削除(1日以上古いデータを削除)
         delete_limit = datetime.now() - timedelta(days=1)
@@ -48,25 +57,16 @@ class IndexView(View):
         )
         if len(dp) > 0:
             print("2重POSTあり")
-            #TODO break的なことをしたい
-
-        else:
-            print("2重POSTなし")
-
-        """TODO 対象月プルダウンでの絞り込み"""
-        if 'month_select_box' in request.GET:
-            disp_month = request.GET['month_select_box']
-        else:
-            disp_month = datetime.today().month
-
-        context = get_disp_data(disp_month)
+            return render(request, 'budget/index.html', context)
 
         print("post")
         if 'result_button' in request.POST:
-            #TODO payment_plan_id,amount_plus_flg,family_id,member_id,rank,payment_date
+            print('result_button')
+            print(request.POST)
+            #TODO family_id,member_id,rank
             insert = {
-                'payment_plan_id': 1,
-                'amount_plus_flg': 1,
+                'payment_plan_id': request.POST['selected_plan_id'],
+                'amount_plus_flg': request.POST['amount_plus_flg'],
                 'amount': request.POST['amount'],
                 'memo': request.POST['memo'],
                 'family_id': 1,
@@ -86,6 +86,7 @@ class IndexView(View):
             DoublePost.objects.create(**insert)
             
         elif 'plan_button' in request.POST:
+            print('plan_button')
             #TODO memo項目追加
             update = {
                 'amount': request.POST['planform_amount'],
@@ -100,6 +101,7 @@ class IndexView(View):
             PaymentPlan.objects.filter(id=request.POST['planform_id']).update(**update)
 
         elif 'wallet_button' in request.POST:
+            print('wallet_button')
             #入力された残高を更新する
             for post_key in request.POST:
                 if post_key[0:15] == 'balance_update_' and len(request.POST[post_key]) != 0:
