@@ -70,7 +70,18 @@
                                 <td>
                                     <form id="month_form" method="get" action="#">
                                         {% csrf_token %}
-                                        対象月{{ displayForm.month_select_box }}
+                                        対象月：{{ displayForm.month_select_box }}
+                                    </form>
+                                    <form id="settlement_form" method="post" action="#">
+                                        {% csrf_token %}
+                                        決算月：{{ settlementForm.settlement_month }}(例)201906
+                                        決算日：{{ settlementForm.settlement_date }}
+                                        <button type="submit" name="settlement_button" value="settlement_button">決算</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form id="fresh" method="get" action="#">
+                                        <button type="submit" name="fresh_button" value="fresh_button">画面更新</button>
                                     </form>
                                 </td>
                             </tr>
@@ -95,6 +106,7 @@
                                                 8:result.amount_plus_flg
                                                 9:result.amount
                                                 10:unit.name_en
+                                                11:result.sample_flg
                                             -->
                                             {% for anytime in payment_unit_data1 %}
                                             <tr id="payment_unit_tr1" class="plan_id{{ anytime.0 }} result_id{{ anytime.5|default:"" }}">
@@ -118,7 +130,7 @@
                                                 </td>
                                                 <td>{{ anytime.7 |default:"" }}</td>
                                                 <td>
-                                                    {% if anytime.9 is not None %}
+                                                    {% if anytime.9 is not None and anytime.11 == 0 %}
                                                         ¥
                                                         {% if anytime.8 == 1 %}
                                                             +
@@ -130,7 +142,7 @@
                                                         {{ anytime.9}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ anytime.5 |date:"Y/m/j"}}</td>
+                                                <td>{{ anytime.5 |date:"Y/m/d"}}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
@@ -157,7 +169,7 @@
                                                 </td>
                                                 <td>{{ year.7 |default:"" }}</td>
                                                 <td>
-                                                    {% if year.9 is not None %}
+                                                    {% if year.9 is not None and year.11 == 0  %}
                                                         ¥
                                                         {% if year.8 == 1 %}
                                                             +
@@ -169,7 +181,7 @@
                                                         {{ year.9}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ year.6 |date:"Y/m/j"}}</td>
+                                                <td>{{ year.6 |date:"Y/m/d"}}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
@@ -195,7 +207,7 @@
                                                     {% endif %}
                                                 </td>
                                                 <td>{{ month.7 |default:"" }}</td>
-                                                <td>{% if month.9 is not None %}
+                                                <td>{% if month.9 is not None and month.11 == 0 %}
                                                         ¥
                                                         {% if month.8 == 1 %}
                                                             +
@@ -207,7 +219,7 @@
                                                         {{ month.9}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ month.6 |date:"Y/m/j"}}</td>
+                                                <td>{{ month.6 |date:"Y/m/d"}}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
@@ -234,7 +246,7 @@
                                                 </td>
                                                 <td>{{ week.7 |default:"" }}</td>
                                                 <td>
-                                                    {% if week.9 is not None %}
+                                                    {% if week.9 is not None and week.11 == 0 %}
                                                         ¥
                                                         {% if week.8 == 1 %}
                                                             +
@@ -246,7 +258,7 @@
                                                         {{ week.9}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ week.6 |date:"Y/m/j"}}</td>
+                                                <td>{{ week.6 |date:"Y/m/d"}}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
@@ -273,7 +285,7 @@
                                                 </td>
                                                 <td>{{ day.7 |default:"" }}</td>
                                                 <td>
-                                                    {% if day.9 is not None %}
+                                                    {% if day.9 is not None and day.11 == 0 %}
                                                         ¥
                                                         {% if day.8 == 1 %}
                                                             +
@@ -285,7 +297,7 @@
                                                         {{ day.9}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ day.6 |date:"Y/m/j" }}</td>
+                                                <td>{{ day.6 |date:"Y/m/d" }}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
@@ -422,6 +434,12 @@
                         target_plan_amount = document.getElementById("selected_plan_amount");
                         <!-- 代入 -->
                         target_plan_amount.innerHTML = plan_amount_text;
+
+                        <!-- 予算IDの取得(hidden) -->
+                        <!-- セット位置の取得 -->
+                        target_plan_id_hidden = document.getElementById("id_selected_plan_id");
+                        <!-- 代入 -->
+                        target_plan_id_hidden.value = payment_plan_id;
                     <!-- 実績タブ > 予算情報デフォルトセット END -->
 
 

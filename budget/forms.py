@@ -7,8 +7,7 @@ PLUS_FLG_CHOICES = (
     ('1', '収入'),
     ('0', '支出'),
 )
-
-# payment_unitマスタからプルダウンを生成
+#walletマスタからプルダウンを生成
 cursor = connection.cursor()
 cursor.execute("SELECT id,name_en FROM payment_unit")
 data = cursor.fetchall()
@@ -17,6 +16,21 @@ for i in data:
     unit = (i[0], i[1])
     arrUnit.append(unit)
 PAYMENT_UNIT = arrUnit
+
+
+
+WALLET_CHOICES = (
+
+)
+# payment_unitマスタからプルダウンを生成
+cursor = connection.cursor()
+cursor.execute("SELECT id,name FROM wallet")
+data = cursor.fetchall()
+arrWallet = list()
+for i in data:
+    wallet = (i[0], i[1])
+    arrWallet.append(wallet)
+WALLET_CHOICES = arrWallet
 
 #動的に過去3ヶ月分を作成
 DISPRAY_RANGE = (
@@ -73,10 +87,31 @@ class PaymentResultForm(forms.Form):
     payment_date = forms.DateField(
         label='支払日',
     )
-
+    wallet = forms.ChoiceField(
+        label='財布',
+        choices=WALLET_CHOICES,
+        required=True,
+        initial=0,
+    )
+    selected_plan_id = forms.IntegerField(
+        required=True
+    )
 
 class DisplayForm(forms.Form):
     month_select_box = forms.ChoiceField(
         choices=DISPRAY_RANGE,
         required=True,
     )
+
+
+#TODO monthにplaceholderをつける
+class SettlementForm(forms.Form):
+    settlement_month = forms.CharField(
+        label='決算月',
+        required=True,
+        max_length=6,
+    )
+    settlement_date = forms.DateField(
+        label='決算日',
+    )
+

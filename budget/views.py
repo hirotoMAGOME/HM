@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
-from budget.forms import PaymentPlanForm, PaymentResultForm, DisplayForm
-from budget.models import PaymentPlan, PaymentResult, Wallet, WalletHistory
+from budget.forms import PaymentPlanForm, PaymentResultForm, DisplayForm, SettlementForm
+from budget.models import PaymentPlan, PaymentResult, Wallet, WalletHistory,DoublePost
 
-from datetime import datetime
 from django.db import connection
+from datetime import datetime, timedelta
 
 class IndexView(View):
     def get(self, request, *args, **kwargs):
@@ -31,12 +31,42 @@ class IndexView(View):
 
         context = get_disp_data(disp_month)
 
+
+        #TODO 2重POSTの防止　同じPOSTがきた場合は、処理しない。
+        # 古いデータの削除(1日以上古いデータを削除)
+        delete_limit = datetime.now() - timedelta(days=1)
+        dp_del = DoublePost.objects.filter(create_date__lte=delete_limit)
+        dp_del.delete()
+
+        #2重とみなす時間(s)
+        double_post_error_period = 1200
+        double_min_time = datetime.now() - timedelta(seconds=double_post_error_period)
+        double_max_time = datetime.now() + timedelta(seconds=double_post_error_period)
+
+        #2重チェック用のPOSTデータ
+        check_csrf = request.POST['csrfmiddlewaretoken']
+        check_post_text = ''
+        for post_key in request.POST:
+            check_post_text = check_post_text + request.POST[post_key]
+
+        dp = DoublePost.objects.filter(
+            create_date__gte=double_min_time,
+            create_date__lte=double_max_time,
+            csrf=check_csrf,
+            post_text=check_post_text,
+        )
+        if len(dp) > 0:
+            print("2重POSTあり")
+            return render(request, 'budget/index.html', context)
+
         print("post")
         if 'result_button' in request.POST:
-            #TODO payment_plan_id,amount_plus_flg,family_id,member_id,rank,payment_date
+            print('result_button')
+
+            #TODO family_id,member_id,rank
             insert = {
-                'payment_plan_id': 1,
-                'amount_plus_flg': 1,
+                'payment_plan_id': request.POST['selected_plan_id'],
+                'amount_plus_flg': request.POST['amount_plus_flg'],
                 'amount': request.POST['amount'],
                 'memo': request.POST['memo'],
                 'family_id': 1,
@@ -47,7 +77,20 @@ class IndexView(View):
             }
             PaymentResult.objects.create(**insert)
 
+            # Wallet
+            diff_amount = request.POST['amount'] if(request.POST['amount_plus_flg'] == '1') else int(request.POST['amount']) * (-1)
+            update_wallet(request.POST['wallet'], diff_amount, 2)
+
+            #2重チェック用
+            insert = {
+                'csrf': request.POST['csrfmiddlewaretoken'],
+                'post_text': check_post_text,
+                'create_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            }
+            DoublePost.objects.create(**insert)
+            
         elif 'plan_button' in request.POST:
+            print('plan_button')
             #TODO memo項目追加
             update = {
                 'amount': request.POST['planform_amount'],
@@ -62,26 +105,14 @@ class IndexView(View):
             PaymentPlan.objects.filter(id=request.POST['planform_id']).update(**update)
 
         elif 'wallet_button' in request.POST:
+            print('wallet_button')
             #入力された残高を更新する
             for post_key in request.POST:
                 if post_key[0:15] == 'balance_update_' and len(request.POST[post_key]) != 0:
                     update_wallet_id = post_key.replace('balance_update_', '')
-                    wallet = Wallet.objects.filter(id=update_wallet_id).values('id', 'balance', 'family_id', 'member_id', 'create_date')
 
-                    #Walletの内容をWalletHistoryでUPDATE
-                    wh = WalletHistory(
-                        balance=wallet[0]['balance'],
-                        family_id=wallet[0]['family_id'],
-                        member_id=wallet[0]['member_id'],
-                        create_date=wallet[0]['create_date'],
-                        update_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                        del_flg=0,
-                        wallet_id_id=wallet[0]['id'],
-                    )
-                    wh.save()
-
-                    #Walletを更新
-                    Wallet.objects.filter(id=update_wallet_id).update(balance=request.POST[post_key], update_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+                    #idと金額でWalletの更新とWalletHistoryの作成
+                    update_wallet(update_wallet_id, request.POST[post_key], 1)
 
         return render(request, 'budget/index.html', context)
 
@@ -95,12 +126,12 @@ def get_front_info(unit_id, month):
     cursor = connection.cursor()
     cursor.execute(
         "SELECT "
-        "plan.id,plan.name,plan.payment_limit,plan.amount_plus_flg,plan.amount,result.id,result.payment_date,result.memo,result.amount_plus_flg,result.amount,unit.name_en "
+        "plan.id,plan.name,plan.payment_limit,plan.amount_plus_flg,plan.amount,result.id,result.payment_date,result.memo,result.amount_plus_flg,result.amount,unit.name_en,result.sample_flg "
         "FROM payment_plan AS plan "
         "LEFT JOIN payment_unit as unit ON plan.payment_unit_id = unit.id "
         "LEFT JOIN payment_result as result ON plan.id = result.payment_plan_id "
         "WHERE payment_unit_id = %s "
-        "AND MONTH(payment_date) = %s",
+        "AND (MONTH(payment_date) = %s OR sample_flg = 1)",
         (unit_id, month, )
     )
     data = cursor.fetchall()
@@ -136,6 +167,37 @@ def get_disp_data(disp_month):
         'displayForm': DisplayForm(),
         'disp_month': disp_month,
         'wallet_data': wallet_data,
+        'settlementForm': SettlementForm(),
     }
 
     return context
+
+
+# 財布の金額を更新
+# 更新前の金額はWalletHistoryにコピー
+# update_wallet_id
+# update_balance
+# mode 1:balance=update_balanceで更新　2:balance = balance + update_balanceで更新
+def update_wallet(update_wallet_id, update_balance, mode):
+    wallet = Wallet.objects.filter(id=update_wallet_id).values('id', 'balance', 'family_id', 'member_id', 'create_date')
+
+    # Walletの内容をWalletHistoryでUPDATE
+    wh = WalletHistory(
+        balance=wallet[0]['balance'],
+        family_id=wallet[0]['family_id'],
+        member_id=wallet[0]['member_id'],
+        create_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        update_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        del_flg=0,
+        wallet_id_id=wallet[0]['id'],
+    )
+    wh.save()
+
+    if mode == 1:
+        new_balance = update_balance
+    elif mode == 2:
+        new_balance = int(wallet[0]['balance']) + int(update_balance)
+
+    # Walletを更新
+    Wallet.objects.filter(id=update_wallet_id).update(balance=new_balance,
+                                                      update_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
