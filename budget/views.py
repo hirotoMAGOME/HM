@@ -126,13 +126,25 @@ def get_front_info(unit_id, month):
     cursor = connection.cursor()
     cursor.execute(
         "SELECT "
-        "plan.id,plan.name,plan.payment_limit,plan.amount_plus_flg,plan.amount,result.id,result.payment_date,result.memo,result.amount_plus_flg,result.amount,unit.name_en,result.sample_flg "
+        "plan2.id as id,plan2.name as name,plan2.payment_limit as payment_limit,plan2.amount_plus_flg as anount_plus_flg,plan2.amount as amount,result2.id as result_id,result2.payment_date as payment_date,result2.memo as memo,result2.amount_plus_flg as result_amount_plus_flg,result2.amount as result_amount,unit.name_en as name_en,1 as sample_flg "
+        "FROM payment_plan AS plan2 "
+        "LEFT JOIN payment_unit as unit ON plan2.payment_unit_id = unit.id "
+        "LEFT JOIN payment_result_sample as result2 ON plan2.id = result2.payment_plan_id "
+        "WHERE payment_unit_id = %s "
+        "AND result2.id IS NOT NULL "
+        #"AND MONTH(payment_date) = %s "
+        "UNION ALL "
+        "SELECT "
+        "plan.id as id,plan.name as name,plan.payment_limit as payment_limit,plan.amount_plus_flg as anount_plus_flg,plan.amount as amount,result.id as result_id,result.payment_date as payment_date,result.memo as memo,result.amount_plus_flg as result_amount_plus_flg,result.amount as result_amount,unit.name_en as name_en,0 as sample_flg "
         "FROM payment_plan AS plan "
         "LEFT JOIN payment_unit as unit ON plan.payment_unit_id = unit.id "
         "LEFT JOIN payment_result as result ON plan.id = result.payment_plan_id "
         "WHERE payment_unit_id = %s "
-        "AND (MONTH(payment_date) = %s OR sample_flg = 1)",
-        (unit_id, month, )
+        "AND result.id IS NOT NULL "
+        "ORDER BY id ASC,sample_flg DESC"
+        #"AND MONTH(payment_date) = %s "
+        #, (unit_id, month, unit_id, month,)
+        , (unit_id, unit_id,)
     )
     data = cursor.fetchall()
 
