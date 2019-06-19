@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.views import View
 
 from budget.forms import PaymentPlanForm, PaymentResultForm, DisplayForm, SettlementForm
-from budget.models import PaymentPlan, PaymentResult, Wallet, WalletHistory,DoublePost
+from budget.models import PaymentPlan, PaymentResult, Wallet, WalletHistory, DoublePost, Settlement
 
 from django.db import connection
 from datetime import datetime, timedelta
+import calendar
 
 class IndexView(View):
     def get(self, request, *args, **kwargs):
@@ -73,7 +74,6 @@ class IndexView(View):
                 'member_id': 1,
                 'rank': 1,
                 'payment_date': request.POST['payment_date'],
-
             }
             PaymentResult.objects.create(**insert)
 
@@ -113,6 +113,9 @@ class IndexView(View):
 
                     #idと金額でWalletの更新とWalletHistoryの作成
                     update_wallet(update_wallet_id, request.POST[post_key], 1)
+        elif 'settlement_button' in request.POST:
+            print('settlement_button')
+            update_settlement(request.POST['settlement_month'], request.POST['settlement_date'])
 
         return render(request, 'budget/index.html', context)
 
@@ -213,3 +216,39 @@ def update_wallet(update_wallet_id, update_balance, mode):
     # Walletを更新
     Wallet.objects.filter(id=update_wallet_id).update(balance=new_balance,
                                                       update_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+
+def update_settlement(month,date):
+
+    #成形
+    settlement_month = month[0:4] + '-' + month[4:6] + '-01 00:00:00'
+    settlement_date = date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' 00:00:00'
+
+    # TODO 重複チェック
+    # INSERT 実行
+    insert = {
+        'settlement_month': settlement_month,
+        'settlement_date': settlement_date,
+        'family_id': 1,
+        'member_id': 1,
+        'create_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        'update_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    }
+    Settlement.objects.create(**insert)
+
+    # UPDATE 内容の設定
+    first_date = settlement_month
+    _, last = calendar.monthrange(int(month[0:4]), int(month[4:6].replace('0', '')))
+    last_date = month[0:4] + '-' + month[4:6] + '-' + str(last) + ' 23:59:59'
+
+    update = {
+        'payment_month': first_date,
+        'update_date': datetime.now(),
+    }
+
+    # UPDATE 実行
+    PaymentResult.objects.filter(
+        payment_month__isnull=True,
+        payment_date__gte=first_date,
+        payment_date__lte=last_date,
+    ).update(**update)

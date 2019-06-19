@@ -3,6 +3,7 @@ from django.db import connection
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+
 PLUS_FLG_CHOICES = (
     ('1', '収入'),
     ('0', '支出'),
@@ -113,5 +114,12 @@ class SettlementForm(forms.Form):
     )
     settlement_date = forms.DateField(
         label='決算日',
+        required=True,
     )
 
+    #カスタムバリデーション　フロントにエラーが戻せない
+    #def clean_settlement_month(self):
+    #    settlement_month = self.cleaned_data['settlement_month']
+    #    if(len(settlement_month) != 6):
+    #        raise forms.ValidationError("決算月はyyyymmで入力してください")
+    #    return settlement_month

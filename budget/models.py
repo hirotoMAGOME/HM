@@ -147,6 +147,9 @@ class PaymentResultSample(models.Model):
 
 
 class Settlement(models.Model):
+    """決算モデル"""
+    class Meta:
+        db_table = 'settlement'
     settlement_month = django.db.models.DateTimeField(verbose_name='決算月', unique_for_month=True, null=False)
     settlement_date = django.db.models.DateTimeField(verbose_name='決算日', null=False)
     family_id = django.db.models.IntegerField(verbose_name='家族ID', null=True)
