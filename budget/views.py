@@ -162,6 +162,35 @@ def get_disp_data(disp_month):
     payment_result_data4 = get_front_info(4, disp_month)
     payment_result_data5 = get_front_info(5, disp_month)
 
+    #合計金額を計算
+    total_plan = 0
+    total_result = 0
+    for data in payment_result_data1:
+        if data[11] == 0:
+            total_result = total_result - data[9] + (data[9] * data[8] * 2)
+        elif data[11] == 1:
+            total_plan = total_plan - data[4] + (data[4] * data[3] * 2)
+    for data in payment_result_data2:
+        if data[11] == 0:
+            total_result = total_result - data[9] + (data[9] * data[8] * 2)
+        elif data[11] == 1:
+            total_plan = total_plan - data[4] + (data[4] * data[3] * 2)
+    for data in payment_result_data3:
+        if data[11] == 0:
+            total_result = total_result - data[9] + (data[9] * data[8] * 2)
+        elif data[11] == 1:
+            total_plan = total_plan - data[4] + (data[4] * data[3] * 2)
+    for data in payment_result_data4:
+        if data[11] == 0:
+            total_result = total_result - data[9] + (data[9] * data[8] * 2)
+        elif data[11] == 1:
+            total_plan = total_plan - data[4] + (data[4] * data[3] * 2)
+    for data in payment_result_data5:
+        if data[11] == 0:
+            total_result = total_result - data[9] + (data[9] * data[8] * 2)
+        elif data[11] == 1:
+            total_plan = total_plan - data[4] + (data[4] * data[3] * 2)
+
     #各資産ごとの残高を取得
     wallet_data = Wallet.objects.all()
 
@@ -177,6 +206,8 @@ def get_disp_data(disp_month):
         'payment_unit_count3': len(payment_result_data3),
         'payment_unit_count4': len(payment_result_data4),
         'payment_unit_count5': len(payment_result_data5),
+        'total_result': total_result,
+        'total_plan': total_plan,
         'planForm': PaymentPlanForm(),
         'resultForm': PaymentResultForm(),
         'displayForm': DisplayForm(),
