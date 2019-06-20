@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'soma',
     'hiroto',
     'login',
-    'budget'
+    'budget',
+    'user_admin'
 ]
 
 MIDDLEWARE = [
