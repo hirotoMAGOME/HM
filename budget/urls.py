@@ -4,6 +4,6 @@ from . import views
 app_name = 'budget'
 
 urlpatterns = [
-    #url(r'^budget$', views.index, name='index'),
+    url(r'^average_ajax/', views.for_ajax),
     url('', views.index, name='index'),
 ]
