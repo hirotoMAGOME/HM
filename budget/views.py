@@ -18,6 +18,7 @@ class IndexView(View):
         else:
             disp_month = datetime.today().month
 
+        """出力情報の取得"""
         context = get_disp_data(disp_month)
 
         return render(request, 'budget/index.html', context)
