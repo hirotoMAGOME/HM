@@ -500,6 +500,28 @@
 
                     <!-- 実績タブ > 実績情報デフォルトセット END -->
 
+
+                    <!-- Ajax   -->
+                    csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                        $.ajax({
+                            'url':"average_ajax/",
+                            'type':"POST",
+                            'data':{
+                                "average_plan_id":payment_plan_id,
+                                "csrfmiddlewaretoken":csrf,
+                            },
+                            'dataType':'json',
+                            'success':function(response){
+                                console.log(response);
+                                alert("aaaaa");
+                            },
+                        });
+                        console.log("ajax success");
+                        return false
+
+
+                    <!-- Ajax END -->
+
                     $('#modalArea').fadeIn();
                 }
             })

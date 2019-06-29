@@ -20,3 +20,9 @@ hiroto/__pycache__/
 hiroto/migrations/__pycache__/
 
 budget/__pycache__/
+
+user_admin/__pycache__/__init__\.cpython-36\.pyc
+
+user_admin/__pycache__/
+
+user_admin/migrations/

@@ -154,6 +154,20 @@ def get_front_info(unit_id, month):
     return data
 
 
+def for_ajax(request):
+    import json
+    from django.http import HttpResponse,Http404
+    print("aaa")
+    print(request.POST)
+    if request.method == 'POST':
+        print("ajax")
+        response = json.dumps({'aaaaaaa': 'bbbbbb',})
+        return HttpResponse(response)
+    else:
+        print("bbb")
+        raise Http404
+
+
 def get_disp_data(disp_month):
     #各予算単位ごとにデータの取得
     payment_result_data1 = get_front_info(1, disp_month)
