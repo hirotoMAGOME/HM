@@ -155,7 +155,7 @@ def get_front_info(unit_id, month):
     return data
 
 
-def for_ajax(request):
+def for_ajax_average(request):
     import json
     from django.http import HttpResponse,Http404
     print("aaa")

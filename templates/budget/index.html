@@ -503,6 +503,23 @@
 
                     <!-- Ajax   -->
                     csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+                    <!-- Ajax(パラメータの取得)   -->
+                    console.log("ajax start");
+                        $.ajax({
+                            'url':"http://127.0.0.1:8000/user_admin/config1/",
+                            'type':"POST",
+                            'data':{
+                                "average_plan_id":payment_plan_id,
+                                "csrfmiddlewaretoken":csrf,
+                            },
+                            'dataType':'json',
+                            'success':function(response){
+                                alert("get_config");
+                            },
+                        });
+
+                    <!-- Ajax(テンプレートへ反映)   -->
                         $.ajax({
                             'url':"average_ajax/",
                             'type':"POST",
@@ -512,13 +529,9 @@
                             },
                             'dataType':'json',
                             'success':function(response){
-                                console.log(response);
-                                alert("aaaaa");
+                                alert("average_ajax");
                             },
                         });
-                        console.log("ajax success");
-                        return false
-
 
                     <!-- Ajax END -->
 
