@@ -158,14 +158,28 @@ def get_front_info(unit_id, month):
 def for_ajax_average(request):
     import json
     from django.http import HttpResponse,Http404
-    print("aaa")
-    print(request.POST)
-    if request.method == 'POST':
-        print("ajax")
-        response = json.dumps({'aaaaaaa': 'bbbbbb',})
+
+    if request.method == 'POST' and 'average_plan_id' in request.POST:
+        plan_id = request.POST['average_plan_id']
+
+        #plan_idに紐付く実績収支の平均を出す
+        cursor = connection.cursor()
+        cursor.execute(
+            "SELECT "
+            "ROUND(AVG(amount),0) as average "
+            "FROM payment_result "
+            "WHERE payment_plan_id = %s "
+            , (plan_id,)
+        )
+        data = cursor.fetchall()
+
+        #出力結果から平均金額を取得
+        average_price = int(data[0][0])
+
+        #レスポンスを返す
+        response = json.dumps({'average_price': average_price,})
         return HttpResponse(response)
     else:
-        print("bbb")
         raise Http404
 
 

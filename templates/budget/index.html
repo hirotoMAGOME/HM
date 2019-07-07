@@ -505,34 +505,44 @@
                     csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
                     <!-- Ajax(パラメータの取得)   -->
-                    console.log("ajax start");
+
+                        <!-- 初期化 -->
+                        target_average_amount = document.getElementById("average_amount");
+                        target_average_amount.innerHTML = "";
+
+                        <!-- TODO urlを動的に取得 -->
                         $.ajax({
                             'url':"http://127.0.0.1:8000/user_admin/config1/",
                             'type':"POST",
                             'data':{
+                                <!-- 適切なパラメータにする -->
                                 "average_plan_id":payment_plan_id,
                                 "csrfmiddlewaretoken":csrf,
                             },
                             'dataType':'json',
                             'success':function(response){
-                                alert("get_config");
+                                if(response['success_flg']==0){
+                                    $.ajax({
+                                        'url':"average_ajax/",
+                                        'type':"POST",
+                                        'data':{
+                                            "average_plan_id":payment_plan_id,
+                                            "csrfmiddlewaretoken":csrf,
+                                        },
+                                        'dataType':'json',
+                                        'success':function(response){
+                                            <!-- 平均金額挿入場所を取得 -->
+                                            target_average_amount = document.getElementById("average_amount");
+                                            <!-- 代入 -->
+                                            target_average_amount.innerHTML = "(平均：¥" + response['average_price'] + ")";
+                                        },
+                                    });
+                                }else{
+                                    <!-- TODO 異常系 -->
+                                    console.log("ddd");
+                                }
                             },
                         });
-
-                    <!-- Ajax(テンプレートへ反映)   -->
-                        $.ajax({
-                            'url':"average_ajax/",
-                            'type':"POST",
-                            'data':{
-                                "average_plan_id":payment_plan_id,
-                                "csrfmiddlewaretoken":csrf,
-                            },
-                            'dataType':'json',
-                            'success':function(response){
-                                alert("average_ajax");
-                            },
-                        });
-
                     <!-- Ajax END -->
 
                     $('#modalArea').fadeIn();

@@ -25,15 +25,56 @@ class IndexView(View):
 
 index = IndexView.as_view()
 
+"""
+平均金額を返せるかどうか判断する関数
+
+@param request={
+        "average_plan_id": (int),
+        "csrfmiddlewaretoken": (str),
+    }
+@return 0 (平均金額表示対象)
+        1 (平均金額表示対象外)
+"""
 def for_ajax_config1(request):
     import json
     from django.http import HttpResponse,Http404
-    print("config1")
-    print(request.POST)
-    if request.method == 'POST':
-        print("config_ajax")
-        response = json.dumps({'aaaaaaa': 'bbbbbb',})
-        return HttpResponse(response)
+
+    if request.method == 'POST' and 'average_plan_id' in request.POST:
+        plan_id = request.POST['average_plan_id']
+
+        #plan_idに紐付く実績収支の平均を出す
+        cursor = connection.cursor()
+        cursor.execute(
+            "SELECT "
+            "value "
+            "FROM user_admin_config "
+            "WHERE name = concat( "
+                "'AVERAGE_PER_'"
+                ",UPPER("
+                    "(SELECT name_en FROM payment_unit WHERE id = (SELECT payment_unit_id FROM payment_plan WHERE id = %s))"
+                ")"
+            ")"
+            , (plan_id,)
+        )
+        data = cursor.fetchall()
+
+        #出力結果から平均金額を取得できる場合は0を返す
+        plan_ids = data[0][0].split(',')
+
+        if plan_id in plan_ids:
+            # レスポンスを返す
+            response = json.dumps({'success_flg': 0, })
+            return HttpResponse(response)
+        else:
+            # レスポンスを返す
+            response = json.dumps({'success_flg': 1, })
+            return HttpResponse(response)
+
     else:
-        print("config_ajax_bbb")
         raise Http404
+
+
+def get_day_average(day_plan_id):
+    print("get_day_average")
+
+    return day_plan_id
