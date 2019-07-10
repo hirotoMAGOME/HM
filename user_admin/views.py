@@ -57,8 +57,12 @@ def for_ajax_config1(request):
             , (plan_id,)
         )
         data = cursor.fetchall()
+    else:
+        raise Http404
 
-        #出力結果から平均金額を取得できる場合は0を返す
+
+    #出力結果から平均金額を取得できる場合は0を返す
+    if len(data) != 0:
         plan_ids = data[0][0].split(',')
 
         if plan_id in plan_ids:
@@ -71,7 +75,11 @@ def for_ajax_config1(request):
             return HttpResponse(response)
 
     else:
-        raise Http404
+        # レスポンスを返す
+        response = json.dumps({'success_flg': 1, })
+        return HttpResponse(response)
+
+
 
 
 def get_day_average(day_plan_id):
