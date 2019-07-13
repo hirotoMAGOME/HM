@@ -123,7 +123,67 @@
 		padding: 0.5em;
 	}
 }
-
+/*実績タブ*/
+.result_tab *, .result_tab *:before, .result_tab *:after {
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+.result_tab{
+	margin: 1em auto;
+}
+.result_tab > input[type='radio'] {
+	margin: 0;
+	padding: 0;
+	border: none;
+	border-radius: 0;
+	outline: none;
+	background: none;
+	-webkit-appearance: none;
+	        appearance: none;
+	display: none;
+}
+.result_tab .result_tabpanel{
+	display: none;
+}
+.result_tab > input:first-child:checked ~ .result_tabpanels > .result_tabpanel:first-child,
+.result_tab > input:nth-child(3):checked ~ .result_tabpanels > .result_tabpanel:nth-child(2),
+.result_tab > input:nth-child(5):checked ~ .result_tabpanels > .result_tabpanel:nth-child(3),
+.result_tab > input:nth-child(7):checked ~ .result_tabpanels > .result_tabpanel:nth-child(4),
+.result_tab > input:nth-child(9):checked ~ .result_tabpanels > .result_tabpanel:nth-child(5),
+.result_tab > input:nth-child(11):checked ~ .result_tabpanels > .result_tabpanel:nth-child(6) {
+	display: block;
+}
+.result_tab > label {
+	position: relative;
+	display: inline-block;
+	padding: 15px;
+	cursor: pointer;
+	border: 1px solid transparent;
+	border-bottom: 0;
+}
+.result_tab > label:hover,
+.result_tab > input:focus + label {
+	color: #0066cc;
+}
+.result_tab > input:checked + label {
+	margin-bottom: -1px;
+	border-color: #cccccc;
+	border-bottom: 1px solid #ffffff;/*背景色と同じ*/
+	border-radius: 6px 6px 0 0;
+}
+.result_tab .result_tabpanel{
+	padding: 0.5em 1em;
+	border-top: 1px solid #cccccc;
+}
+@media (max-width: 480px) {
+	.result_tab{
+		width: 100%;
+		font-size: 0.8em;
+	}
+	.result_tab label {
+		padding: 0.5em;
+	}
+}
 
 /* モーダルCSS */
 .modalArea {display: none;position: fixed;z-index: 10; /*サイトによってここの数値は調整 */top: 0;left: 0;width: 100%;height: 100%;}
@@ -199,6 +259,27 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
                             </form>
 	                	</div>
 	                	<div id="second_tab01" class="cp_tabpanel">
+
+                            <div class="result_tab">
+
+	                            <input type="radio" name="result_tab" id="result_tab1_1" aria-controls="result_tab01" >
+                	            <label for="result_tab1_1">予算</label>
+                	            <input type="radio" name="result_tab" id="result_tab1_2" aria-controls="result_tab02" checked>
+                	            <label for="result_tab1_2">実績</label>
+
+                                <div class="result_tabpanels">
+                                    <div id="result_tab01" class="result_tabpanel">
+                                        aa
+
+                                    </div>
+                                    <div id="result_tab02" class="result_tabpanel">
+                                        bb
+
+                                    </div>
+                                </div>
+                            </div>
+
+
 	                	    <h2>予算情報</h2>
                                 <div id="selected_plan_name"></div>
                                 <div id="selected_plan_amount"></div>
