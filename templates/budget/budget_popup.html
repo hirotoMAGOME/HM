@@ -212,14 +212,12 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
 	                <div class="cp_tabpanels">
 	                	<div id="first_tab01" class="cp_tabpanel">
 
-
-
                             <div class="plan_tab">
 
 	                            <input type="radio" name="plan_tab" id="plan_tab1_1" aria-controls="plan_tab01" >
-                	            <label for="plan_tab1_1">予算</label>
+                	            <label for="plan_tab1_1">作成</label>
                 	            <input type="radio" name="plan_tab" id="plan_tab1_2" aria-controls="plan_tab02" checked>
-                	            <label for="plan_tab1_2">実績</label>
+                	            <label for="plan_tab1_2">更新</label>
 
                                 <div class="plan_tabpanels">
                                     <div id="plan_tab01" class="plan_tabpanel">
@@ -227,58 +225,34 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
 
                                     </div>
                                     <div id="plan_tab02" class="plan_tabpanel">
-                                        bb
-
+                                        <h2>予算の更新</h2>
+                                        <form action="" method="post" role="form">
+                                            {% csrf_token %}
+                                            {{ planForm.planform_id.as_hidden }}
+                                            <p>
+                                                {{ planForm.planform_payment_unit_id.label }}：
+                                                {{ planForm.planform_payment_unit_id }}
+                                            </p>
+                                            <p>
+                                                {{ planForm.planform_name.label }}：
+                                                {{ planForm.planform_name }}
+                                            </p>
+                                            <p>
+                                                {{ planForm.planform_amount.label }}：
+                                                {{ planForm.planform_amount }}円  (  {{ planForm.planform_amount_plus_flg }}  )
+                                            </p>
+                                            <p>
+                                                {{ planForm.planform_payment_limit.label }}：
+                                                {{ planForm.planform_payment_limit }}
+                                            </p>
+                                            <button type="submit" name="plan_button" value="plan_button">更新</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
 
-
-
-	                	    <h2>予算の更新</h2>
-                            <form action="" method="post" role="form">
-                                {% csrf_token %}
-                                {{ planForm.planform_id.as_hidden }}
-                                <p>
-                                    {{ planForm.planform_payment_unit_id.label }}：
-                                    {{ planForm.planform_payment_unit_id }}
-                                </p>
-                                <p>
-                                    {{ planForm.planform_name.label }}：
-                                    {{ planForm.planform_name }}
-                                </p>
-                                <p>
-                                    {{ planForm.planform_amount.label }}：
-                                    {{ planForm.planform_amount }}円  (  {{ planForm.planform_amount_plus_flg }}  )
-                                </p>
-                                <p>
-                                    {{ planForm.planform_payment_limit.label }}：
-                                    {{ planForm.planform_payment_limit }}
-                                </p>
-                                <button type="submit" name="plan_button" value="plan_button">更新</button>
-                            </form>
 	                	</div>
 	                	<div id="second_tab01" class="cp_tabpanel">
-
-                            <div class="result_tab">
-
-	                            <input type="radio" name="result_tab" id="result_tab1_1" aria-controls="result_tab01" >
-                	            <label for="result_tab1_1">予算</label>
-                	            <input type="radio" name="result_tab" id="result_tab1_2" aria-controls="result_tab02" checked>
-                	            <label for="result_tab1_2">実績</label>
-
-                                <div class="result_tabpanels">
-                                    <div id="result_tab01" class="result_tabpanel">
-                                        aa
-
-                                    </div>
-                                    <div id="result_tab02" class="result_tabpanel">
-                                        bb
-
-                                    </div>
-                                </div>
-                            </div>
-
 
 	                	    <h2>予算情報</h2>
                                 <div id="selected_plan_name"></div>
@@ -287,29 +261,46 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
                                 <div id="average_amount"></div>
 
                             <h2>実績情報</h2>
-                            <form action="" method="post" role="form">
-                                {% csrf_token %}
-                                <!--TODO ダイナミックサーチ-->
-                                <p>
-                                    {{ resultForm.memo.label }}：
-                                    {{ resultForm.memo }}
-                                </p>
-                                <p>
-                                    {{ resultForm.amount.label }}：
-                                    {{ resultForm.amount }}円  (  {{ resultForm.amount_plus_flg }}  )
-                                </p>
-                                <p>
-                                    {{ resultForm.wallet.label }}：
-                                    {{ resultForm.wallet }}
-                                </p>
-                                <!--TODO datepicker-->
-                                <p>
-                                    {{ resultForm.payment_date.label }}：
-                                    {{ resultForm.payment_date }}
-                                </p>
-                                {{ resultForm.selected_plan_id.as_hidden }}
-                                <button type="submit" name="result_button" value="result_button">登録</button>
-                            </form>
+
+                            <div class="result_tab">
+	                            <input type="radio" name="result_tab" id="result_tab1_1" aria-controls="result_tab01" >
+                	            <label for="result_tab1_1">作成</label>
+                	            <input type="radio" name="result_tab" id="result_tab1_2" aria-controls="result_tab02" checked>
+                	            <label for="result_tab1_2">更新</label>
+
+                                <div class="result_tabpanels">
+                                    <div id="result_tab01" class="result_tabpanel">
+                                        <form action="" method="post" role="form">
+                                            {% csrf_token %}
+                                            <!--TODO ダイナミックサーチ-->
+                                            <p>
+                                                {{ resultForm.memo.label }}：
+                                                {{ resultForm.memo }}
+                                            </p>
+                                            <p>
+                                                {{ resultForm.amount.label }}：
+                                                {{ resultForm.amount }}円  (  {{ resultForm.amount_plus_flg }}  )
+                                            </p>
+                                            <p>
+                                                {{ resultForm.wallet.label }}：
+                                                {{ resultForm.wallet }}
+                                            </p>
+                                            <!--TODO datepicker-->
+                                            <p>
+                                                {{ resultForm.payment_date.label }}：
+                                                {{ resultForm.payment_date }}
+                                            </p>
+                                            {{ resultForm.selected_plan_id.as_hidden }}
+                                            <button type="submit" name="result_button" value="result_button">登録</button>
+                                        </form>
+                                    </div>
+                                    <div id="result_tab02" class="result_tabpanel">
+                                        bb
+
+                                    </div>
+                                </div>
+                            </div>
+
 	                	</div>
 	                </div>
                 </div>
