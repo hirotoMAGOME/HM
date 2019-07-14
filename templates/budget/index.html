@@ -44,6 +44,7 @@
                 <td>
                     <div class = "side-menu" >
                         hiroto side menu<br/>
+                        <a href="/user_admin">ユーザー設定</a>
                     </div>
                 </td>
                 <td>
@@ -68,6 +69,25 @@
                             </tr>
                             <tr>
                                 <td>
+                                    <form id="month_form" method="get" action="#">
+                                        {% csrf_token %}
+                                        対象月：{{ displayForm.month_select_box }}
+                                    </form>
+                                    <form id="settlement_form" method="post" action="#">
+                                        {% csrf_token %}
+                                        決算月：{{ settlementForm.settlement_month }}(例)201906
+                                        決算日：{{ settlementForm.settlement_date }}
+                                        <button type="submit" name="settlement_button" value="settlement_button">決算</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form id="fresh" method="get" action="#">
+                                        <button type="submit" name="fresh_button" value="fresh_button">画面更新</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <table class = "budget-table">
                                         <tr>
                                             <th></th>
@@ -87,12 +107,14 @@
                                                 8:result.amount_plus_flg
                                                 9:result.amount
                                                 10:unit.name_en
+                                                11:result.sample_flg
                                             -->
                                             {% for anytime in payment_unit_data1 %}
                                             <tr id="payment_unit_tr1" class="plan_id{{ anytime.0 }} result_id{{ anytime.5|default:"" }}">
                                             {% if forloop.first %}
                                                 <th rowspan={{ payment_unit_count1 }}>{{ anytime.10 }}</th>
                                             {% endif %}
+                                            {% if anytime.11 == 1 %}
                                                 <td name = "plan_name_name_tag{{ anytime.0 }}">{{ anytime.1 }}</td>
                                                 <td>{{ anytime.2 }}</td>
                                                 <td name = "plan_amount_name_tag{{ anytime.0 }}">
@@ -108,9 +130,14 @@
                                                         {{ anytime.4}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ anytime.7 |default:"" }}</td>
-                                                <td>
-                                                    {% if anytime.9 is not None %}
+                                            {% else %}
+                                                <td name = "plan_name_name_tag{{ anytime.0 }}"></td>
+                                                <td></td>
+                                                <td name = "plan_amount_name_tag{{ anytime.0 }}"></td>
+                                            {% endif %}
+                                                <td name = "result_name_name_tag{{ anytime.5 }}">{{ anytime.7 |default:"" }}</td>
+                                                <td name = "result_amount_name_tag{{ anytime.5 }}">
+                                                    {% if anytime.9 is not None and anytime.11 == 0 %}
                                                         ¥
                                                         {% if anytime.8 == 1 %}
                                                             +
@@ -122,7 +149,7 @@
                                                         {{ anytime.9}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ anytime.5 |date:"Y/m/j"}}</td>
+                                                <td name = "result_paymentdate_name_tag{{ anytime.5 }}">{{ anytime.5 |date:"Y/m/d"}}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
@@ -132,6 +159,7 @@
                                             {% if forloop.first %}
                                                 <th rowspan={{ payment_unit_count2 }}>{{ year.10 }}</th>
                                             {% endif %}
+                                            {% if year.11 == 1 %}
                                                 <td name = "plan_name_name_tag{{ year.0 }}">{{ year.1 }}</td>
                                                 <td>{{ year.2 }}</td>
                                                 <td name = "plan_amount_name_tag{{ year.0 }}">
@@ -147,9 +175,14 @@
                                                         {{ year.4}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ year.7 |default:"" }}</td>
-                                                <td>
-                                                    {% if year.9 is not None %}
+                                            {% else %}
+                                                    <td name = "plan_name_name_tag{{ year.0 }}"></td>
+                                                    <td></td>
+                                                    <td name = "plan_amount_name_tag{{ year.0 }}"></td>
+                                            {% endif %}
+                                                <td name = "result_name_name_tag{{ year.5 }}">{{ year.7 |default:"" }}</td>
+                                                <td name = "result_amount_name_tag{{ year.5 }}">
+                                                    {% if year.9 is not None and year.11 == 0  %}
                                                         ¥
                                                         {% if year.8 == 1 %}
                                                             +
@@ -161,7 +194,7 @@
                                                         {{ year.9}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ year.6 |date:"Y/m/j"}}</td>
+                                                <td name = "result_paymentdate_name_tag{{ year.5 }}">{{ year.6 |date:"Y/m/d"}}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
@@ -171,6 +204,7 @@
                                             {% if forloop.first %}
                                                 <th rowspan={{ payment_unit_count3 }}>{{ month.10 }}</th>
                                             {% endif %}
+                                            {% if month.11 == 1 %}
                                                 <td name = "plan_name_name_tag{{ month.0 }}">{{ month.1 }}</td>
                                                 <td>{{ month.2 }}</td>
                                                 <td name = "plan_amount_name_tag{{ month.0 }}">
@@ -186,8 +220,14 @@
                                                         {{ month.4}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ month.7 |default:"" }}</td>
-                                                <td>{% if month.9 is not None %}
+                                            {% else %}
+                                                <td name = "plan_name_name_tag{{ month.0 }}"></td>
+                                                <td></td>
+                                                <td name = "plan_amount_name_tag{{ month.0 }}"></td>
+                                            {% endif %}
+                                                <td name = "result_name_name_tag{{ month.5 }}">{{ month.7 |default:"" }}</td>
+                                                <td name = "result_amount_name_tag{{ month.5 }}">
+                                                    {% if month.9 is not None and month.11 == 0 %}
                                                         ¥
                                                         {% if month.8 == 1 %}
                                                             +
@@ -199,7 +239,7 @@
                                                         {{ month.9}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ month.6 |date:"Y/m/j"}}</td>
+                                                <td name = "result_paymentdate_name_tag{{ month.5 }}">{{ month.6 |date:"Y/m/d"}}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
@@ -209,6 +249,7 @@
                                             {% if forloop.first %}
                                                 <th rowspan={{ payment_unit_count4 }}>{{ week.10 }}</th>
                                             {% endif %}
+                                            {% if week.11 == 1 %}
                                                 <td name = "plan_name_name_tag{{ week.0 }}">{{ week.1 }}</td>
                                                 <td>{{ week.2 }}</td>
                                                 <td name = "plan_amount_name_tag{{ week.0 }}">
@@ -224,9 +265,14 @@
                                                         {{ week.4}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ week.7 |default:"" }}</td>
-                                                <td>
-                                                    {% if week.9 is not None %}
+                                            {% else %}
+                                                <td name = "plan_name_name_tag{{ week.0 }}"></td>
+                                                <td></td>
+                                                <td name = "plan_amount_name_tag{{ week.0 }}"></td>
+                                            {% endif %}
+                                                <td name = "result_name_name_tag{{ week.5 }}">{{ week.7 |default:"" }}</td>
+                                                <td name = "result_amount_name_tag{{ week.5 }}">
+                                                    {% if week.9 is not None and week.11 == 0 %}
                                                         ¥
                                                         {% if week.8 == 1 %}
                                                             +
@@ -238,7 +284,7 @@
                                                         {{ week.9}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ week.6 |date:"Y/m/j"}}</td>
+                                                <td name = "result_paymentdate_name_tag{{ week.5 }}">{{ week.6 |date:"Y/m/d"}}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
@@ -248,6 +294,7 @@
                                             {% if forloop.first %}
                                                 <th rowspan={{ payment_unit_count5 }}>{{ day.10 }}</th>
                                             {% endif %}
+                                            {% if day.11 == 1 %}
                                                 <td name = "plan_name_name_tag{{ day.0 }}">{{ day.1 }}</td>
                                                 <td>{{ day.2 }}</td>
                                                 <td name = "plan_amount_name_tag{{ day.0 }}">
@@ -263,9 +310,14 @@
                                                         {{ day.4}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ day.7 |default:"" }}</td>
-                                                <td>
-                                                    {% if day.9 is not None %}
+                                            {% else %}
+                                                <td name = "plan_name_name_tag{{ day.0 }}"></td>
+                                                <td></td>
+                                                <td name = "plan_amount_name_tag{{ day.0 }}"></td>
+                                            {% endif %}
+                                                <td name = "result_name_name_tag{{ day.5 }}">{{ day.7 |default:"" }}</td>
+                                                <td name = "result_amount_name_tag{{ day.5 }}">
+                                                    {% if day.9 is not None and day.11 == 0 %}
                                                         ¥
                                                         {% if day.8 == 1 %}
                                                             +
@@ -277,31 +329,38 @@
                                                         {{ day.9}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{ day.6 |date:"Y/m/j" }}</td>
+                                                <td name = "result_paymentdate_name_tag{{ day.5 }}">{{ day.6 |date:"Y/m/d" }}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
+                                        <tr>
+                                            <th>TOTAL</th>
+                                            <td>予定</td>
+                                            <td></td>
+                                            <td>¥{{ total_plan }}</td>
+                                            <td>実績</td>
+                                            <td>¥{{ total_result }}</td>
+                                            <td></td>
+                                        </tr>
                                     </table>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <div class="inline-box">
-                                        資産サマリー<br/>
-                                        <table class="asset-table">
-                                            <tr>
-                                                <th>現金</th>
-                                                <td>20000円</td>
-                                            </tr>
-                                            <tr>
-                                                <th>LINE pay</th>
-                                                <td>5000円</td>
-                                            </tr>
-                                            <tr>
-                                                <th>paypay</th>
-                                                <td>300円</td>
-                                            </tr>
-                                        </table>
+                                        <form action="" method="post" role="form">
+                                        {% csrf_token %}
+                                        資産サマリー<button type="submit" name="wallet_button" value="wallet_button">更新</button>
+                                            <table class="asset-table">
+                                                {% for wallet in wallet_data %}
+                                                    <tr>
+                                                        <th>{{ wallet.name }}</th>
+                                                        <td>{{ wallet.balance }}円</td>
+                                                        <td><input type="text" name="balance_update_{{ wallet.id }}" maxlength="10" id="balance{{ wallet.id }}">円</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </table>
+                                        </form>
                                     </div>
                                     <div class="inline-box">
                                         収支入力精度<br/>
@@ -328,11 +387,15 @@
 
         <!--↓body閉じタグ直前でjQueryを読み込む-->
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- 対象月プルダウンの初期値セット -->
         <script>
-            var aa = 0;
+            var today = new Date();
+            var month = today.getMonth();
+            document.getElementById('id_month_select_box').options[month + 1 - {{ disp_month }}].selected = true;
+        </script>
+        <script>
             $(function () {
                 $('#openModal1').click(function(){
-                    aa ++;
                     $('#modalArea').fadeIn();
                 });
                 $('#closeModal , #modalBg').click(function(){
@@ -341,6 +404,7 @@
             });
         </script>
         <script>
+            <!-- クリック箇所に応じたデフォルト値をモーダルにセット -->
             <!--tdタグ内をクリック時に,該当class名からpayment_result_idを取得-->
             $('td').click(function(){
                 arrClassName = $(this)[0].parentElement.className.split(" ");
@@ -411,13 +475,14 @@
                         target_plan_amount = document.getElementById("selected_plan_amount");
                         <!-- 代入 -->
                         target_plan_amount.innerHTML = plan_amount_text;
+
                     <!-- 実績タブ > 予算情報デフォルトセット END -->
 
 
-                    <!-- 実績タブ > 実績情報デフォルトセット -->
+                    <!-- 実績タブ > 実績作成情報デフォルトセット -->
                         <!-- 予算名を実績メモに仮セット -->
                         <!-- セット位置の取得 -->
-                        target_result_memo = document.getElementById("id_memo");
+                        target_result_memo = document.getElementById("id_PRRF_memo");
                         <!-- 代入 -->
                         target_result_memo.value = plan_name_text;
 
@@ -427,13 +492,118 @@
                         var mm = ("0" + (date.getMonth() + 1)).slice(-2);
                         var dd = ("0" + date.getDate()).slice(-2);
 
-                        document.getElementById("id_payment_date").value = yyyy + '-' + mm + '-' + dd;
+                        document.getElementById("id_PRRF_payment_date").value = yyyy + '-' + mm + '-' + dd;
 
-                    <!-- 実績タブ > 実績情報デフォルトセット END -->
+                        <!-- 予算IDの取得(hidden) -->
+                        <!-- セット位置の取得 -->
+                        target_plan_id_hidden = document.getElementById("id_PRRF_selected_plan_id");
+                        <!-- 代入 -->
+                        target_plan_id_hidden.value = payment_plan_id;
+
+                    <!-- 実績タブ > 実績作成情報デフォルトセット END -->
+
+                    <!-- 実績タブ > 実績更新情報デフォルトセット -->
+                        <!-- 予算名を実績メモに仮セット -->
+                        <!-- セット位置の取得 -->
+                        target_result_memo = document.getElementById("id_PRUF_memo");
+                        <!-- 実績名の取得 -->
+                        var result_name_text = document.getElementsByName("result_name_name_tag" + payment_result_id)[0].innerHTML;
+                        <!-- 代入 -->
+                        target_result_memo.value = result_name_text;
+
+                        <!-- 実績支払日の取得 -->
+                        var result_paymentdate_text = document.getElementsByName("result_paymentdate_name_tag" + payment_result_id)[0].innerHTML;
+
+                        var yyyy = result_paymentdate_text.slice(0,4);
+                        var mm = result_paymentdate_text.slice(5,7);
+                        var dd = result_paymentdate_text.slice(8,10);
+
+                        <!-- 代入 -->
+                        document.getElementById("id_PRUF_payment_date").value = yyyy + '-' + mm + '-' + dd;
+
+                        <!-- 予算IDの取得(hidden) -->
+                        <!-- セット位置の取得 -->
+                        target_plan_id_hidden = document.getElementById("id_PRUF_selected_result_id");
+                        <!-- 代入 -->
+                        target_plan_id_hidden.value = payment_result_id;
+
+                        <!-- 実績金額の取得 -->
+                        var result_amount_text = document.getElementsByName("result_amount_name_tag" + payment_result_id)[0].innerHTML;
+                        <!-- セット位置の取得(金額) -->
+                        target_result_amount = document.getElementById("id_PRUF_amount");
+                        <!-- 代入(金額) -->
+                        result_amount_text_num = result_amount_text.replace(/[^0-9]/g, '');
+                        target_result_amount.value = result_amount_text_num;
+                        <!-- セット位置の取得(符号) -->
+                        target_result_amount_plus = document.getElementById("id_PRUF_amount_plus_flg");
+                        <!-- 代入(符号) -->
+                        if(result_amount_text.indexOf('+') != -1){
+                            result_amount_text_plus = 1;
+                        }else{
+                            result_amount_text_plus = 0;
+                        }
+                        target_result_amount_plus.value = result_amount_text_plus;
+
+                    <!-- 実績タブ > 実績更新情報デフォルトセット END -->
+
+                    <!-- Ajax   -->
+                    csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+                    <!-- Ajax(パラメータの取得)   -->
+
+                        <!-- 初期化 -->
+                        target_average_amount = document.getElementById("average_amount");
+                        target_average_amount.innerHTML = "";
+
+                        <!-- TODO urlを動的に取得 -->
+                        $.ajax({
+                            'url':"http://127.0.0.1:8000/user_admin/config1/",
+                            'type':"POST",
+                            'data':{
+                                <!-- 適切なパラメータにする -->
+                                "average_plan_id":payment_plan_id,
+                                "csrfmiddlewaretoken":csrf,
+                            },
+                            'dataType':'json',
+                            'success':function(response){
+                                if(response['success_flg']==0){
+                                    $.ajax({
+                                        'url':"average_ajax/",
+                                        'type':"POST",
+                                        'data':{
+                                            "average_plan_id":payment_plan_id,
+                                            "csrfmiddlewaretoken":csrf,
+                                        },
+                                        'dataType':'json',
+                                        'success':function(response){
+                                            <!-- 平均金額挿入場所を取得 -->
+                                            target_average_amount = document.getElementById("average_amount");
+                                            <!-- 代入 -->
+                                            target_average_amount.innerHTML = "(平均：¥" + response['average_price'] + ")";
+                                        },
+                                    });
+                                }else if(response['success_flg']==1){
+                                    <!-- TODO 平均金額計算の対象外の予算に対する処理-->
+                                    console.log("eee");
+                                }else{
+
+                                    <!-- TODO 異常系 -->
+                                    console.log("ddd");
+                                }
+                            },
+                        });
+                    <!-- Ajax END -->
 
                     $('#modalArea').fadeIn();
                 }
             })
         </script>
+        <script>
+            $(function(){
+                $("#id_month_select_box").change(function(){
+                    $("#month_form").submit();
+                });
+            });
+        </script>
     </body>
 </html>
