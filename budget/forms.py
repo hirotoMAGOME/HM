@@ -68,7 +68,7 @@ class PaymentPlanForm(forms.Form):
     )
 
 
-class PaymentResultForm(forms.Form):
+class PaymentResultRegistForm(forms.Form):
     #実績情報
     #TODO プルダウンやめる。ダイナミックサーチ
 
@@ -97,7 +97,35 @@ class PaymentResultForm(forms.Form):
     selected_plan_id = forms.IntegerField(
         required=True
     )
+class PaymentResultUpdateForm(forms.Form):
+    #実績情報
+    #TODO プルダウンやめる。ダイナミックサーチ
 
+    PRUF_amount_plus_flg = forms.ChoiceField(
+        choices=PLUS_FLG_CHOICES,
+        required=True,
+        initial=0,
+    )
+    PRUF_amount = forms.CharField(
+        label='金額',
+        required=True,
+    )
+    PRUF_memo = forms.CharField(
+        label='備考',
+        max_length=100,
+    )
+    PRUF_payment_date = forms.DateField(
+        label='支払日',
+    )
+    PRUF_wallet = forms.ChoiceField(
+        label='財布',
+        choices=WALLET_CHOICES,
+        required=True,
+        initial=0,
+    )
+    PRUF_selected_result_id = forms.IntegerField(
+        required=True
+    )
 class DisplayForm(forms.Form):
     month_select_box = forms.ChoiceField(
         choices=DISPRAY_RANGE,

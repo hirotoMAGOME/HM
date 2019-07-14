@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
-from budget.forms import PaymentPlanForm, PaymentResultForm, DisplayForm, SettlementForm
+from budget.forms import PaymentPlanForm, PaymentResultRegistForm, PaymentResultUpdateForm, DisplayForm, SettlementForm
 from budget.models import PaymentPlan, PaymentResult, Wallet, WalletHistory, DoublePost, Settlement
 
 from django.db import connection
@@ -62,8 +62,8 @@ class IndexView(View):
             return render(request, 'budget/index.html', context)
 
         print("post")
-        if 'result_button' in request.POST:
-            print('result_button')
+        if 'result_regist_button' in request.POST:
+            print('result_regist_button')
 
             #TODO family_id,member_id,rank
             insert = {
@@ -89,7 +89,24 @@ class IndexView(View):
                 'create_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             }
             DoublePost.objects.create(**insert)
-            
+        elif 'result_update_button' in request.POST:
+            print('result_update_button')
+
+            # TODO family_id,member_id,rank
+            update = {
+                'amount_plus_flg': request.POST['amount_plus_flg'],
+                'amount': request.POST['amount'],
+                'memo': request.POST['memo'],
+                'family_id': 1,
+                'member_id': 1,
+                'rank': 1,
+                'payment_date': request.POST['payment_date'],
+            }
+            PaymentResult.objects.filter(id=request.POST['result_id']).update(**update)
+
+
+
+
         elif 'plan_button' in request.POST:
             print('plan_button')
             #TODO memo項目追加
@@ -237,8 +254,9 @@ def get_disp_data(disp_month):
         'payment_unit_count5': len(payment_result_data5),
         'total_result': total_result,
         'total_plan': total_plan,
-        'planForm': PaymentPlanForm(),
-        'resultForm': PaymentResultForm(),
+        'planUpdateForm': PaymentPlanForm(),
+        'resultRegistForm': PaymentResultRegistForm(),
+        'resultUpdateForm': PaymentResultUpdateForm(),
         'displayForm': DisplayForm(),
         'disp_month': disp_month,
         'wallet_data': wallet_data,

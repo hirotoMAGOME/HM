@@ -228,22 +228,22 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
                                         <h2>予算の更新</h2>
                                         <form action="" method="post" role="form">
                                             {% csrf_token %}
-                                            {{ planForm.planform_id.as_hidden }}
+                                            {{ planUpdateForm.planform_id.as_hidden }}
                                             <p>
-                                                {{ planForm.planform_payment_unit_id.label }}：
-                                                {{ planForm.planform_payment_unit_id }}
+                                                {{ planUpdateForm.planform_payment_unit_id.label }}：
+                                                {{ planUpdateForm.planform_payment_unit_id }}
                                             </p>
                                             <p>
-                                                {{ planForm.planform_name.label }}：
-                                                {{ planForm.planform_name }}
+                                                {{ planUpdateForm.planform_name.label }}：
+                                                {{ planUpdateForm.planform_name }}
                                             </p>
                                             <p>
-                                                {{ planForm.planform_amount.label }}：
-                                                {{ planForm.planform_amount }}円  (  {{ planForm.planform_amount_plus_flg }}  )
+                                                {{ planUpdateForm.planform_amount.label }}：
+                                                {{ planUpdateForm.planform_amount }}円  (  {{ planUpdateForm.planform_amount_plus_flg }}  )
                                             </p>
                                             <p>
-                                                {{ planForm.planform_payment_limit.label }}：
-                                                {{ planForm.planform_payment_limit }}
+                                                {{ planUpdateForm.planform_payment_limit.label }}：
+                                                {{ planUpdateForm.planform_payment_limit }}
                                             </p>
                                             <button type="submit" name="plan_button" value="plan_button">更新</button>
                                         </form>
@@ -274,29 +274,50 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
                                             {% csrf_token %}
                                             <!--TODO ダイナミックサーチ-->
                                             <p>
-                                                {{ resultForm.memo.label }}：
-                                                {{ resultForm.memo }}
+                                                {{ resultRegistForm.memo.label }}：
+                                                {{ resultRegistForm.memo }}
                                             </p>
                                             <p>
-                                                {{ resultForm.amount.label }}：
-                                                {{ resultForm.amount }}円  (  {{ resultForm.amount_plus_flg }}  )
+                                                {{ resultRegistForm.amount.label }}：
+                                                {{ resultRegistForm.amount }}円  (  {{ resultRegistForm.amount_plus_flg }}  )
                                             </p>
                                             <p>
-                                                {{ resultForm.wallet.label }}：
-                                                {{ resultForm.wallet }}
+                                                {{ resultRegistForm.wallet.label }}：
+                                                {{ resultRegistForm.wallet }}
                                             </p>
                                             <!--TODO datepicker-->
                                             <p>
-                                                {{ resultForm.payment_date.label }}：
-                                                {{ resultForm.payment_date }}
+                                                {{ resultRegistForm.payment_date.label }}：
+                                                {{ resultRegistForm.payment_date }}
                                             </p>
-                                            {{ resultForm.selected_plan_id.as_hidden }}
-                                            <button type="submit" name="result_button" value="result_button">登録</button>
+                                            {{ resultRegistForm.selected_plan_id.as_hidden }}
+                                            <button type="submit" name="result_regist_button" value="result_regist_button">作成</button>
                                         </form>
                                     </div>
                                     <div id="result_tab02" class="result_tabpanel">
-                                        bb
-
+                                        <form action="" method="post" role="form">
+                                            {% csrf_token %}
+                                            <!--TODO ダイナミックサーチ-->
+                                            <p>
+                                                {{ resultUpdateForm.PRUF_memo.label }}：
+                                                {{ resultUpdateForm.PRUF_memo }}
+                                            </p>
+                                            <p>
+                                                {{ resultUpdateForm.PRUF_amount.label }}：
+                                                {{ resultUpdateForm.PRUF_amount }}円  (  {{ resultUpdateForm.PRUF_amount_plus_flg }}  )
+                                            </p>
+                                            <p>
+                                                {{ resultUpdateForm.PRUF_wallet.label }}：
+                                                {{ resultUpdateForm.PRUF_wallet }}
+                                            </p>
+                                            <!--TODO datepicker-->
+                                            <p>
+                                                {{ resultUpdateForm.PRUF_payment_date.label }}：
+                                                {{ resultUpdateForm.PRUF_payment_date }}
+                                            </p>
+                                            {{ resultUpdateForm.PRUF_selected_result_id.as_hidden }}
+                                            <button type="submit" name="result_update_button" value="result_update_button">更新</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
