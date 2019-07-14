@@ -25,14 +25,6 @@ class IndexView(View):
 
     def post(self, request, *args, **kwargs):
         """POST リクエスト用のメソッド"""
-        """TODO 対象月プルダウンでの絞り込み"""
-        if 'month_select_box' in request.GET:
-            disp_month = request.GET['month_select_box']
-        else:
-            disp_month = datetime.today().month
-
-        context = get_disp_data(disp_month)
-
 
         #TODO 2重POSTの防止　同じPOSTがきた場合は、処理しない。
         # 古いデータの削除(1日以上古いデータを削除)
@@ -134,6 +126,19 @@ class IndexView(View):
         elif 'settlement_button' in request.POST:
             print('settlement_button')
             update_settlement(request.POST['settlement_month'], request.POST['settlement_date'])
+
+
+        """TODO 対象月プルダウンでの絞り込み"""
+        if 'month_select_box' in request.GET:
+            disp_month = request.GET['month_select_box']
+        else:
+            disp_month = datetime.today().month
+
+        """表示内容の
+        
+        取得"""
+        context = get_disp_data(disp_month)
+
 
         return render(request, 'budget/index.html', context)
 
