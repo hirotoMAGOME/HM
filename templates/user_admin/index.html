@@ -1,1 +1,37 @@
 user_admin
+<!DOCTYPE html>
+<!--
+960px想定
+-->
+<html lang="jp">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style type = "text/css">
+            table.user_admin_config-table{
+                border:1px black solid;
+            }
+            table.user_admin_config-table tr,table.user_admin_config-table th,table.user_admin_config-table td{
+                border:1px black solid;
+            }
+        </style>
+    </head>
+    <body>
+        <table class = "user_admin_config-table">
+            <tr>
+                {% for config in config_data %}
+                    <tr>
+                        <th colspan = 2></th>
+                    </tr>
+                    <tr>
+                        <td>{{ config.name }}</td>
+                        <td>{{ config.value }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan = 2>{{ config.memo }}</td>
+                    </tr>
+                {% endfor %}
+            </tr>
+        </table>
+    </body>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
-from budget.forms import PaymentPlanForm, PaymentResultForm, DisplayForm, SettlementForm
+from budget.forms import PaymentPlanForm, PaymentResultRegistForm, PaymentResultUpdateForm, DisplayForm, SettlementForm
 from budget.models import PaymentPlan, PaymentResult, Wallet, WalletHistory, DoublePost, Settlement
 
 from django.db import connection
@@ -18,6 +18,7 @@ class IndexView(View):
         else:
             disp_month = datetime.today().month
 
+        """出力情報の取得"""
         context = get_disp_data(disp_month)
 
         return render(request, 'budget/index.html', context)
@@ -61,19 +62,19 @@ class IndexView(View):
             return render(request, 'budget/index.html', context)
 
         print("post")
-        if 'result_button' in request.POST:
-            print('result_button')
+        if 'result_regist_button' in request.POST:
+            print('result_regist_button')
 
             #TODO family_id,member_id,rank
             insert = {
-                'payment_plan_id': request.POST['selected_plan_id'],
-                'amount_plus_flg': request.POST['amount_plus_flg'],
-                'amount': request.POST['amount'],
-                'memo': request.POST['memo'],
+                'payment_plan_id': request.POST['PRRF_selected_plan_id'],
+                'amount_plus_flg': request.POST['PRRF_amount_plus_flg'],
+                'amount': request.POST['PRRF_amount'],
+                'memo': request.POST['PRRF_memo'],
                 'family_id': 1,
                 'member_id': 1,
                 'rank': 1,
-                'payment_date': request.POST['payment_date'],
+                'payment_date': request.POST['PRRF_payment_date'],
             }
             PaymentResult.objects.create(**insert)
 
@@ -88,7 +89,24 @@ class IndexView(View):
                 'create_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             }
             DoublePost.objects.create(**insert)
-            
+        elif 'result_update_button' in request.POST:
+            print('result_update_button')
+
+            # TODO family_id,member_id,rank
+            update = {
+                'amount_plus_flg': request.POST['PRUF_amount_plus_flg'],
+                'amount': request.POST['PRUF_amount'],
+                'memo': request.POST['PRUF_memo'],
+                'family_id': 1,
+                'member_id': 1,
+                'rank': 1,
+                'payment_date': request.POST['PRUF_payment_date'],
+            }
+            PaymentResult.objects.filter(id=request.POST['PRUF_selected_result_id']).update(**update)
+
+
+
+
         elif 'plan_button' in request.POST:
             print('plan_button')
             #TODO memo項目追加
@@ -154,17 +172,31 @@ def get_front_info(unit_id, month):
     return data
 
 
-def for_ajax(request):
+def for_ajax_average(request):
     import json
     from django.http import HttpResponse,Http404
-    print("aaa")
-    print(request.POST)
-    if request.method == 'POST':
-        print("ajax")
-        response = json.dumps({'aaaaaaa': 'bbbbbb',})
+
+    if request.method == 'POST' and 'average_plan_id' in request.POST:
+        plan_id = request.POST['average_plan_id']
+
+        #plan_idに紐付く実績収支の平均を出す
+        cursor = connection.cursor()
+        cursor.execute(
+            "SELECT "
+            "ROUND(AVG(amount),0) as average "
+            "FROM payment_result "
+            "WHERE payment_plan_id = %s "
+            , (plan_id,)
+        )
+        data = cursor.fetchall()
+
+        #出力結果から平均金額を取得
+        average_price = int(data[0][0])
+
+        #レスポンスを返す
+        response = json.dumps({'average_price': average_price,})
         return HttpResponse(response)
     else:
-        print("bbb")
         raise Http404
 
 
@@ -222,8 +254,9 @@ def get_disp_data(disp_month):
         'payment_unit_count5': len(payment_result_data5),
         'total_result': total_result,
         'total_plan': total_plan,
-        'planForm': PaymentPlanForm(),
-        'resultForm': PaymentResultForm(),
+        'planUpdateForm': PaymentPlanForm(),
+        'resultRegistForm': PaymentResultRegistForm(),
+        'resultUpdateForm': PaymentResultUpdateForm(),
         'displayForm': DisplayForm(),
         'disp_month': disp_month,
         'wallet_data': wallet_data,
