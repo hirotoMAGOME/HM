@@ -72,29 +72,29 @@ class PaymentResultRegistForm(forms.Form):
     #実績情報
     #TODO プルダウンやめる。ダイナミックサーチ
 
-    amount_plus_flg = forms.ChoiceField(
+    PRRF_amount_plus_flg = forms.ChoiceField(
         choices=PLUS_FLG_CHOICES,
         required=True,
         initial=0,
     )
-    amount = forms.CharField(
+    PRRF_amount = forms.CharField(
         label='金額',
         required=True,
     )
-    memo = forms.CharField(
+    PRRF_memo = forms.CharField(
         label='備考',
         max_length=100,
     )
-    payment_date = forms.DateField(
+    PRRF_payment_date = forms.DateField(
         label='支払日',
     )
-    wallet = forms.ChoiceField(
+    PRRF_wallet = forms.ChoiceField(
         label='財布',
         choices=WALLET_CHOICES,
         required=True,
         initial=0,
     )
-    selected_plan_id = forms.IntegerField(
+    PRRF_selected_plan_id = forms.IntegerField(
         required=True
     )
 class PaymentResultUpdateForm(forms.Form):

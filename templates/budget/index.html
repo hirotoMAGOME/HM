@@ -475,18 +475,13 @@
                         <!-- 代入 -->
                         target_plan_amount.innerHTML = plan_amount_text;
 
-                        <!-- 予算IDの取得(hidden) -->
-                        <!-- セット位置の取得 -->
-                        target_plan_id_hidden = document.getElementById("id_selected_plan_id");
-                        <!-- 代入 -->
-                        target_plan_id_hidden.value = payment_plan_id;
                     <!-- 実績タブ > 予算情報デフォルトセット END -->
 
 
                     <!-- 実績タブ > 実績情報デフォルトセット -->
                         <!-- 予算名を実績メモに仮セット -->
                         <!-- セット位置の取得 -->
-                        target_result_memo = document.getElementById("id_memo");
+                        target_result_memo = document.getElementById("id_PRRF_memo");
                         <!-- 代入 -->
                         target_result_memo.value = plan_name_text;
 
@@ -496,7 +491,13 @@
                         var mm = ("0" + (date.getMonth() + 1)).slice(-2);
                         var dd = ("0" + date.getDate()).slice(-2);
 
-                        document.getElementById("id_payment_date").value = yyyy + '-' + mm + '-' + dd;
+                        document.getElementById("id_PRRF_payment_date").value = yyyy + '-' + mm + '-' + dd;
+
+                        <!-- 予算IDの取得(hidden) -->
+                        <!-- セット位置の取得 -->
+                        target_plan_id_hidden = document.getElementById("id_PRRF_selected_plan_id");
+                        <!-- 代入 -->
+                        target_plan_id_hidden.value = payment_plan_id;
 
                     <!-- 実績タブ > 実績情報デフォルトセット END -->
 
@@ -537,7 +538,11 @@
                                             target_average_amount.innerHTML = "(平均：¥" + response['average_price'] + ")";
                                         },
                                     });
+                                }else if(response['success_flg']==1){
+                                    <!-- TODO 平均金額計算の対象外の予算に対する処理-->
+                                    console.log("eee");
                                 }else{
+
                                     <!-- TODO 異常系 -->
                                     console.log("ddd");
                                 }

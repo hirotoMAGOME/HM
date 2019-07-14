@@ -274,23 +274,23 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
                                             {% csrf_token %}
                                             <!--TODO ダイナミックサーチ-->
                                             <p>
-                                                {{ resultRegistForm.memo.label }}：
-                                                {{ resultRegistForm.memo }}
+                                                {{ resultRegistForm.PRRF_memo.label }}：
+                                                {{ resultRegistForm.PRRF_memo }}
                                             </p>
                                             <p>
-                                                {{ resultRegistForm.amount.label }}：
-                                                {{ resultRegistForm.amount }}円  (  {{ resultRegistForm.amount_plus_flg }}  )
+                                                {{ resultRegistForm.PRRF_amount.label }}：
+                                                {{ resultRegistForm.PRRF_amount }}円  (  {{ resultRegistForm.PRRF_amount_plus_flg }}  )
                                             </p>
                                             <p>
-                                                {{ resultRegistForm.wallet.label }}：
-                                                {{ resultRegistForm.wallet }}
+                                                {{ resultRegistForm.PRRF_wallet.label }}：
+                                                {{ resultRegistForm.PRRF_wallet }}
                                             </p>
                                             <!--TODO datepicker-->
                                             <p>
-                                                {{ resultRegistForm.payment_date.label }}：
-                                                {{ resultRegistForm.payment_date }}
+                                                {{ resultRegistForm.PRRF_payment_date.label }}：
+                                                {{ resultRegistForm.PRRF_payment_date }}
                                             </p>
-                                            {{ resultRegistForm.selected_plan_id.as_hidden }}
+                                            {{ resultRegistForm.PRRF_selected_plan_id.as_hidden }}
                                             <button type="submit" name="result_regist_button" value="result_regist_button">作成</button>
                                         </form>
                                     </div>
