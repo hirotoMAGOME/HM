@@ -135,7 +135,7 @@
                                                 <td></td>
                                                 <td name = "plan_amount_name_tag{{ anytime.0 }}"></td>
                                             {% endif %}
-                                                <td>{{ anytime.7 |default:"" }}</td>
+                                                <td name = "result_name_name_tag{{ anytime.5 }}">{{ anytime.7 |default:"" }}</td>
                                                 <td>
                                                     {% if anytime.9 is not None and anytime.11 == 0 %}
                                                         ¥
@@ -180,7 +180,7 @@
                                                     <td></td>
                                                     <td name = "plan_amount_name_tag{{ year.0 }}"></td>
                                             {% endif %}
-                                                <td>{{ year.7 |default:"" }}</td>
+                                                <td name = "result_name_name_tag{{ year.5 }}">{{ year.7 |default:"" }}</td>
                                                 <td>
                                                     {% if year.9 is not None and year.11 == 0  %}
                                                         ¥
@@ -225,7 +225,7 @@
                                                 <td></td>
                                                 <td name = "plan_amount_name_tag{{ month.0 }}"></td>
                                             {% endif %}
-                                                <td>{{ month.7 |default:"" }}</td>
+                                                <td name = "result_name_name_tag{{ month.5 }}">{{ month.7 |default:"" }}</td>
                                                 <td>{% if month.9 is not None and month.11 == 0 %}
                                                         ¥
                                                         {% if month.8 == 1 %}
@@ -269,7 +269,7 @@
                                                 <td></td>
                                                 <td name = "plan_amount_name_tag{{ week.0 }}"></td>
                                             {% endif %}
-                                                <td>{{ week.7 |default:"" }}</td>
+                                                <td name = "result_name_name_tag{{ week.5 }}">{{ week.7 |default:"" }}</td>
                                                 <td>
                                                     {% if week.9 is not None and week.11 == 0 %}
                                                         ¥
@@ -314,7 +314,7 @@
                                                 <td></td>
                                                 <td name = "plan_amount_name_tag{{ day.0 }}"></td>
                                             {% endif %}
-                                                <td>{{ day.7 |default:"" }}</td>
+                                                <td name = "result_name_name_tag{{ day.5 }}">{{ day.7 |default:"" }}</td>
                                                 <td>
                                                     {% if day.9 is not None and day.11 == 0 %}
                                                         ¥
@@ -478,7 +478,7 @@
                     <!-- 実績タブ > 予算情報デフォルトセット END -->
 
 
-                    <!-- 実績タブ > 実績情報デフォルトセット -->
+                    <!-- 実績タブ > 実績作成情報デフォルトセット -->
                         <!-- 予算名を実績メモに仮セット -->
                         <!-- セット位置の取得 -->
                         target_result_memo = document.getElementById("id_PRRF_memo");
@@ -499,8 +499,32 @@
                         <!-- 代入 -->
                         target_plan_id_hidden.value = payment_plan_id;
 
-                    <!-- 実績タブ > 実績情報デフォルトセット END -->
+                    <!-- 実績タブ > 実績作成情報デフォルトセット END -->
 
+                    <!-- 実績タブ > 実績更新情報デフォルトセット -->
+                        <!-- 予算名を実績メモに仮セット -->
+                        <!-- セット位置の取得 -->
+                        target_result_memo = document.getElementById("id_PRUF_memo");
+                        <!-- 実績名の取得 -->
+                        var result_name_text = document.getElementsByName("result_name_name_tag" + payment_result_id)[0].innerHTML;
+                        <!-- 代入 -->
+                        target_result_memo.value = result_name_text;
+
+                        <!-- 当日日付をセット -->
+                        var date = new Date();
+                        var yyyy = date.getFullYear();
+                        var mm = ("0" + (date.getMonth() + 1)).slice(-2);
+                        var dd = ("0" + date.getDate()).slice(-2);
+
+                        document.getElementById("id_PRUF_payment_date").value = yyyy + '-' + mm + '-' + dd;
+
+                        <!-- 予算IDの取得(hidden) -->
+                        <!-- セット位置の取得 -->
+                        target_plan_id_hidden = document.getElementById("id_PRUF_selected_result_id");
+                        <!-- 代入 -->
+                        target_plan_id_hidden.value = payment_result_id;
+
+                    <!-- 実績タブ > 実績更新情報デフォルトセット END -->
 
                     <!-- Ajax   -->
                     csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;

@@ -67,14 +67,14 @@ class IndexView(View):
 
             #TODO family_id,member_id,rank
             insert = {
-                'payment_plan_id': request.POST['selected_plan_id'],
-                'amount_plus_flg': request.POST['amount_plus_flg'],
-                'amount': request.POST['amount'],
-                'memo': request.POST['memo'],
+                'payment_plan_id': request.POST['PRRF_selected_plan_id'],
+                'amount_plus_flg': request.POST['PRRF_amount_plus_flg'],
+                'amount': request.POST['PRRF_amount'],
+                'memo': request.POST['PRRF_memo'],
                 'family_id': 1,
                 'member_id': 1,
                 'rank': 1,
-                'payment_date': request.POST['payment_date'],
+                'payment_date': request.POST['PRRF_payment_date'],
             }
             PaymentResult.objects.create(**insert)
 
@@ -94,15 +94,15 @@ class IndexView(View):
 
             # TODO family_id,member_id,rank
             update = {
-                'amount_plus_flg': request.POST['amount_plus_flg'],
-                'amount': request.POST['amount'],
-                'memo': request.POST['memo'],
+                'amount_plus_flg': request.POST['PRUF_amount_plus_flg'],
+                'amount': request.POST['PRUF_amount'],
+                'memo': request.POST['PRUF_memo'],
                 'family_id': 1,
                 'member_id': 1,
                 'rank': 1,
-                'payment_date': request.POST['payment_date'],
+                'payment_date': request.POST['PRUF_payment_date'],
             }
-            PaymentResult.objects.filter(id=request.POST['result_id']).update(**update)
+            PaymentResult.objects.filter(id=request.POST['PRUF_selected_result_id']).update(**update)
 
 
 
