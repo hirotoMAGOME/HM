@@ -40,29 +40,57 @@ DISPRAY_RANGE = (
     (datetime.strftime(datetime.today() - relativedelta(months=2), '%-m'), datetime.strftime(datetime.today() - relativedelta(months=2), '%m') + '月'),
 )
 
-class PaymentPlanForm(forms.Form):
+class PaymentPlanRegistForm(forms.Form):
     #予算情報
-    planform_id = forms.IntegerField(
+    PPRF_planform_id = forms.IntegerField(
         required=True,
     )
-    planform_name = forms.CharField(
+    PPRF_planform_name = forms.CharField(
         label='予算名',
         required=True,
     )
-    planform_payment_limit = forms.CharField(
+    PPRF_planform_payment_limit = forms.CharField(
         label='締め日',
         required=True,
     )
-    planform_amount_plus_flg = forms.ChoiceField(
+    PPRF_planform_amount_plus_flg = forms.ChoiceField(
         choices=PLUS_FLG_CHOICES,
         required=True,
         initial=0,
     )
-    planform_amount = forms.CharField(
+    PPRF_planform_amount = forms.CharField(
         label='金額',
         required=True,
     )
-    planform_payment_unit_id = forms.ChoiceField(
+    PPRF_planform_payment_unit_id = forms.ChoiceField(
+        choices=PAYMENT_UNIT,
+        label='単位',
+    )
+
+
+class PaymentPlanUpdateForm(forms.Form):
+    #予算情報
+    PPUF_planform_id = forms.IntegerField(
+        required=True,
+    )
+    PPUF_planform_name = forms.CharField(
+        label='予算名',
+        required=True,
+    )
+    PPUF_planform_payment_limit = forms.CharField(
+        label='締め日',
+        required=True,
+    )
+    PPUF_planform_amount_plus_flg = forms.ChoiceField(
+        choices=PLUS_FLG_CHOICES,
+        required=True,
+        initial=0,
+    )
+    PPUF_planform_amount = forms.CharField(
+        label='金額',
+        required=True,
+    )
+    PPUF_planform_payment_unit_id = forms.ChoiceField(
         choices=PAYMENT_UNIT,
         label='単位',
     )
@@ -97,6 +125,8 @@ class PaymentResultRegistForm(forms.Form):
     PRRF_selected_plan_id = forms.IntegerField(
         required=True
     )
+
+
 class PaymentResultUpdateForm(forms.Form):
     #実績情報
     #TODO プルダウンやめる。ダイナミックサーチ
@@ -126,6 +156,8 @@ class PaymentResultUpdateForm(forms.Form):
     PRUF_selected_result_id = forms.IntegerField(
         required=True
     )
+
+
 class DisplayForm(forms.Form):
     month_select_box = forms.ChoiceField(
         choices=DISPRAY_RANGE,

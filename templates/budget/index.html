@@ -421,26 +421,26 @@
                 if(payment_plan_id !== undefined) {
                     <!-- 予算タブ > 予算情報デフォルトセット START -->
                         <!-- セット位置の取得(id) -->
-                        target_plan_id = document.getElementById("id_planform_id");
+                        target_plan_id = document.getElementById("id_PPUF_planform_id");
                         <!-- 代入 -->
                         target_plan_id.value = payment_plan_id;
 
                         <!-- 予算名の取得 TODO 重複-->
                         var plan_name_text = document.getElementsByName("plan_name_name_tag" + payment_plan_id)[0].innerHTML;
                         <!-- セット位置の取得 -->
-                        target_plan_name = document.getElementById("id_planform_name");
+                        target_plan_name = document.getElementById("id_PPUF_planform_name");
                         <!-- 代入 -->
                         target_plan_name.value = plan_name_text;
 
                         <!-- 予算の取得 TODO replace不要。数値、符号を別々に取得。下にもあるamountも合わせて修正。-->
                         var plan_amount_text = document.getElementsByName("plan_amount_name_tag" + payment_plan_id)[0].innerHTML;
                         <!-- セット位置の取得(金額) -->
-                        target_plan_amount = document.getElementById("id_planform_amount");
+                        target_plan_amount = document.getElementById("id_PPUF_planform_amount");
                         <!-- 代入(金額) -->
                         plan_amount_text_num = plan_amount_text.replace(/[^0-9]/g, '');
                         target_plan_amount.value = plan_amount_text_num;
                         <!-- セット位置の取得(符号) -->
-                        target_plan_amount_plus = document.getElementById("id_planform_amount_plus_flg");
+                        target_plan_amount_plus = document.getElementById("id_PPUF_planform_amount_plus_flg");
                         <!-- 代入(符号) -->
                         if(plan_amount_text.indexOf('+') != -1){
                             plan_amount_text_plus = 1;
@@ -453,7 +453,7 @@
                         var payment_unit_tr_id = document.getElementsByClassName("plan_id" + payment_plan_id)[0].id;
                         var unit_id = payment_unit_tr_id.replace('payment_unit_tr','');
                         <!-- セット位置の取得 -->
-                        target_plan_unit = document.getElementById("id_planform_payment_unit_id");
+                        target_plan_unit = document.getElementById("id_PPUF_planform_payment_unit_id");
                         <!-- 代入 -->
                         target_plan_unit.options[Number(unit_id)-1].selected = true;
 

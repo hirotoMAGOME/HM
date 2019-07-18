@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
-from budget.forms import PaymentPlanForm, PaymentResultRegistForm, PaymentResultUpdateForm, DisplayForm, SettlementForm
+from budget.forms import PaymentPlanRegistForm, PaymentPlanUpdateForm, PaymentResultRegistForm, PaymentResultUpdateForm, DisplayForm, SettlementForm
 from budget.models import PaymentPlan, PaymentResult, Wallet, WalletHistory, DoublePost, Settlement
 
 from django.db import connection
@@ -71,8 +71,8 @@ class IndexView(View):
             PaymentResult.objects.create(**insert)
 
             # Wallet
-            diff_amount = request.POST['amount'] if(request.POST['amount_plus_flg'] == '1') else int(request.POST['amount']) * (-1)
-            update_wallet(request.POST['wallet'], diff_amount, 2)
+            diff_amount = request.POST['PRRF_amount'] if(request.POST['PRRF_amount_plus_flg'] == '1') else int(request.POST['PRRF_amount']) * (-1)
+            update_wallet(request.POST['PRRF_wallet'], diff_amount, 2)
 
             #2重チェック用
             insert = {
@@ -81,6 +81,7 @@ class IndexView(View):
                 'create_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             }
             DoublePost.objects.create(**insert)
+
         elif 'result_update_button' in request.POST:
             print('result_update_button')
 
@@ -95,24 +96,38 @@ class IndexView(View):
                 'payment_date': request.POST['PRUF_payment_date'],
             }
             PaymentResult.objects.filter(id=request.POST['PRUF_selected_result_id']).update(**update)
+            print('実績を更新しました。result_id = ' + request.POST['PRUF_selected_result_id'])
 
-
-
-
-        elif 'plan_button' in request.POST:
-            print('plan_button')
+        elif 'plan_regist_button' in request.POST:
+            print('plan_regist_button')
             #TODO memo項目追加
             update = {
-                'amount': request.POST['planform_amount'],
+                'amount': request.POST['PPRF_planform_amount'],
                 'family_id': 1,
                 'member_id': 1,
-                'name': request.POST['planform_name'],
-                'payment_limit': request.POST['planform_payment_limit'],
-                'payment_unit_id': request.POST['planform_payment_unit_id'],
-                'amount_plus_flg': request.POST['planform_amount_plus_flg'],
+                'name': request.POST['PPRF_planform_name'],
+                'payment_limit': request.POST['PPRF_planform_payment_limit'],
+                'payment_unit_id': request.POST['PPRF_planform_payment_unit_id'],
+                'amount_plus_flg': request.POST['PPRF_planform_amount_plus_flg'],
                 'update_date': datetime.now(),
             }
-            PaymentPlan.objects.filter(id=request.POST['planform_id']).update(**update)
+            PaymentPlan.objects.filter(id=request.POST['PPRF_planform_id']).update(**update)
+
+        elif 'plan_update_button' in request.POST:
+            print('plan_update_button')
+            #TODO memo項目追加
+            update = {
+                'amount': request.POST['PPUF_planform_amount'],
+                'family_id': 1,
+                'member_id': 1,
+                'name': request.POST['PPUF_planform_name'],
+                'payment_limit': request.POST['PPUF_planform_payment_limit'],
+                'payment_unit_id': request.POST['PPUF_planform_payment_unit_id'],
+                'amount_plus_flg': request.POST['PPUF_planform_amount_plus_flg'],
+                'update_date': datetime.now(),
+            }
+            PaymentPlan.objects.filter(id=request.POST['PPUF_planform_id']).update(**update)
+            print('予算を更新しました。result_id = ' + request.POST['PPUF_planform_id'])
 
         elif 'wallet_button' in request.POST:
             print('wallet_button')
@@ -259,7 +274,8 @@ def get_disp_data(disp_month):
         'payment_unit_count5': len(payment_result_data5),
         'total_result': total_result,
         'total_plan': total_plan,
-        'planUpdateForm': PaymentPlanForm(),
+        'planRegistForm': PaymentPlanRegistForm(),
+        'planUpdateForm': PaymentPlanUpdateForm(),
         'resultRegistForm': PaymentResultRegistForm(),
         'resultUpdateForm': PaymentResultUpdateForm(),
         'displayForm': DisplayForm(),

@@ -221,31 +221,51 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
 
                                 <div class="plan_tabpanels">
                                     <div id="plan_tab01" class="plan_tabpanel">
-                                        aa
-
+                                        <h2>予算の作成</h2>
+                                        <form action="" method="post" role="form">
+                                            {% csrf_token %}
+                                            {{ planRegistForm.PPRF_planform_id.as_hidden }}
+                                            <p>
+                                                {{ planRegistForm.PPRF_planform_payment_unit_id.label }}：
+                                                {{ planRegistForm.PPRF_planform_payment_unit_id }}
+                                            </p>
+                                            <p>
+                                                {{ planRegistForm.PPRF_planform_name.label }}：
+                                                {{ planRegistForm.PPRF_planform_name }}
+                                            </p>
+                                            <p>
+                                                {{ planRegistForm.PPRF_planform_amount.label }}：
+                                                {{ planRegistForm.PPRF_planform_amount }}円  (  {{ planRegistForm.PPRF_planform_amount_plus_flg }}  )
+                                            </p>
+                                            <p>
+                                                {{ planRegistForm.PPRF_planform_payment_limit.label }}：
+                                                {{ planRegistForm.PPRF_planform_payment_limit }}
+                                            </p>
+                                            <button type="submit" name="plan_regist_button" value="plan_regist_button">更新</button>
+                                        </form>
                                     </div>
                                     <div id="plan_tab02" class="plan_tabpanel">
                                         <h2>予算の更新</h2>
                                         <form action="" method="post" role="form">
                                             {% csrf_token %}
-                                            {{ planUpdateForm.planform_id.as_hidden }}
+                                            {{ planUpdateForm.PPUF_planform_id.as_hidden }}
                                             <p>
-                                                {{ planUpdateForm.planform_payment_unit_id.label }}：
-                                                {{ planUpdateForm.planform_payment_unit_id }}
+                                                {{ planUpdateForm.PPUF_planform_payment_unit_id.label }}：
+                                                {{ planUpdateForm.PPUF_planform_payment_unit_id }}
                                             </p>
                                             <p>
-                                                {{ planUpdateForm.planform_name.label }}：
-                                                {{ planUpdateForm.planform_name }}
+                                                {{ planUpdateForm.PPUF_planform_name.label }}：
+                                                {{ planUpdateForm.PPUF_planform_name }}
                                             </p>
                                             <p>
-                                                {{ planUpdateForm.planform_amount.label }}：
-                                                {{ planUpdateForm.planform_amount }}円  (  {{ planUpdateForm.planform_amount_plus_flg }}  )
+                                                {{ planUpdateForm.PPUF_planform_amount.label }}：
+                                                {{ planUpdateForm.PPUF_planform_amount }}円  (  {{ planUpdateForm.PPUF_planform_amount_plus_flg }}  )
                                             </p>
                                             <p>
-                                                {{ planUpdateForm.planform_payment_limit.label }}：
-                                                {{ planUpdateForm.planform_payment_limit }}
+                                                {{ planUpdateForm.PPUF_planform_payment_limit.label }}：
+                                                {{ planUpdateForm.PPUF_planform_payment_limit }}
                                             </p>
-                                            <button type="submit" name="plan_button" value="plan_button">更新</button>
+                                            <button type="submit" name="plan_update_button" value="plan_update_button">更新</button>
                                         </form>
                                     </div>
                                 </div>
@@ -263,9 +283,9 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
                             <h2>実績情報</h2>
 
                             <div class="result_tab">
-	                            <input type="radio" name="result_tab" id="result_tab1_1" aria-controls="result_tab01" >
+	                            <input type="radio" name="result_tab" id="result_tab1_1" aria-controls="result_tab01" checked>
                 	            <label for="result_tab1_1">作成</label>
-                	            <input type="radio" name="result_tab" id="result_tab1_2" aria-controls="result_tab02" checked>
+                	            <input type="radio" name="result_tab" id="result_tab1_2" aria-controls="result_tab02">
                 	            <label for="result_tab1_2">更新</label>
 
                                 <div class="result_tabpanels">
