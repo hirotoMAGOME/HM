@@ -582,7 +582,7 @@
                                     });
                                 }else if(response['success_flg']==1){
                                     <!-- TODO 平均金額計算の対象外の予算に対する処理-->
-                                    console.log("eee");
+                                    alert("平均単価の取得失敗")
                                 }else{
 
                                     <!-- TODO 異常系 -->
@@ -600,7 +600,6 @@
             <!-- クリック箇所に応じたデフォルト値をモーダルにセット -->
             <!--tdタグ内をクリック時に,該当class名からpayment_result_idを取得-->
             $('.asset_tr').click(function(){
-                alert("aaaa");
                 $('#modalAreaAsset').fadeIn();
             });
         </script>
