@@ -212,38 +212,32 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
 
                             <div class="asset_tab">
 
-	                            <input type="radio" name="asset_tab" id="asset_tab2_1" aria-controls="asset_tab01" >
+	                            <input type="radio" name="asset_tab" id="asset_tab2_1" aria-controls="asset_tab01" checked>
                 	            <label for="asset_tab2_1">入力</label>
-                	            <input type="radio" name="asset_tab" id="asset_tab2_2" aria-controls="asset_tab02" checked>
+                	            <input type="radio" name="asset_tab" id="asset_tab2_2" aria-controls="asset_tab02" >
                 	            <label for="asset_tab2_2">推移</label>
 
                                 <div class="asset_tabpanels">
                                     <div id="asset_tab01" class="asset_tabpanel">
                                         <h2>資産の作成</h2>
                                         <form action="" method="post" role="form">
-                                            {% csrf_token %}
-                                            {{ assetRegistForm.PPRF_assetform_id.as_hidden }}
-                                            <p>
-                                                {{ assetRegistForm.PPRF_assetform_payment_unit_id.label }}：
-                                                {{ assetRegistForm.PPRF_assetform_payment_unit_id }}
-                                            </p>
-                                            <p>
-                                                {{ assetRegistForm.PPRF_assetform_name.label }}：
-                                                {{ assetRegistForm.PPRF_assetform_name }}
-                                            </p>
-                                            <p>
-                                                {{ assetRegistForm.PPRF_assetform_amount.label }}：
-                                                {{ assetRegistForm.PPRF_assetform_amount }}円  (  {{ assetRegistForm.PPRF_assetform_amount_plus_flg }}  )
-                                            </p>
-                                            <p>
-                                                {{ assetRegistForm.PPRF_assetform_payment_limit.label }}：
-                                                {{ assetRegistForm.PPRF_assetform_payment_limit }}
-                                            </p>
-                                            <button type="submit" name="asset_regist_button" value="asset_regist_button">更新</button>
+                                        {% csrf_token %}
+                                        資産サマリー
+                                            <table class="asset-table">
+                                                {% for wallet in wallet_data %}
+                                                    <tr class="asset_tr">
+                                                    {{ wallet.id.as_hidden }}
+                                                        <th>{{ wallet.name }}</th>
+                                                        <td>{{ wallet.balance }}円</td>
+                                                        <td><input type="text" name="balance_update_{{ wallet.id }}" maxlength="10" id="balance{{ wallet.id }}">円</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </table>
+                                            <button type="submit" name="wallet_button" value="wallet_button">更新</button>
                                         </form>
                                     </div>
                                     <div id="asset_tab02" class="asset_tabpanel">
-                                        <h2>資産の更新</h2>
+                                        <h2>資産の推移</h2>
                                         <form action="" method="post" role="form">
                                             {% csrf_token %}
                                             {{ assetUpdateForm.PPUF_assetform_id.as_hidden }}
