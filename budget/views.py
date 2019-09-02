@@ -184,6 +184,7 @@ def get_front_info(unit_id, month):
         "WHERE payment_unit_id = %s "
         "AND result.id IS NOT NULL "
         "AND MONTH(payment_date) = %s "
+        "AND YEAR(payment_date) = YEAR(CURRENT_DATE)"
         "ORDER BY id ASC,sample_flg DESC"
         , (unit_id, unit_id,month)
     )
