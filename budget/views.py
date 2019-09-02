@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
-from budget.forms import PaymentPlanForm, PaymentResultRegistForm, PaymentResultUpdateForm, DisplayForm, SettlementForm
+from budget.forms import PaymentPlanRegistForm, PaymentPlanUpdateForm, PaymentResultRegistForm, PaymentResultUpdateForm, DisplayForm, SettlementForm, WalletUpdateForm
 from budget.models import PaymentPlan, PaymentResult, Wallet, WalletHistory, DoublePost, Settlement
 
 from django.db import connection
@@ -25,14 +25,6 @@ class IndexView(View):
 
     def post(self, request, *args, **kwargs):
         """POST リクエスト用のメソッド"""
-        """TODO 対象月プルダウンでの絞り込み"""
-        if 'month_select_box' in request.GET:
-            disp_month = request.GET['month_select_box']
-        else:
-            disp_month = datetime.today().month
-
-        context = get_disp_data(disp_month)
-
 
         #TODO 2重POSTの防止　同じPOSTがきた場合は、処理しない。
         # 古いデータの削除(1日以上古いデータを削除)
@@ -79,8 +71,8 @@ class IndexView(View):
             PaymentResult.objects.create(**insert)
 
             # Wallet
-            diff_amount = request.POST['amount'] if(request.POST['amount_plus_flg'] == '1') else int(request.POST['amount']) * (-1)
-            update_wallet(request.POST['wallet'], diff_amount, 2)
+            diff_amount = request.POST['PRRF_amount'] if(request.POST['PRRF_amount_plus_flg'] == '1') else int(request.POST['PRRF_amount']) * (-1)
+            update_wallet(request.POST['PRRF_wallet'], diff_amount, 2)
 
             #2重チェック用
             insert = {
@@ -89,6 +81,7 @@ class IndexView(View):
                 'create_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             }
             DoublePost.objects.create(**insert)
+
         elif 'result_update_button' in request.POST:
             print('result_update_button')
 
@@ -103,37 +96,66 @@ class IndexView(View):
                 'payment_date': request.POST['PRUF_payment_date'],
             }
             PaymentResult.objects.filter(id=request.POST['PRUF_selected_result_id']).update(**update)
+            print('実績を更新しました。result_id = ' + request.POST['PRUF_selected_result_id'])
 
-
-
-
-        elif 'plan_button' in request.POST:
-            print('plan_button')
+        elif 'plan_regist_button' in request.POST:
+            print('plan_regist_button')
             #TODO memo項目追加
             update = {
-                'amount': request.POST['planform_amount'],
+                'amount': request.POST['PPRF_planform_amount'],
                 'family_id': 1,
                 'member_id': 1,
-                'name': request.POST['planform_name'],
-                'payment_limit': request.POST['planform_payment_limit'],
-                'payment_unit_id': request.POST['planform_payment_unit_id'],
-                'amount_plus_flg': request.POST['planform_amount_plus_flg'],
+                'name': request.POST['PPRF_planform_name'],
+                'payment_limit': request.POST['PPRF_planform_payment_limit'],
+                'payment_unit_id': request.POST['PPRF_planform_payment_unit_id'],
+                'amount_plus_flg': request.POST['PPRF_planform_amount_plus_flg'],
                 'update_date': datetime.now(),
             }
-            PaymentPlan.objects.filter(id=request.POST['planform_id']).update(**update)
+            PaymentPlan.objects.filter(id=request.POST['PPRF_planform_id']).update(**update)
+
+        elif 'plan_update_button' in request.POST:
+            print('plan_update_button')
+            #TODO memo項目追加
+            update = {
+                'amount': request.POST['PPUF_planform_amount'],
+                'family_id': 1,
+                'member_id': 1,
+                'name': request.POST['PPUF_planform_name'],
+                'payment_limit': request.POST['PPUF_planform_payment_limit'],
+                'payment_unit_id': request.POST['PPUF_planform_payment_unit_id'],
+                'amount_plus_flg': request.POST['PPUF_planform_amount_plus_flg'],
+                'update_date': datetime.now(),
+            }
+            PaymentPlan.objects.filter(id=request.POST['PPUF_planform_id']).update(**update)
+            print('予算を更新しました。result_id = ' + request.POST['PPUF_planform_id'])
 
         elif 'wallet_button' in request.POST:
             print('wallet_button')
+            print(request.POST)
             #入力された残高を更新する
-            for post_key in request.POST:
-                if post_key[0:15] == 'balance_update_' and len(request.POST[post_key]) != 0:
-                    update_wallet_id = post_key.replace('balance_update_', '')
 
-                    #idと金額でWalletの更新とWalletHistoryの作成
-                    update_wallet(update_wallet_id, request.POST[post_key], 1)
+            update_wallet_id = request.POST['asset_id']
+            update_wallet_balance = request.POST['balance']
+
+            # idと金額でWalletの更新とWalletHistoryの作成
+            update_wallet(update_wallet_id, update_wallet_balance, 1)
+
         elif 'settlement_button' in request.POST:
             print('settlement_button')
             update_settlement(request.POST['settlement_month'], request.POST['settlement_date'])
+
+
+        """TODO 対象月プルダウンでの絞り込み"""
+        if 'month_select_box' in request.GET:
+            disp_month = request.GET['month_select_box']
+        else:
+            disp_month = datetime.today().month
+
+        """表示内容の
+        
+        取得"""
+        context = get_disp_data(disp_month)
+
 
         return render(request, 'budget/index.html', context)
 
@@ -153,7 +175,6 @@ def get_front_info(unit_id, month):
         "LEFT JOIN payment_result_sample as result2 ON plan2.id = result2.payment_plan_id "
         "WHERE payment_unit_id = %s "
         "AND result2.id IS NOT NULL "
-        #"AND MONTH(payment_date) = %s "
         "UNION ALL "
         "SELECT "
         "plan.id as id,plan.name as name,plan.payment_limit as payment_limit,plan.amount_plus_flg as anount_plus_flg,plan.amount as amount,result.id as result_id,result.payment_date as payment_date,result.memo as memo,result.amount_plus_flg as result_amount_plus_flg,result.amount as result_amount,unit.name_en as name_en,0 as sample_flg "
@@ -162,10 +183,10 @@ def get_front_info(unit_id, month):
         "LEFT JOIN payment_result as result ON plan.id = result.payment_plan_id "
         "WHERE payment_unit_id = %s "
         "AND result.id IS NOT NULL "
+        "AND MONTH(payment_date) = %s "
+        "AND YEAR(payment_date) = YEAR(CURRENT_DATE)"
         "ORDER BY id ASC,sample_flg DESC"
-        #"AND MONTH(payment_date) = %s "
-        #, (unit_id, month, unit_id, month,)
-        , (unit_id, unit_id,)
+        , (unit_id, unit_id,month)
     )
     data = cursor.fetchall()
 
@@ -254,12 +275,14 @@ def get_disp_data(disp_month):
         'payment_unit_count5': len(payment_result_data5),
         'total_result': total_result,
         'total_plan': total_plan,
-        'planUpdateForm': PaymentPlanForm(),
+        'planRegistForm': PaymentPlanRegistForm(),
+        'planUpdateForm': PaymentPlanUpdateForm(),
         'resultRegistForm': PaymentResultRegistForm(),
         'resultUpdateForm': PaymentResultUpdateForm(),
         'displayForm': DisplayForm(),
         'disp_month': disp_month,
         'wallet_data': wallet_data,
+        'walletUpdateForm': WalletUpdateForm(),
         'settlementForm': SettlementForm(),
     }
 
