@@ -183,8 +183,9 @@ def get_front_info(unit_id, month):
         "LEFT JOIN payment_result as result ON plan.id = result.payment_plan_id "
         "WHERE payment_unit_id = %s "
         "AND result.id IS NOT NULL "
+        "AND MONTH(payment_date) = %s "
         "ORDER BY id ASC,sample_flg DESC"
-        , (unit_id, unit_id,)
+        , (unit_id, unit_id,month)
     )
     data = cursor.fetchall()
 
