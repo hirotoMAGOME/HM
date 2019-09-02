@@ -158,6 +158,17 @@ class PaymentResultUpdateForm(forms.Form):
     )
 
 
+class WalletUpdateForm(forms.Form):
+    name = forms.CharField(
+        label='資産名',
+        max_length=100,
+    )
+    balance = forms.IntegerField(
+        label='残高',
+        required=True
+    )
+
+
 class DisplayForm(forms.Form):
     month_select_box = forms.ChoiceField(
         choices=DISPRAY_RANGE,
@@ -183,3 +194,4 @@ class SettlementForm(forms.Form):
     #    if(len(settlement_month) != 6):
     #        raise forms.ValidationError("決算月はyyyymmで入力してください")
     #    return settlement_month
+

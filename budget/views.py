@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
-from budget.forms import PaymentPlanRegistForm, PaymentPlanUpdateForm, PaymentResultRegistForm, PaymentResultUpdateForm, DisplayForm, SettlementForm
+from budget.forms import PaymentPlanRegistForm, PaymentPlanUpdateForm, PaymentResultRegistForm, PaymentResultUpdateForm, DisplayForm, SettlementForm, WalletUpdateForm
 from budget.models import PaymentPlan, PaymentResult, Wallet, WalletHistory, DoublePost, Settlement
 
 from django.db import connection
@@ -131,13 +131,15 @@ class IndexView(View):
 
         elif 'wallet_button' in request.POST:
             print('wallet_button')
+            print(request.POST)
             #入力された残高を更新する
-            for post_key in request.POST:
-                if post_key[0:15] == 'balance_update_' and len(request.POST[post_key]) != 0:
-                    update_wallet_id = post_key.replace('balance_update_', '')
 
-                    #idと金額でWalletの更新とWalletHistoryの作成
-                    update_wallet(update_wallet_id, request.POST[post_key], 1)
+            update_wallet_id = request.POST['asset_id']
+            update_wallet_balance = request.POST['balance']
+
+            # idと金額でWalletの更新とWalletHistoryの作成
+            update_wallet(update_wallet_id, update_wallet_balance, 1)
+
         elif 'settlement_button' in request.POST:
             print('settlement_button')
             update_settlement(request.POST['settlement_month'], request.POST['settlement_date'])
@@ -173,7 +175,6 @@ def get_front_info(unit_id, month):
         "LEFT JOIN payment_result_sample as result2 ON plan2.id = result2.payment_plan_id "
         "WHERE payment_unit_id = %s "
         "AND result2.id IS NOT NULL "
-        #"AND MONTH(payment_date) = %s "
         "UNION ALL "
         "SELECT "
         "plan.id as id,plan.name as name,plan.payment_limit as payment_limit,plan.amount_plus_flg as anount_plus_flg,plan.amount as amount,result.id as result_id,result.payment_date as payment_date,result.memo as memo,result.amount_plus_flg as result_amount_plus_flg,result.amount as result_amount,unit.name_en as name_en,0 as sample_flg "
@@ -183,8 +184,6 @@ def get_front_info(unit_id, month):
         "WHERE payment_unit_id = %s "
         "AND result.id IS NOT NULL "
         "ORDER BY id ASC,sample_flg DESC"
-        #"AND MONTH(payment_date) = %s "
-        #, (unit_id, month, unit_id, month,)
         , (unit_id, unit_id,)
     )
     data = cursor.fetchall()
@@ -281,6 +280,7 @@ def get_disp_data(disp_month):
         'displayForm': DisplayForm(),
         'disp_month': disp_month,
         'wallet_data': wallet_data,
+        'walletUpdateForm': WalletUpdateForm(),
         'settlementForm': SettlementForm(),
     }
 

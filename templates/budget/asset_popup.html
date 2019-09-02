@@ -221,18 +221,17 @@ button {padding: 10px;background-color: #fff;border: 1px solid #282828;border-ra
                                     <div id="asset_tab01" class="asset_tabpanel">
                                         <h2>資産の作成</h2>
                                         <form action="" method="post" role="form">
-                                        {% csrf_token %}
-                                        資産サマリー
-                                            <table class="asset-table">
-                                                {% for wallet in wallet_data %}
-                                                    <tr class="asset_tr">
-                                                    {{ wallet.id.as_hidden }}
-                                                        <th>{{ wallet.name }}</th>
-                                                        <td>{{ wallet.balance }}円</td>
-                                                        <td><input type="text" name="balance_update_{{ wallet.id }}" maxlength="10" id="balance{{ wallet.id }}">円</td>
-                                                    </tr>
-                                                {% endfor %}
-                                            </table>
+                                            {% csrf_token %}
+                                            資産サマリー
+                                            <input type="hidden" name="asset_id" id="asset_id" value="">
+                                            <p>
+                                                {{ walletUpdateForm.name.label }}：
+                                                {{ walletUpdateForm.name }}
+                                            </p>
+                                            <p>
+                                                {{ walletUpdateForm.balance.label }}：
+                                                {{ walletUpdateForm.balance }}
+                                            </p>
                                             <button type="submit" name="wallet_button" value="wallet_button">更新</button>
                                         </form>
                                     </div>

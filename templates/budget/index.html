@@ -353,11 +353,11 @@
                                         資産サマリー<button type="submit" name="wallet_button" value="wallet_button">更新</button>
                                             <table class="asset-table">
                                                 {% for wallet in wallet_data %}
-                                                    <tr class="asset_tr">
+                                                    <tr class="asset_tr wallet_id{{ wallet.id }}">
                                                     {{ wallet.id.as_hidden }}
                                                         <th>{{ wallet.name }}</th>
                                                         <td>{{ wallet.balance }}円</td>
-                                                        <td><input type="text" name="balance_update_{{ wallet.id }}" maxlength="10" id="balance{{ wallet.id }}">円</td>
+                                                        <td>使いすぎ</td>
                                                     </tr>
                                                 {% endfor %}
                                             </table>
@@ -405,7 +405,7 @@
             <!-- クリック箇所に応じたデフォルト値をモーダルにセット -->
             <!--tdタグ内をクリック時に,該当class名からpayment_result_idを取得-->
             $('td').click(function(){
-                arrClassName = $(this)[0].parentElement.className.split(" ");
+                arrClassName = $(this)[0].parentElement.className.split(" ");console.log(arrClassName);
                 for(var i=0,l=arrClassName.length;i<l;i++) {
                     if(arrClassName[i].indexOf("result_id")===0) {
                         <!-- クリックした実績id -->
@@ -598,9 +598,22 @@
         </script>
         <script>
             <!-- クリック箇所に応じたデフォルト値をモーダルにセット -->
-            <!--tdタグ内をクリック時に,該当class名からpayment_result_idを取得-->
-            $('.asset_tr').click(function(){
-                $('#modalAreaAsset').fadeIn();
+            <!--tdタグ内をクリック時に,該当class名からwallet_idを取得-->
+            $('td').click(function(){
+                console.log("bbbbb")
+                arrClassName = $(this)[0].parentElement.className.split(" ");
+                for(var i=0,l=arrClassName.length;i<l;i++) {
+                    if(arrClassName[i].indexOf("wallet_id")===0){
+                        var wallet_id = arrClassName[i].replace('wallet_id', '');
+                    }
+                }
+
+                if(wallet_id !== undefined){
+
+                    $('#modalAreaAsset').fadeIn();
+                }
+
+
             });
         </script>
         <script>
