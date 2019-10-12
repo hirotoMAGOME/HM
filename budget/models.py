@@ -112,6 +112,7 @@ class PaymentResult(models.Model):
     rank = django.db.models.IntegerField(verbose_name='表示順', null=True)
     payment_month = django.db.models.DateTimeField(verbose_name='支払月', null=True)
     payment_date = django.db.models.DateTimeField(verbose_name='支払日', null=True)
+    charge_month = django.db.models.DateTimeField(verbose_name='請求月', null=True)
     sample_flg = django.db.models.BooleanField(verbose_name='サンプルフラグ', default=0)
     family_id = django.db.models.IntegerField(verbose_name='家族ID', null=True)
     member_id = django.db.models.IntegerField(verbose_name='メンバーID', null=True)

@@ -405,11 +405,17 @@
             <!-- クリック箇所に応じたデフォルト値をモーダルにセット -->
             <!--tdタグ内をクリック時に,該当class名からpayment_result_idを取得-->
             $('td').click(function(){
+                <!-- Ajax用 -->
+                csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
                 arrClassName = $(this)[0].parentElement.className.split(" ");console.log(arrClassName);
                 for(var i=0,l=arrClassName.length;i<l;i++) {
                     if(arrClassName[i].indexOf("result_id")===0) {
                         <!-- クリックした実績id -->
                         var payment_result_id = arrClassName[i].replace('result_id','');
+
+                        ajax_config_2(payment_result_id,csrf);
+
                     }else if(arrClassName[i].indexOf("plan_id")===0) {
                         <!-- クリックした予算id -->
                         var payment_plan_id = arrClassName[i].replace('plan_id', '');
@@ -553,9 +559,6 @@
 
                     <!-- 実績タブ > 実績更新情報デフォルトセット END -->
 
-                    <!-- Ajax   -->
-                    csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-
                     <!-- Ajax(パラメータの取得)   -->
 
                         <!-- 初期化 -->
@@ -609,7 +612,6 @@
             <!-- クリック箇所に応じたデフォルト値をモーダルにセット -->
             <!--tdタグ内をクリック時に,該当class名からwallet_idを取得-->
             $('td').click(function(){
-                console.log("bbbbb")
                 arrClassName = $(this)[0].parentElement.className.split(" ");
                 for(var i=0,l=arrClassName.length;i<l;i++) {
                     if(arrClassName[i].indexOf("wallet_id")===0){
@@ -638,6 +640,37 @@
                     $("#month_form").submit();
                 });
             });
+        </script>
+        <script>
+            function ajax_config_2(payment_result_id,param_csrf){
+                console.log("function2");
+                //請求月をセットするAjax
+                //IP見えてるのはいいのか
+                //TODO 相対パスにする
+                $.ajax({
+                    'url':"http://127.0.0.1:8000/user_admin/config2/",
+                    'type':"POST",
+                    'data':{
+                        <!-- 適切なパラメータにする -->
+                        "request_request_id":payment_result_id,
+                        "csrfmiddlewaretoken":param_csrf,
+                    },
+                    'dataType':'json',
+                    'success':function(response){
+                        console.log("test2");
+                        console.log(response);
+                        if(response['success_flg']==0){
+
+                        }else if(response['success_flg']==1){
+                            <!-- TODO 平均金額計算の対象外の予算に対する処理-->
+                            console.log("dddccffff");
+                        }else{
+                            <!-- TODO 異常系 -->
+                            console.log("dddcc");
+                        }
+                    },
+                });
+            };
         </script>
     </body>
 </html>
